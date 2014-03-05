@@ -9,9 +9,6 @@
 #include "PathNode.h"
 #include "PathFind.h"
 
-#include "Baton.h"
-//Tilfällig
-
 namespace esc
 {
 
@@ -267,24 +264,24 @@ namespace esc
 				{
 									sf::Sprite *sprite = m_xSpriteManager->loadSprite("alpha_guard.png", 0, 0, 64, 64);
 
-									//SGuardRotation *rotation = m_vGuardRotations[iCurrentRotationCount++];
+									SGuardRotation *rotation = m_vGuardRotations[iCurrentRotationCount++];
 
-									//if (rotation->m_bConstant)
-									//{
+									if (rotation->m_bConstant)
+									{
 										Guard *guard = m_xGameObjectManager->createGuard(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, sprite, this);
-										//guard->setWatchSize(rotation->m_fSize);
-										//guard->setVisionRange(rotation->m_fRange);
-										//guard->setConstantRotation(rotation->m_bClockwise);
+										guard->setWatchSize(rotation->m_fSize);
+										guard->setVisionRange(rotation->m_fRange);
+										guard->setConstantRotation(rotation->m_bClockwise);
 										m_vLevelObjects.push_back(guard);
-									//}
-									/*else
-									{<
-										Guard *guard = m_xGameObjectManager->createGuard(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, sprite);
+									}
+									else
+									{
+										Guard *guard = m_xGameObjectManager->createGuard(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, sprite, this);
 										guard->setWatchSize(rotation->m_fSize);
 										guard->setVisionRange(rotation->m_fRange);
 										guard->setRotationPoints(rotation->m_fMaxAngle, rotation->m_fMinAngle, rotation->m_bClockwise);
 										m_vLevelObjects.push_back(guard);
-									}*/
+									}
 									
 									break;
 				}
@@ -326,9 +323,6 @@ namespace esc
 
 			
 		}
-
-		Item *baton = m_xGameObjectManager->createItem(sf::Vector2f(3325, 631), sf::Vector2f(64, 64), sf::Vector2f(0,0), BATON, m_xSpriteManager->loadSprite("Baton_pu.png", 0, 0, 64, 64));
-		m_vLevelObjects.push_back(baton);
 
 		m_xPathFinder = new PathFind(this);
 
@@ -651,8 +645,4 @@ namespace esc
 		return &m_vPathNodes;
 	}
 
-	SpriteManager *Level::getSpriteManager()
-	{
-		return m_xSpriteManager;
-	}
 }

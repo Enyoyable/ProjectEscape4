@@ -6,27 +6,13 @@
 
 namespace esc
 {
-	Item::Item(sf::Vector2f p_v2Pos, sf::Sprite *p_sSprite, bool p_bIsFlying, sf::Vector2f p_v2target, int p_iObjectId, EObjectType p_eType)
+	Item::Item(sf::Vector2f p_v2Pos, sf::Sprite *p_sSprite, int p_iObjectId, EObjectType p_eType)
 		:GameObject(p_v2Pos, sf::Vector2f(p_sSprite->getGlobalBounds().width, p_sSprite->getGlobalBounds().height), true, p_iObjectId, p_eType, p_sSprite)
 	{
-		setOrigin(32, 32);
-
-		m_v2fTarget = p_v2target - p_v2Pos;
-
-		float xDiff = -p_v2Pos.x + p_v2target.x;
-		float yDiff = -p_v2Pos.y + p_v2target.y;
-
-		float rotation = atan2f(yDiff, xDiff) / 0.017453292519943 + 180;
-		setRotation(rotation);
-
-		m_v2fTarget /= sqrtf(xDiff * xDiff + yDiff * yDiff);
-
-		m_v2fTarget *= 2000.f;
 
 		m_bIsRemoved = false;
-
-		m_bIsFlying = p_bIsFlying;
-		//m_v2fTarget = p_v2target;
+		m_bIsFlying = false;
+		m_v2Speed = sf::Vector2f(0.0f, 0.0f);
 	}
 
 	void Item::update(float p_fDeltaTime)
@@ -36,7 +22,7 @@ namespace esc
 
 		if (m_bIsFlying)
 		{
-			setPosition(getPosition() + m_v2fTarget * p_fDeltaTime);
+			move(m_v2Speed);
 			setRotation(getRotation() + 5.0f);
 		}
 	}
@@ -50,13 +36,22 @@ namespace esc
 		target.draw(*m_xSprite, states);
 	}
 
-	void Item::setDir(sf::Vector2f p_v2fInpSpeed)
+	void Item::setIsRemoved(bool p_bIsGone)
 	{
-		m_v2fTarget = p_v2fInpSpeed;
+		m_bIsRemoved = p_bIsGone;
 	}
-	sf::Vector2f Item::getDir()
+	bool Item::getIsRemoved()
 	{
-		return m_v2fTarget;
+		return  m_bIsRemoved;
+	}
+
+	void Item::setSpeed(sf::Vector2f p_v2fInpSpeed)
+	{
+		m_v2Speed = p_v2fInpSpeed;
+	}
+	sf::Vector2f Item::getSpeed()
+	{
+		return m_v2Speed;
 	}
 
 	void Item::setIsFlying(bool p_bflying)

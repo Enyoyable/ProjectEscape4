@@ -20,9 +20,7 @@ namespace esc
 
 		virtual void trigger();
 
-		virtual void Throw();
-
-		virtual void setTarget(sf::Vector2f p_v2fTarget);
+		void setTarget(sf::Vector2f p_v2fTarget);
 
 	private:
 		GameObjectManager *m_xGameObjectManager;

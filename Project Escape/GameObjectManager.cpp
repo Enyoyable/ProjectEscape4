@@ -95,8 +95,8 @@ namespace esc
 		return m_xPlayerObject;
 	}
 
-	Item *GameObjectManager::createItem(sf::Vector2f p_v2fPosition, sf::Vector2f p_v2fSize, sf::Vector2f p_v2dir, EObjectType p_eType, sf::Sprite *p_xSprite)
+	Item *GameObjectManager::createItem(sf::Vector2f p_v2fPosition, sf::Vector2f p_v2fSize, EObjectType p_eType, sf::Sprite *p_xSprite)
 	{
-		return new Item(p_v2fPosition, p_xSprite, false, p_v2dir, m_iCurrentObjectId++, p_eType);
+		return new Item(p_v2fPosition, p_xSprite, m_iCurrentObjectId++, p_eType);
 	}
 }

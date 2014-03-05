@@ -26,12 +26,6 @@ namespace esc
 
 		virtual void attack();
 
-		virtual void Throw();
-
-		virtual void drop();
-
-		virtual void setTarget(sf::Vector2f p_v2fTarget);
-
 		EWeaponType getCurrentWeaponType();
 
 		void setAttachedObject(GameObject *p_xObject);

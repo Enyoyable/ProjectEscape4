@@ -33,8 +33,8 @@ namespace esc
 
 		m_iPatrolPointCount = 0;
 
-		m_fGuardChaseSpeed = 40.f;
-		m_fGuardPatrolSpeed = 200.f;
+		m_fGuardChaseSpeed = 120.f;
+		m_fGuardPatrolSpeed = 60.f;
 
 		m_isDead = false;
 
@@ -118,11 +118,14 @@ namespace esc
 			m_xAIManager->update(p_fDeltaTime);
 			return;
 		}
+
+		if (m_bAngleLocked)
+			return;
 			
 
 		m_bIsChasing = false;
 
-		float fTurnRate = p_fDeltaTime * 10.f;
+		float fTurnRate = p_fDeltaTime * 20.f;
 
 		if (m_xPlayerObject == nullptr)
 		{

@@ -13,7 +13,6 @@ namespace esc
 	class CollisionManager;
 	class Level;
 	class PlayerObject;
-	class HUD;
 
 	class GameState : public State
 	{
@@ -31,8 +30,6 @@ namespace esc
 		virtual void pause();
 
 	protected:
-		HUD *Hud;
-
 		Level *m_xLevel;
 
 		PlayerObject *m_xPlayer;

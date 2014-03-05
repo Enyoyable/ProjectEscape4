@@ -28,9 +28,6 @@ namespace esc
 
 		sf::Sprite *m_xRightLargeCircle;
 		sf::Sprite *m_xRightLargeCircleItem;
-		sf::Sprite *m_xRightLargeCircleGarotte;
-		sf::Sprite *m_xRightLargeCircleBaton;
-		sf::Sprite *m_xRightLargeCircleGun;
 
 		sf::Sprite *m_xLeftLargeCircle;
 		sf::Sprite *m_xLeftLargeCircleItem;

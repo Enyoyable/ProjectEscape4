@@ -4,16 +4,17 @@
 #include "Level.h"
 #include "Item.h"
 #include "GameObjectManager.h"
-#include "SpriteManager.h"
 #include "Baton.h"
 #include "Weapon.h"
 #include "Gun.h"
+#include "Garrote.h"
+#include "AnimatedSprite.h"
 
 namespace esc
 {
 
 	PlayerObject::PlayerObject(sf::Sprite *sprite, sf::Vector2f position, sf::RenderWindow *window, int p_iObjectId, Level *p_xLevel, sf::Clock *p_xTimer, GameObjectManager *p_xGobjManager)
-		: GameObject(position, sf::Vector2f(sprite->getGlobalBounds().width, sprite->getGlobalBounds().height), false, p_iObjectId, PLAYER, sprite)
+		: GameObject(position, sf::Vector2f(64, 64), false, p_iObjectId, PLAYER, sprite)
 	{
 		m_hiding = false;
 		m_interactionRange = 64.0f;
@@ -22,7 +23,7 @@ namespace esc
 
 		m_startpos = position;
 		m_walkspeed = 8.0f;
-		m_sneakspeed = 4.0f;
+		m_sneakspeed = 1.5f;
 
 		m_iCurWep = 0;
 		m_bHasCard = false;
@@ -50,8 +51,7 @@ namespace esc
 
 	void PlayerObject::update(float deltaTime, std::vector<GameObject*> objects)
 	{
-		if (m_xWeapon != nullptr)
-			m_xWeapon->update(deltaTime);
+		
 
 		if (m_rAttack != nullptr)
 		{
@@ -102,12 +102,6 @@ namespace esc
 
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
 		{
-			if (m_xWeapon != nullptr)
-			{
-				m_xWeapon->setTarget(sf::Vector2f(sf::Mouse::getPosition(*p_window)) + getPosition() - sf::Vector2f(960, 540));
-				m_xWeapon->Throw();
-			}
-
 			if (m_iCurWep != 0)
 			{
 				if (m_iCurWep == 1)
@@ -195,7 +189,8 @@ namespace esc
 				}
 			}
 
-			setRotation(calcAngle(sf::Mouse::getPosition(*p_window).x + getPosition().x - p_window->getSize().x * 0.5, sf::Mouse::getPosition(*p_window).y + getPosition().y - p_window->getSize().y * 0.5));
+			if (!m_bAngleLocked)
+				setRotation(calcAngle(sf::Mouse::getPosition(*p_window).x + getPosition().x - p_window->getSize().x * 0.5, sf::Mouse::getPosition(*p_window).y + getPosition().y - p_window->getSize().y * 0.5));
 		}
 
 		if (m_hiding == true)
@@ -211,6 +206,11 @@ namespace esc
 		m_bLblock = false;
 		m_bUblock = false;
 		m_bDblock = false;
+
+		if (m_xWeapon != nullptr)
+			m_xWeapon->update(deltaTime);
+
+		static_cast<AnimatedSprite*>(m_xSprite)->update(deltaTime);
 
 	}
 
@@ -277,7 +277,7 @@ namespace esc
 
 		states.transform *= getTransform();
 		target.draw(*m_noiseCir);
-		target.draw(*m_xSprite, states);
+		target.draw(*static_cast<AnimatedSprite*>(m_xSprite), states);
 	}
 
 	void PlayerObject::setInteractionRange(float range)
@@ -299,9 +299,6 @@ namespace esc
 		}
 		else if (p_xInteractObj->getType() == BATON)
 		{
-
-			m_xWeapon = new Baton(true, 10, 1.f, 1.f, m_xLevel->getObjects(), m_xLevel);
-			
 			m_iCurWep = 1;
 			p_xInteractObj->setIsRemoved(true);
 
@@ -316,11 +313,6 @@ namespace esc
 			m_bHasObj = true;
 			p_xInteractObj->setIsRemoved(true);
 		}
-		else if (p_xInteractObj->getType() == GUN)
-		{
-			m_xWeapon = new Gun(true, 10, 1.f, 1.f, m_xLevel->getObjects(), m_xGobjManager, m_xLevel->getSpriteManager());
-			m_iCurWep = 2;
-		}
 		else if (p_xInteractObj->getType() == DOORH || p_xInteractObj->getType() == DOORV)
 		{
 			if (m_bHasCard == true
@@ -334,6 +326,30 @@ namespace esc
 
 	void PlayerObject::Attack()
 	{
+
+		/*if (m_iCurWep == 0)
+		{
+			float m_fRadious = 30;
+
+			m_rAttack = new sf::CircleShape(m_fRadious);
+			m_rAttack->setOrigin(-32, m_fRadious);
+			m_rAttack->setPosition(getPosition());
+			m_rAttack->setRotation(getRotation());
+			m_rAttack->setFillColor(sf::Color(200, 200, 200));
+			m_rAttack->setOrigin(m_fRadious, m_fRadious);
+
+		}
+		else if (m_iCurWep == 1)
+		{
+			float m_fRadious = 60;
+
+			m_rAttack = new sf::CircleShape(m_fRadious);
+			m_rAttack->setOrigin(-50, m_fRadious);
+			m_rAttack->setPosition(getPosition());
+			m_rAttack->setRotation(getRotation());
+			m_rAttack->setOrigin(m_fRadious, m_fRadious);
+		}*/
+
 		if (m_xWeapon->getCurrentWeaponType() == EWeaponType::WEAPONBATON)
 		{
 			Baton *baton = static_cast<Baton*>(m_xWeapon);
@@ -345,22 +361,13 @@ namespace esc
 			gun->setTarget(sf::Vector2f(sf::Mouse::getPosition(*p_window)) + getPosition() - sf::Vector2f(960, 540));
 			gun->trigger();
 		}
-	}
-
-	void PlayerObject::Throw()
-	{
-		if (m_xWeapon->getCurrentWeaponType() == EWeaponType::WEAPONBATON)
+		else if (m_xWeapon->getCurrentWeaponType() == EWeaponType::WEAPONGARROTE)
 		{
-			Baton *baton = static_cast<Baton*>(m_xWeapon);
-			baton->setTarget(sf::Vector2f(sf::Mouse::getPosition(*p_window)) + getPosition() - sf::Vector2f(960, 540));
-			baton->Throw();
+			Garrote *garrote = static_cast<Garrote*>(m_xWeapon);
+			garrote->trigger();
 		}
-		else if (m_xWeapon->getCurrentWeaponType() == EWeaponType::WEAPONGUN)
-		{
-			Gun *gun = static_cast<Gun*>(m_xWeapon);
-			gun->setTarget(sf::Vector2f(sf::Mouse::getPosition(*p_window)) + getPosition() - sf::Vector2f(960, 540));
-			gun->Throw();
-		}
+			
+		
 	}
 
 	bool PlayerObject::HandleCollision(GameObject *p_oObject)

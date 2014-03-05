@@ -17,6 +17,7 @@ namespace esc
 
 		friend class Baton;
 		friend class Bullet;
+		friend class Garrote;
 
 	public:
 		Guard(sf::Vector2f p_v2fPosition, sf::Vector2f p_v2fSize, bool p_bInteractable, int p_iObjectId, PlayerObject *p_xPlayer, GameObjectManager *p_xGameObjectManager, Level *level, sf::Sprite *p_xSprite = nullptr);

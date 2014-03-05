@@ -59,12 +59,6 @@ namespace esc
 		}
 	}
 
-	void Gun::Throw()
-	{
-		Item *Gun = new Item(m_xAttachedObject->getPosition(), m_xSpriteManager->loadSprite("PDA_pu.png", 0, 0, 64, 64), true, m_v2fTarget, 9999, BATON);
-		m_vObjects->push_back(Gun);
-	}
-
 	void Gun::setTarget(sf::Vector2f p_v2fTarget)
 	{
 		m_v2fTarget = p_v2fTarget;

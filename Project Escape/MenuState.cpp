@@ -69,7 +69,7 @@ namespace esc
 		{
 			m_xStateManager->setCurrentState(StateManager::EStates::GAME);
 		}
-		printf("MENU");
+		
 		for (auto vGameObjects : m_vGameObjects)
 		{
 			for (auto object : vGameObjects)

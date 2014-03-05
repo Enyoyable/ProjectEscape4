@@ -9,7 +9,8 @@
 #include "Weapon.h"
 #include "Baton.h"
 #include "Gun.h"
-#include "HUD.h"
+#include "Garrote.h"
+#include "AnimatedSprite.h"
 
 namespace esc
 {
@@ -22,16 +23,14 @@ namespace esc
 		m_xEngine = p_xEngine;
 		m_xLevel = p_xLevel;
 
-		
-
 		m_fTimer = 0;
 	}
 
 	void GameState::init()
 	{
 		sf::Clock *xTimer = new sf::Clock;
-		m_xPlayer = m_xGameObjectManager->createPlayer(m_xSpriteManager->loadSprite("spy.txt"), sf::Vector2f(64 * 48, 64 * 8), m_xEngine->m_window, 1, m_xLevel, xTimer);
-
+		//m_xPlayer = m_xGameObjectManager->createPlayer(m_xSpriteManager->loadSprite("spy.txt"), sf::Vector2f(64 * 48, 64 * 8), m_xEngine->m_window, 1, m_xLevel, xTimer);
+		m_xPlayer = m_xGameObjectManager->createPlayer(m_xSpriteManager->loadAnimatedSprite("Spy_walk.txt"), sf::Vector2f(64 * 48, 64 * 8), m_xEngine->m_window, 1, m_xLevel, xTimer);
 		m_vGameObjects[MAIN].push_back(m_xPlayer);
 
 		m_vGameObjects[MAIN].insert(m_vGameObjects[MAIN].end(), m_xLevel->getObjects()->begin(), m_xLevel->getObjects()->end());
@@ -40,10 +39,15 @@ namespace esc
 
 		m_xView->reset(sf::FloatRect(0, 0, 1920 * 1, 1080 * 1));
 
-		m_xPlayer->m_xWeapon = new Gun(true, 10, 1.f, 1.f, &m_vGameObjects[MAIN], m_xGameObjectManager, m_xSpriteManager);
+		/*m_xPlayer->m_xWeapon = new Gun(true, 10, 1.f, 1.f, &m_vGameObjects[MAIN], m_xGameObjectManager, m_xSpriteManager);
+		m_xPlayer->m_xWeapon->setAttachedObject(m_xPlayer);*/
+
+		/*m_xPlayer->m_xWeapon = new Baton(true, 10, 1.f, 1.f, &m_vGameObjects[MAIN], m_xLevel);
+		m_xPlayer->m_xWeapon->setAttachedObject(m_xPlayer);*/
+
+		m_xPlayer->m_xWeapon = new Garrote(1.f, 3.f, &m_vGameObjects[MAIN]);
 		m_xPlayer->m_xWeapon->setAttachedObject(m_xPlayer);
 
-		Hud = new HUD(m_xView, m_xSpriteManager, m_xPlayer);
 	}
 
 	void GameState::update(float p_fDeltaTime)
@@ -68,8 +72,6 @@ namespace esc
 				m_xGameObjectManager->updateObjects(&vGameObjects, p_fDeltaTime);
 		}
 
-		//Hud->update(p_fDeltaTime, m_fTimer);
-
 		m_xCollisionManager->getCollision(&m_vGameObjects[MAIN]);
 
 		sf::Listener::setPosition(m_xPlayer->getPosition().x, m_xPlayer->getPosition().y, 0);
@@ -87,7 +89,6 @@ namespace esc
 		{
 			m_xGameObjectManager->drawObjects(&vGameObjects);
 		}
-		//Hud->draw(target, states);
 	}
 
 	void GameState::exit()

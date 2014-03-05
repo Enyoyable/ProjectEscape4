@@ -3,9 +3,7 @@
 #include "GameObject.h"
 #include "Guard.h"
 #include "PlayerObject.h"
-#include "SpriteManager.h"
 #include "Level.h"
-#include "Item.h"
 
 namespace esc
 {
@@ -170,6 +168,8 @@ namespace esc
 							}
 						}
 					}
+
+					
 				}
 			}
 		}
@@ -186,16 +186,5 @@ namespace esc
 				m_fAttackTimer = 0;
 			}
 		}
-	}
-
-	void Baton::Throw()
-	{
-		Item *Baton = new Item(m_xAttachedObject->getPosition(), m_xLevel->getSpriteManager()->loadSprite("bullet.png", 0, 0, 44, 5), true, m_v2fTarget, 9999, BATON);
-		m_vObjects->push_back(Baton);
-	}
-
-	void Baton::setTarget(sf::Vector2f p_v2fTarget)
-	{
-		m_v2fTarget = p_v2fTarget;
 	}
 }

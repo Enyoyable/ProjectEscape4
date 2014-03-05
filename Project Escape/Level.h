@@ -44,8 +44,6 @@ namespace esc
 
 		void getRotationsPaths(std::string p_sFilePath);
 
-		SpriteManager *getSpriteManager();
-
 		void reset();
 
 		void destroy();

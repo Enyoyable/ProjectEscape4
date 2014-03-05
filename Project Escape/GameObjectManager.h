@@ -33,7 +33,7 @@ namespace esc
 
 		PlayerObject *createPlayer(sf::Sprite *p_sprite, sf::Vector2f p_position, sf::RenderWindow *p_window, int p_iObjectId, Level *level, sf::Clock *p_xTimer);
 
-		Item *createItem(sf::Vector2f p_v2fPosition, sf::Vector2f p_v2fSize, sf::Vector2f p_v2Dir, EObjectType p_eType, sf::Sprite *p_xSprite);
+		Item *createItem(sf::Vector2f p_v2fPosition, sf::Vector2f p_v2fSize, EObjectType p_eType, sf::Sprite *p_xSprite);
 
 	private:
 		sf::RenderWindow *m_xWindow;

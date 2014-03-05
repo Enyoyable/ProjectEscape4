@@ -73,6 +73,8 @@ namespace esc
 
 		void GameObject::HandleCollision(GameObject *p_oGameObject);
 
+		bool m_bAngleLocked;
+
 	protected:
 		sf::Sprite *m_xSprite;
 
@@ -87,6 +89,8 @@ namespace esc
 		sf::Vector2f m_v2fSize;
 
 		EObjectType m_eObjectType;
+
+		
 	};
 }
 

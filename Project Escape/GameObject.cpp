@@ -23,6 +23,8 @@ namespace esc
 		setOrigin(32, 32);
 
 		m_bIsRemoved = false;
+
+		m_bAngleLocked = false;
 	}
 
 	void GameObject::draw(sf::RenderTarget& target, sf::RenderStates states) const

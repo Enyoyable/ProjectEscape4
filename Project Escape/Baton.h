@@ -2,7 +2,6 @@
 
 #include "stdafx.h"
 #include "Weapon.h"
-#include "Level.h"
 
 namespace esc
 {
@@ -20,14 +19,7 @@ namespace esc
 
 		virtual void trigger();
 
-		virtual void Throw();
-
-		void setTarget(sf::Vector2f p_v2fTarget);
 	private:
 		Level *m_xLevel;
-
-		sf::Sprite *m_xSprite;
-
-		sf::Vector2f m_v2fTarget;
 	};
 }

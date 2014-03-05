@@ -126,6 +126,9 @@
     <ClCompile Include="Bullet.cpp">
       <Filter>Weapons</Filter>
     </ClCompile>
+    <ClCompile Include="Garrote.cpp">
+      <Filter>Weapons</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PlayerObject.h">
@@ -222,6 +225,9 @@
       <Filter>Weapons</Filter>
     </ClInclude>
     <ClInclude Include="Bullet.h">
+      <Filter>Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="Garrote.h">
       <Filter>Weapons</Filter>
     </ClInclude>
   </ItemGroup>
