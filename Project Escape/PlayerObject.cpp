@@ -214,12 +214,11 @@ namespace esc
 		m_bLblock = false;
 		m_bUblock = false;
 		m_bDblock = false;
-
+		
 		if (m_xWeapon != nullptr)
 			m_xWeapon->update(deltaTime);
 
 		static_cast<AnimatedSprite*>(m_xSprite)->update(deltaTime);
-
 
 	}
 
@@ -354,10 +353,6 @@ namespace esc
 			gun->setTarget(sf::Vector2f(sf::Mouse::getPosition(*p_window)) + getPosition() - sf::Vector2f(960, 540));
 			gun->trigger();
 		}
-		else if (m_xWeapon->getCurrentWeaponType() == EWeaponType::WEAPONGARROTE)
-		{
-		else if (m_xWeapon->getCurrentWeaponType() == EWeaponType::WEAPONGARROTE)
-		}
 	}
 
 	void PlayerObject::Throw()
@@ -374,6 +369,14 @@ namespace esc
 			gun->setTarget(sf::Vector2f(sf::Mouse::getPosition(*p_window)) + getPosition() - sf::Vector2f(960, 540));
 			gun->Throw();
 		}
+		else if (m_xWeapon->getCurrentWeaponType() == EWeaponType::WEAPONGARROTE)
+		{
+			Garrote *garrote = static_cast<Garrote*>(m_xWeapon);
+			garrote->setTarget(sf::Vector2f(sf::Mouse::getPosition(*p_window)) + getPosition() - sf::Vector2f(960, 540));
+			garrote->Throw();
+		}
+
+
 	}
 
 	bool PlayerObject::HandleCollision(GameObject *p_oObject)
