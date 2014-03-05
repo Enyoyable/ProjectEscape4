@@ -35,6 +35,21 @@ namespace esc
 		//Do nothing by default
 	}
 
+	void Weapon::Throw()
+	{
+
+	}
+
+	void Weapon::drop()
+	{
+
+	}
+
+	void Weapon::setTarget(sf::Vector2f p_v2fTarget)
+	{
+
+	}
+
 	EWeaponType Weapon::getCurrentWeaponType()
 	{
 		return m_eCurrentWeaponType;
@@ -49,4 +64,6 @@ namespace esc
 	{
 		return m_xAttachedObject;
 	}
+
+	
 }
