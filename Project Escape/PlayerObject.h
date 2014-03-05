@@ -31,6 +31,8 @@ namespace esc
 
 		void Attack();
 
+		void Throw();
+
 		void Interract(GameObject *p_xInteractObj);
 
 		sf::Vector2f getRangeToObject(GameObject *obj);
