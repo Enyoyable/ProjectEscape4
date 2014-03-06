@@ -1,0 +1,12 @@
+guard walk00001 = 0 0 64 64
+guard walk00002 = 65 0 64 64
+guard walk00003 = 130 0 64 64
+guard walk00004 = 195 0 64 64
+guard walk00005 = 260 0 64 64
+guard walk00006 = 325 0 64 64
+guard walk00007 = 390 0 64 64
+guard walk00008 = 455 0 64 64
+guard walk00009 = 520 0 64 64
+guard walk00010 = 585 0 64 64
+guard walk00011 = 650 0 64 64
+guard walk00012 = 715 0 64 64
