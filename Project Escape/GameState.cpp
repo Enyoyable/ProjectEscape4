@@ -36,7 +36,7 @@ namespace esc
 		m_vGameObjects[MAIN].insert(m_vGameObjects[MAIN].end(), m_xLevel->getObjects()->begin(), m_xLevel->getObjects()->end());
 
 		m_xView = new sf::View();
-
+		//kommentar
 		m_xView->reset(sf::FloatRect(0, 0, 1920 * 1, 1080 * 1));
 
 		/*m_xPlayer->m_xWeapon = new Gun(true, 10, 1.f, 1.f, &m_vGameObjects[MAIN], m_xGameObjectManager, m_xSpriteManager);
