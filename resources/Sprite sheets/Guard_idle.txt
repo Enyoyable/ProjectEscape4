@@ -1,0 +1,2 @@
+Guard idle01 = 0 0 64 64
+Guard idle02 = 65 0 64 64
