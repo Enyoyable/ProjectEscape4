@@ -33,6 +33,8 @@ namespace esc
 
 		SpriteManager *m_xSpriteManager;
 
+		sf::Music *m_sGunshot;
+
 		bool m_bHasShot;
 	};
 

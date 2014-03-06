@@ -38,6 +38,8 @@ namespace esc
 
 		float m_fTimer;
 
+		sf::Music *m_sIngame;
+
 		bool m_bHasInitialized = false;
 	};
 
