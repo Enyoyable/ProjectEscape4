@@ -31,6 +31,8 @@ namespace esc
 	private:
 		std::vector<sf::Text*> m_vTextObjects;
 
+		sf::Music *m_sTitle;
+
 		Button *m_xStartButton;
 		Button *m_xExitButton;
 	};

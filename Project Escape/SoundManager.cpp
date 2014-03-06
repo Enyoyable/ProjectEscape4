@@ -1,49 +1,51 @@
-#include <SFML/Audio.hpp>
 #include "SoundManager.h"
+#include "SFML\Audio\Sound.hpp"
+#include "SFML\Audio\SoundBuffer.hpp"
+#include "SFML\Audio\Music.hpp"
+#include <iostream>
 
-
-SFMLSoundProvider::SFMLSoundProvider()
+SoundManager::SoundManager(std::string _dir)
 {
-	_sound.setVolume(100.0f);
+	m_directory = _dir;
 }
 
-void SFMLSoundProvider::PlaySound(std::string filename) 
+void SoundManager::SoundBuffer(const std::string& _filename)
 {
-	
-	/*if(_soundBuffer.getDuration() ==  0)
+	std::string path = m_directory + _filename;
+	sf::SoundBuffer Buffer;
+	Buffer.loadFromFile(path);
+
+
+	std::map<std::string, sf::SoundBuffer>::iterator it = m_soundBuffer.find(_filename);
+	if (it == m_soundBuffer.end())
 	{
-		_soundBuffer.loadFromFile(filename);
+		m_soundBuffer.insert(std::pair<std::string, sf::SoundBuffer>(_filename, Buffer));
 	}
-	if(_sound.getStatus() == sf::Sound::Playing)
+}
+
+sf::Sound* SoundManager::getSound(const std::string& _filename)
+{
+	sf::Sound* sound = new sf::Sound();
+
+	std::map<std::string, sf::SoundBuffer>::iterator it = m_soundBuffer.find(_filename);
+	if (it == m_soundBuffer.end())
 	{
-		_sound.stop();
+		return nullptr;
 	}
-	_sound.setBuffer(_soundBuffer);
-	_sound.play();*/
-}
-	
-void SFMLSoundProvider::PlaySong(std::string filename, bool looping)
-{
-	_music.openFromFile(filename);
-	_music.setLoop(looping);
-	_music.play();
+
+	sound->setBuffer(it->second);
+
+	return sound;
 }
 
-void SFMLSoundProvider::StopAllSounds() 
+sf::Music* SoundManager::getMusic(const std::string& _filename)
 {
-	if(_sound.getStatus() == sf::Sound::Playing)
-		_sound.stop();
-	if(_music.getStatus() == sf::Sound::Playing)
-		_music.stop();
-}
-	
-bool SFMLSoundProvider::IsSoundPlaying()
-{
-	return _sound.getStatus() == sf::Sound::Playing;
-}
+	sf::Music* music = new sf::Music();
 
+	if (!music->openFromFile(m_directory + _filename))
+	{
+		return nullptr;
+	}
 
-bool SFMLSoundProvider::IsSongPlaying()
-{
-	return _music.getStatus() == sf::Music::Playing;	
+	return music;
 }

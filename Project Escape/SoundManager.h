@@ -1,35 +1,34 @@
 #pragma once
+#include <string>
+#include <vector>
+#include <map>
+#include "SFML\Audio\Sound.hpp"
+#include "SFML\Audio\SoundBuffer.hpp"
+#include "SFML\Audio\Music.hpp"
 
-#include <string.h>
-#include <SFML/Audio.hpp>
+namespace esc
+{
+	class Sound;
+	class Music;
+}
 
-/*class IAudioProvider
+
+class SoundManager
 {
 public:
-  virtual ~IAudioProvider() {}
-  virtual void PlaySound(std::string filename) = 0;
-  virtual void PlaySong(std::string filename, bool looping) = 0;
-  virtual void StopAllSounds() = 0;
-  
-  virtual bool IsSoundPlaying() = 0;
-  virtual bool IsSongPlaying() = 0;
-};
-*/
-class SFMLSoundProvider //: public IAudioProvider
-{
-public:
+	SoundManager(std::string _dir);
 
-	SFMLSoundProvider();
-
-	void PlaySound(std::string filename);
-	void PlaySong(std::string filename, bool looping = false);
-	void StopAllSounds();
-	
-	bool IsSoundPlaying();
-	bool IsSongPlaying();
+	void SoundBuffer(const std::string& _filename);
+	sf::Sound *getSound(const std::string& _filename);
+	sf::Music *getMusic(const std::string& _filename);
+	sf::SoundBuffer _soundBuffer;
+	void Cleanup();
+	sf::Sound _sound;
 
 private:
-	sf::SoundBuffer _soundBuffer;
-	sf::Sound _sound;
-	sf::Music _music;
+	std::string m_directory;
+	std::map<std::string, sf::SoundBuffer> m_soundBuffer;
+	std::map<std::string, sf::Music> m_music;
+	std::map<std::string, sf::Sound> m_Sound;
+
 };

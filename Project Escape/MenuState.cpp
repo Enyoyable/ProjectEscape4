@@ -6,6 +6,7 @@
 #include "Engine.h"
 #include "CollisionManager.h"
 #include "AnimatedSprite.h"
+#include "SoundManager.h"
 
 namespace esc
 {
@@ -42,6 +43,7 @@ namespace esc
 
 		m_xStartButton->setFunction([&](){
 			m_xStateManager->setCurrentState(StateManager::EStates::GAME);
+			m_sTitle->stop();
 		});
 
 		m_xStartButton->setHoverSprite(m_xSpriteManager->loadAnimatedSprite("NewGameAnim.txt"));
@@ -61,6 +63,12 @@ namespace esc
 		m_vGameObjects[MAIN].push_back(m_xStartButton);
 		m_vGameObjects[MAIN].push_back(m_xExitButton);
 
+		SoundManager soundmanager("../resources/Music/");
+		m_sTitle = soundmanager.getMusic("Title_screen.ogg");
+		m_sTitle->setVolume(50.0f);
+		m_sTitle->setLoop(true);
+		m_sTitle->play();
+
 	}
 
 	void MenuState::update(float p_fDeltaTime)
@@ -68,6 +76,7 @@ namespace esc
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::G))
 		{
 			m_xStateManager->setCurrentState(StateManager::EStates::GAME);
+			m_sTitle->stop();
 		}
 		
 		for (auto vGameObjects : m_vGameObjects)

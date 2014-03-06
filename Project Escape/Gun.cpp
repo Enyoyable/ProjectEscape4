@@ -1,6 +1,7 @@
 #include "Gun.h"
 #include "Bullet.h"
 #include "SpriteManager.h"
+#include "SoundManager.h"
 
 namespace esc
 {
@@ -39,6 +40,11 @@ namespace esc
 	{
 		Bullet *bullet = new Bullet(m_xAttachedObject->getPosition(), sf::Vector2f(44, 5), m_v2fTarget, m_xAttachedObject, m_xSpriteManager->loadSprite("bullet.png", 0, 0, 44, 5));
 		m_vObjects->push_back(bullet);
+
+		SoundManager soundmanager("../resources/SFX/");
+		m_sGunshot = soundmanager.getMusic("Gun_shot.wav");
+		m_sGunshot->setVolume(25.0f);
+		m_sGunshot->play();
 	}
 
 	void Gun::trigger()
