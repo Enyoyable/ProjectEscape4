@@ -97,6 +97,7 @@ namespace esc
 
 	Item *GameObjectManager::createItem(sf::Vector2f p_v2fPosition, sf::Vector2f p_v2fSize, EObjectType p_eType, sf::Sprite *p_xSprite)
 	{
+		//kommentar
 		return new Item(p_v2fPosition, p_xSprite, false, sf::Vector2f(0.0f, 0.0f), m_iCurrentObjectId++, p_eType);
 	}
 }
