@@ -20,6 +20,8 @@ namespace esc
 
 	private:
 		bool m_bHasStarted;
+
+		bool m_bHasAttacked;
 	};
 
 }

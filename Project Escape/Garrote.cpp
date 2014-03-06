@@ -8,6 +8,7 @@ namespace esc
 	Garrote::Garrote(float p_fDelay, float p_fDuration, std::vector<GameObject*> *p_vObjects) : Weapon(WEAPONGARROTE, false, 0, p_fDelay, p_fDuration, p_vObjects)
 	{
 		m_bHasStarted = false;
+		m_bHasAttacked = false;
 	}
 
 	void Garrote::update(float fDeltaTime)
@@ -33,6 +34,9 @@ namespace esc
 			{
 				m_bHasFired = false;
 			}
+
+			if (!m_bHasAttacked)
+				m_bHasFired = false;
 		}
 	}
 
@@ -51,9 +55,9 @@ namespace esc
 				Guard *xGuard = static_cast<Guard*>(object);
 
 				if (xGuard->m_isDead)
-					return;
+					continue;
 
-				float fAttackWidth = 180.f;
+				float fAttackWidth = 90.f;
 
 				float fLowestAngle = fMiddleAngle - fAttackWidth * 0.5;
 
@@ -83,7 +87,7 @@ namespace esc
 					{
 						float fTotDiff = sqrtf(xDiff * xDiff + yDiff * yDiff);
 
-						if (fTotDiff < 100.f)
+						if (fTotDiff < 60.f)
 						{
 							float fGuardRotation = xGuard->m_fWatchAngle;
 
@@ -93,7 +97,7 @@ namespace esc
 							{
 								m_bHasStarted = true;
 								fGuardRotation += 180;
-
+								m_bHasAttacked = true;
 								if (fGuardRotation > 360)
 								{
 									fGuardRotation -= 360;
@@ -110,7 +114,7 @@ namespace esc
 									xGuard->m_isDead = true;
 									xGuard->setIsRemoved(true);
 									m_bHasStarted = false;
-
+									m_bHasAttacked = false;
 									xPlayer->m_bAngleLocked = false;
 									xGuard->m_bAngleLocked = false;
 									m_fAttackTimer = 0;
@@ -128,7 +132,7 @@ namespace esc
 					{
 						float fTotDiff = sqrtf(xDiff * xDiff + yDiff * yDiff);
 
-						if (fTotDiff < 100.f)
+						if (fTotDiff < 60.f)
 						{
 							float fGuardRotation = xGuard->m_fWatchAngle;
 
@@ -138,7 +142,7 @@ namespace esc
 							{
 								m_bHasStarted = true;
 								fGuardRotation += 180;
-
+								m_bHasAttacked = true;
 								if (fGuardRotation > 360)
 								{
 									fGuardRotation -= 360;
@@ -153,6 +157,7 @@ namespace esc
 								
 								if (p_bIsFinished)
 								{
+									m_bHasAttacked = false;
 									xGuard->m_isDead = true;
 									xGuard->setIsRemoved(true);
 									m_bHasStarted = false;

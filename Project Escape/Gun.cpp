@@ -1,7 +1,6 @@
 #include "Gun.h"
 #include "Bullet.h"
 #include "SpriteManager.h"
-#include "SoundManager.h"
 
 namespace esc
 {
@@ -40,11 +39,6 @@ namespace esc
 	{
 		Bullet *bullet = new Bullet(m_xAttachedObject->getPosition(), sf::Vector2f(44, 5), m_v2fTarget, m_xAttachedObject, m_xSpriteManager->loadSprite("bullet.png", 0, 0, 44, 5));
 		m_vObjects->push_back(bullet);
-
-		SoundManager soundmanager("../resources/SFX/");
-		m_sGunshot = soundmanager.getMusic("Gun_shot.wav");
-		m_sGunshot->setVolume(25.0f);
-		m_sGunshot->play();
 	}
 
 	void Gun::trigger()
@@ -67,14 +61,14 @@ namespace esc
 
 	void Gun::Throw()
 	{
-		Item *Gun = new Item(m_xAttachedObject->getPosition(), m_xSpriteManager->loadSprite("PDA_pu.png", 0, 0, 64, 64), true, m_v2fTarget, 9999, GUN);
-		m_vObjects->push_back(Gun);
+		//Item *Gun = new Item(m_xAttachedObject->getPosition(), m_xSpriteManager->loadSprite("PDA_pu.png", 0, 0, 64, 64), true, m_v2fTarget, 9999, GUN);
+		//m_vObjects->push_back(Gun);
 	}
 
 	void Gun::drop()
 	{
-		Item *Gun = new Item(m_xAttachedObject->getPosition(), m_xSpriteManager->loadSprite("PDA_pu.png", 0, 0, 64, 64), false, sf::Vector2f(0.0f,0.0f), 9999, GUN);
-		m_vObjects->push_back(Gun);
+		//Item *Gun = new Item(m_xAttachedObject->getPosition(), m_xSpriteManager->loadSprite("PDA_pu.png", 0, 0, 64, 64), false, sf::Vector2f(0.0f,0.0f), 9999, GUN);
+		//m_vObjects->push_back(Gun);
 	}
 
 	void Gun::setTarget(sf::Vector2f p_v2fTarget)
