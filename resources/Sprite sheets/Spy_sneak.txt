@@ -1,0 +1,8 @@
+Spy_sneak01 = 0 0 64 64
+Spy_sneak02 = 65 0 64 64
+Spy_sneak03 = 130 0 64 64
+Spy_sneak04 = 195 0 64 64
+Spy_sneak05 = 260 0 64 64
+Spy_sneak06 = 325 0 64 64
+Spy_sneak07 = 390 0 64 64
+Spy_sneak08 = 455 0 64 64
