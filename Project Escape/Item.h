@@ -15,6 +15,7 @@ namespace esc
 
 		virtual void update(float p_fDeltaTime);
 		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+		void HandleCollision(GameObject *p_xGameObject, std::vector<GameObject*> *p_vRemoveVector);
 
 		void setDir(sf::Vector2f p_v2fInpDir);
 		sf::Vector2f getDir();

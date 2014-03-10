@@ -21,7 +21,7 @@ namespace esc
 
 		m_v2fTarget /= sqrtf(xDiff * xDiff + yDiff * yDiff);
 
-		m_v2fTarget *= 2000.f;
+		m_v2fTarget *= 1000.f;
 
 		m_bIsRemoved = false;
 
@@ -37,7 +37,7 @@ namespace esc
 		if (m_bIsFlying)
 		{
 			setPosition(getPosition() + m_v2fTarget * p_fDeltaTime);
-			setRotation(getRotation() + 5.0f);
+			setRotation(getRotation() + 50.0f);
 		}
 	}
 
@@ -49,6 +49,25 @@ namespace esc
 
 		states.transform *= getTransform();
 		target.draw(*m_xSprite, states);
+	}
+
+	void Item::HandleCollision(GameObject *p_xGameObject, std::vector<GameObject*> *p_vRemoveVector)
+	{
+		if (p_xGameObject->getType() == PATROLLINGGUARD || p_xGameObject->getType() == STATIONARYGUARD)
+		{
+			p_vRemoveVector->push_back(p_xGameObject);
+			//p_vRemoveVector->push_back(this);
+
+			m_bIsFlying = false;
+			m_v2fTarget = sf::Vector2f(0, 0);
+		}
+		else if (p_xGameObject->getType() == WALL)
+		{
+			//p_vRemoveVector->push_back(this);
+
+			m_bIsFlying = false;
+			m_v2fTarget = sf::Vector2f(0, 0);
+		}
 	}
 
 	void Item::setDir(sf::Vector2f p_v2fInpSpeed)

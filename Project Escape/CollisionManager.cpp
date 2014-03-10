@@ -1,6 +1,7 @@
 #include "CollisionManager.h"
 #include "Button.h"
 #include "Bullet.h"
+#include "Item.h"
 
 namespace esc
 {
@@ -82,6 +83,56 @@ namespace esc
 								Bullet *bullet = static_cast<Bullet*>(object);
 								if (bullet->HandleCollision(object2, &vRemoveVector))
 									bDelete = true;
+							}
+						}
+					}
+				}
+			}
+			else if (object->getType() == BATON || object->getType() == GUN || object->getType() == RADIO)
+			{
+				for (auto object2 : *p_collisionObjects)
+				{
+					if (object2->getType() != PLAYER && object2->getType() != GUN && object2->getType() != BATON &&object2->getType() != RADIO)
+					{
+						int pPosX = object->getPosition().x;
+						int pPosY = object->getPosition().y;
+						int pSizeX = object->getSize().x;
+						int pSizeY = object->getSize().y;
+
+						int oPosX = object2->getPosition().x;
+						int oPosY = object2->getPosition().y;
+						int oSizeX = object2->getSize().x;
+						int oSizeY = object2->getSize().y;
+
+						float A = pSizeX * 0.5;
+						float B = oSizeX * 0.5f;
+						float C = (pPosX + A) - (oPosX + B);
+
+						if (fabs(C) < A + B)
+						{
+							float Q = pSizeY * 0.5;
+							float P = oSizeY * 0.5f;
+							float Z = (pPosY + A) - (oPosY + B);
+							if (fabs(Z) < Q + P)
+							{
+								if (object->getType() == GUN)
+								{
+									Item *gun = static_cast<Item*>(object);
+									gun->HandleCollision(object2, &vRemoveVector);
+									bDelete = true;
+								}
+								else if (object->getType() == BATON)
+								{
+									Item *baton = static_cast<Item*>(object);
+									baton->HandleCollision(object2, &vRemoveVector);
+									bDelete = true;
+								}
+								else if (object->getType() == RADIO)
+								{
+									Item *radio = static_cast<Item*>(object);
+									radio->HandleCollision(object2, &vRemoveVector);
+									bDelete = true;
+								}
 							}
 						}
 					}
