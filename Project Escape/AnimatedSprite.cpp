@@ -87,4 +87,9 @@ namespace esc
 		m_vFrames = m_vTotalFrames;
 	}
 
+	bool AnimatedSprite::onLastFrame()
+	{
+		return m_iCurrentFrame == (m_vFrames.size() - 1);
+	}
+
 }

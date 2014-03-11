@@ -15,6 +15,7 @@
 #include "PathFind.h"
 #include "AIManager.h"
 #include "Button.h"
+#include "Animator.h"
 
 namespace esc
 {
@@ -65,7 +66,9 @@ namespace esc
 
 		sf::Clock timer;
 
-		PlayerObject *pObj = xGameObjectManager->createPlayer(sprite, sf::Vector2f(64 * 17, 64 * 8), m_window, 1, &level, &timer);
+		Animator *animator = new Animator(&spriteManager, "../resources/Spritesheets/");
+
+		PlayerObject *pObj = xGameObjectManager->createPlayer(animator, sprite, sf::Vector2f(64 * 17, 64 * 8), m_window, 1, &level, &timer);
 		objects.push_back(pObj);
 		
 		level.loadColorCodes("colorcodes.txt");

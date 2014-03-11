@@ -8,6 +8,7 @@ namespace esc
 
 	class DrawManager;
 	class Level;
+	class Animator;
 	class GameObjectManager;
 	class Weapon;
 
@@ -17,7 +18,7 @@ namespace esc
 		friend class Baton;
 
 	public:
-		PlayerObject(sf::Sprite *p_sprite, sf::Vector2f p_position, sf::RenderWindow *p_window, int p_iObjectId, Level *p_xLevel, sf::Clock *p_xTimer, GameObjectManager *p_xGobjManager);
+		PlayerObject(Animator *p_xAnimator, sf::Sprite *p_sprite, sf::Vector2f p_position, sf::RenderWindow *p_window, int p_iObjectId, Level *p_xLevel, sf::Clock *p_xTimer, GameObjectManager *p_xGobjManager);
 
 		virtual void update(float deltaTime, std::vector<GameObject*> Hideableobjects);
 
@@ -88,7 +89,7 @@ namespace esc
 		Level *m_xLevel;
 		sf::Clock *m_xTimer;
 
-		
+		Animator *m_xAnimator;
 	};
 
 }

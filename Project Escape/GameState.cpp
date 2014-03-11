@@ -12,6 +12,7 @@
 #include "Garrote.h"
 #include "AnimatedSprite.h"
 #include "SoundManager.h"
+#include "Animator.h"
 
 namespace esc
 {
@@ -31,14 +32,14 @@ namespace esc
 	{
 		sf::Clock *xTimer = new sf::Clock;
 		//m_xPlayer = m_xGameObjectManager->createPlayer(m_xSpriteManager->loadSprite("spy.txt"), sf::Vector2f(64 * 48, 64 * 8), m_xEngine->m_window, 1, m_xLevel, xTimer);
-		m_xPlayer = m_xGameObjectManager->createPlayer(m_xSpriteManager->loadAnimatedSprite("Spy_walk.txt"), sf::Vector2f(64 * 48, 64 * 8), m_xEngine->m_window, 1, m_xLevel, xTimer);
+		m_xPlayer = m_xGameObjectManager->createPlayer(new Animator(m_xSpriteManager, "../resources/Spritesheets/"), m_xSpriteManager->loadAnimatedSprite("Spy_walk.txt"), sf::Vector2f(64 * 48, 64 * 8), m_xEngine->m_window, 1, m_xLevel, xTimer);
 		m_vGameObjects[MAIN].push_back(m_xPlayer);
 
 		m_vGameObjects[MAIN].insert(m_vGameObjects[MAIN].end(), m_xLevel->getObjects()->begin(), m_xLevel->getObjects()->end());
 
 		m_xView = new sf::View();
 		//kommentar
-		m_xView->reset(sf::FloatRect(0, 0, 1920 * 10, 1080 * 10));
+		m_xView->reset(sf::FloatRect(0, 0, 1920 * 1, 1080 * 1));
 
 		m_xPlayer->m_xWeapon = new Gun(true, 10, 1.f, 1.f, &m_vGameObjects[MAIN], m_xGameObjectManager, m_xSpriteManager);
 		m_xPlayer->m_xWeapon->setAttachedObject(m_xPlayer);

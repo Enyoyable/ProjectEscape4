@@ -42,6 +42,8 @@ namespace esc
 
 		void resetAnimationConditions();
 
+		bool onLastFrame();
+
 	private:
 		bool m_bIsPlaying;
 

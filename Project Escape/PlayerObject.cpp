@@ -10,12 +10,13 @@
 #include "Gun.h"
 #include "Garrote.h"
 #include "AnimatedSprite.h"
+#include "Animator.h"
 
 
 namespace esc
 {
 
-	PlayerObject::PlayerObject(sf::Sprite *sprite, sf::Vector2f position, sf::RenderWindow *window, int p_iObjectId, Level *p_xLevel, sf::Clock *p_xTimer, GameObjectManager *p_xGobjManager)
+	PlayerObject::PlayerObject(Animator *p_xAnimator, sf::Sprite *sprite, sf::Vector2f position, sf::RenderWindow *window, int p_iObjectId, Level *p_xLevel, sf::Clock *p_xTimer, GameObjectManager *p_xGobjManager)
 		: GameObject(position, sf::Vector2f(64, 64), false, p_iObjectId, PLAYER, sprite)
 	{
 		m_hiding = false;
@@ -49,6 +50,10 @@ namespace esc
 		m_xGobjManager = p_xGobjManager;
 
 		m_xWeapon = nullptr;
+
+		m_xAnimator = p_xAnimator;
+
+		m_xAnimator->loadAnimations("playerAnims.txt");
 	}
 
 	void PlayerObject::update(float deltaTime, std::vector<GameObject*> objects)
@@ -134,6 +139,7 @@ namespace esc
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 			{
 				m_sneaking = true;
+				
 			}
 			else
 				m_sneaking = false;
@@ -141,7 +147,10 @@ namespace esc
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && !m_bUblock)
 			{
 				if (m_sneaking)
+				{
+					m_xAnimator->setCurrentAnimation("Spy_sneak.txt");
 					move(0, -m_sneakspeed);
+				}
 				else
 				{
 					if (m_noiseCir->getRadius() < m_Walknoise)
@@ -150,13 +159,17 @@ namespace esc
 						m_noiseCir->setOrigin(m_noiseCir->getOrigin().x + 20.0f, m_noiseCir->getOrigin().x + 20.0f);
 					}
 					move(0, -m_walkspeed);
+					m_xAnimator->setCurrentAnimation("Spy_walk.txt");
 				}
 			}
 
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && !m_bDblock)
 			{
 				if (m_sneaking)
+				{
 					move(0, m_sneakspeed);
+					m_xAnimator->setCurrentAnimation("Spy_sneak.txt");
+				}
 				else
 				{
 					if (m_noiseCir->getRadius() < m_Walknoise)
@@ -165,13 +178,17 @@ namespace esc
 						m_noiseCir->setOrigin(m_noiseCir->getOrigin().x + 20.0f, m_noiseCir->getOrigin().x + 20.0f);
 					}
 					move(0, m_walkspeed);
+					m_xAnimator->setCurrentAnimation("Spy_walk.txt");
 				}
 			}
 
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && !m_bLblock)
 			{
 				if (m_sneaking)
+				{
+					m_xAnimator->setCurrentAnimation("Spy_sneak.txt");
 					move(-m_sneakspeed, 0);
+				}
 				else
 				{
 					if (m_noiseCir->getRadius() < m_Walknoise)
@@ -180,13 +197,17 @@ namespace esc
 						m_noiseCir->setOrigin(m_noiseCir->getOrigin().x + 20.0f, m_noiseCir->getOrigin().x + 20.0f);
 					}
 					move(-m_walkspeed, 0);
+					m_xAnimator->setCurrentAnimation("Spy_walk.txt");
 				}
 			}
 
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) && !m_bRblock)
 			{
 				if (m_sneaking)
+				{
+					m_xAnimator->setCurrentAnimation("Spy_sneak.txt");
 					move(m_sneakspeed, 0);
+				}
 				else
 				{
 					if (m_noiseCir->getRadius() < m_Walknoise)
@@ -195,6 +216,7 @@ namespace esc
 						m_noiseCir->setOrigin(m_noiseCir->getOrigin().x + 20.0f, m_noiseCir->getOrigin().x + 20.0f);
 					}
 					move(m_walkspeed, 0);
+					m_xAnimator->setCurrentAnimation("Spy_walk.txt");
 				}
 			}
 			if (!m_bAngleLocked)
@@ -220,6 +242,7 @@ namespace esc
 
 		static_cast<AnimatedSprite*>(m_xSprite)->update(deltaTime);
 
+		m_xAnimator->update(deltaTime);
 	}
 
 	float PlayerObject::calcAngle(float mouse_x, float mouse_y)
@@ -285,7 +308,7 @@ namespace esc
 
 		states.transform *= getTransform();
 		target.draw(*m_noiseCir);
-		target.draw(*static_cast<AnimatedSprite*>(m_xSprite), states);
+		target.draw(*static_cast<AnimatedSprite*>(m_xAnimator->getCurrentAnimation()), states);
 	}
 
 	void PlayerObject::setInteractionRange(float range)
