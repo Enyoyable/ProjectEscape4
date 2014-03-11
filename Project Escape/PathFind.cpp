@@ -110,7 +110,6 @@ namespace esc
 
 	std::vector<sf::Vector2f*> PathFind::pathToObject(GameObject *p_xPathingObject, GameObject *p_xTargetObject)
 	{
-		
 
 		m_vOpenList.clear();
 		m_vClosedList.clear();

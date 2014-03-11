@@ -11,11 +11,13 @@ namespace esc
 	class Level;
 	class Item;
 	class Animator;
+	class PathFind;
 
 	class GameObjectManager
 	{
 
 		friend class MenuState;
+		friend class Engine;
 
 	public:
 		GameObjectManager(sf::RenderWindow *p_xWindow);

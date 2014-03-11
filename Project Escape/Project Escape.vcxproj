@@ -86,7 +86,10 @@
   <ItemGroup>
     <ClCompile Include="AIManager.cpp" />
     <ClCompile Include="AIStateChasing.cpp" />
+    <ClCompile Include="AIStatePatrolling.cpp" />
+    <ClCompile Include="AIStateStationary.cpp" />
     <ClCompile Include="AnimatedSprite.cpp" />
+    <ClCompile Include="Animator.cpp" />
     <ClCompile Include="Baton.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Button.cpp" />
@@ -121,7 +124,10 @@
     <ClInclude Include="AIManager.h" />
     <ClInclude Include="AIState.h" />
     <ClInclude Include="AIStateChasing.h" />
+    <ClInclude Include="AIStatePatrolling.h" />
+    <ClInclude Include="AIStateStationary.h" />
     <ClInclude Include="AnimatedSprite.h" />
+    <ClInclude Include="Animator.h" />
     <ClInclude Include="Baton.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="Button.h" />

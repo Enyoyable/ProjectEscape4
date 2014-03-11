@@ -44,6 +44,16 @@ namespace esc
 			static_cast<Guard*>(m_xGameObject)->setDirection(v2fTargetPosition);
 		}
 
+		if (vPathToPlayer.size() > 0)
+		{
+			for (auto path : vPathToPlayer)
+			{
+				delete path;
+				path = nullptr;
+			}
+
+			vPathToPlayer.clear();
+		}
 		
 	}
 

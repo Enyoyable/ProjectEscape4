@@ -11,6 +11,7 @@ namespace esc
 	class AIManager;
 	class GameObjectManager;
 	class Level;
+	class PathFind;
 
 	class Guard : public GameObject
 	{
@@ -20,7 +21,7 @@ namespace esc
 		friend class Garrote;
 
 	public:
-		Guard(sf::Vector2f p_v2fPosition, sf::Vector2f p_v2fSize, bool p_bInteractable, int p_iObjectId, PlayerObject *p_xPlayer, GameObjectManager *p_xGameObjectManager, Level *level, sf::Sprite *p_xSprite = nullptr);
+		Guard(sf::Vector2f p_v2fPosition, sf::Vector2f p_v2fSize, bool p_bInteractable, int p_iObjectId, PlayerObject *p_xPlayer, GameObjectManager *p_xGameObjectManager, Level *level, PathFind *p_xPathFind, sf::Sprite *p_xSprite = nullptr);
 
 		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 

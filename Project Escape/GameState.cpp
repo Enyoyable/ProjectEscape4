@@ -13,6 +13,8 @@
 #include "AnimatedSprite.h"
 #include "SoundManager.h"
 #include "Animator.h"
+#include "AIManager.h"
+#include "PathFind.h"
 
 namespace esc
 {
@@ -55,6 +57,18 @@ namespace esc
 		m_sIngame->setVolume(15.0f);
 		m_sIngame->setLoop(true);
 		m_sIngame->play();
+
+		PathFind *path = new PathFind(m_xLevel);
+
+		for (auto obj : m_vGameObjects[MAIN])
+		{
+			if (obj->getType() == PATROLLINGGUARD || obj->getType() == STATIONARYGUARD)
+			{
+				Guard *guard = static_cast<Guard*>(obj);
+
+				guard->attachAi(new AIManager(guard, path, m_xPlayer));
+			}
+		}
 	}
 
 	void GameState::update(float p_fDeltaTime)

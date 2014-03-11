@@ -76,6 +76,10 @@ namespace esc
 		level.getRotationsPaths("rotate.txt");
 		level.create("level.png", "patrol.txt");
 		level.createFloor("FirstFloor.png");
+
+
+
+		
 		
 		xStateManager->attachState(StateManager::GAME, new GameState(xGameObjectManager, xStateManager, &spriteManager, this, xCollisionManager, &level));
 		xStateManager->attachState(StateManager::MENU, new MenuState(xGameObjectManager, xStateManager, &spriteManager, this, xCollisionManager));

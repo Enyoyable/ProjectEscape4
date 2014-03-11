@@ -1,11 +1,12 @@
 #include "Guard.h"
 #include "PlayerObject.h"
 #include "AIManager.h"
+#include "PathFind.h"
 
 namespace esc
 {
 
-	Guard::Guard(sf::Vector2f p_v2fPosition, sf::Vector2f p_v2fSize, bool p_bInteractable, int p_iObjectId, PlayerObject *p_xPlayer, GameObjectManager *p_xGameObjectManager, Level *p_xlevel, sf::Sprite *p_xSprite)
+	Guard::Guard(sf::Vector2f p_v2fPosition, sf::Vector2f p_v2fSize, bool p_bInteractable, int p_iObjectId, PlayerObject *p_xPlayer, GameObjectManager *p_xGameObjectManager, Level *p_xlevel, PathFind *p_xPathfind, sf::Sprite *p_xSprite)
 		: GameObject(p_v2fPosition, p_v2fSize, p_bInteractable, p_iObjectId, PATROLLINGGUARD, p_xSprite)
 	{
 		m_fWatchAngle = 0;
@@ -113,12 +114,6 @@ namespace esc
 		if (m_bIsRemoved)
 			return;
 
-		if (m_bHasAI)
-		{
-			m_xAIManager->update(p_fDeltaTime);
-			return;
-		}
-
 		if (m_bAngleLocked)
 			return;
 			
@@ -200,6 +195,8 @@ namespace esc
 
 			//move((m_xPlayerObject->getPosition() - getPosition()) / fDistance * m_fGuardChaseSpeed * p_fDeltaTime);
 			setPosition(getPosition() + ((m_xPlayerObject->getPosition() - getPosition()) / fDistance * m_fGuardChaseSpeed * p_fDeltaTime));
+
+			//m_xAIManager->update(p_fDeltaTime);
 		}
 		else if (m_bIsChasing == false &&
 			fabs(getPosition().x - m_v2fStartPosition.x) >= 10 &&

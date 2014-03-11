@@ -31,6 +31,9 @@
     <Filter Include="Weapons">
       <UniqueIdentifier>{7495563b-a61a-41ad-b867-5a2697c59d35}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Rendering">
+      <UniqueIdentifier>{04182ddc-fc3d-4193-9955-fabfbbba112c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -128,6 +131,15 @@
     </ClCompile>
     <ClCompile Include="Garrote.cpp">
       <Filter>Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="Animator.cpp">
+      <Filter>Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="AIStateStationary.cpp">
+      <Filter>AI</Filter>
+    </ClCompile>
+    <ClCompile Include="AIStatePatrolling.cpp">
+      <Filter>AI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -229,6 +241,15 @@
     </ClInclude>
     <ClInclude Include="Garrote.h">
       <Filter>Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="Animator.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="AIStateStationary.h">
+      <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="AIStatePatrolling.h">
+      <Filter>AI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
