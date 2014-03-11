@@ -52,6 +52,8 @@ namespace esc
 
 		std::vector<GameObject*> *getObjects();
 
+		SpriteManager* getSpriteManager();
+
 		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
 	private:

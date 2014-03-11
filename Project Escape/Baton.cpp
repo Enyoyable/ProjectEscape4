@@ -4,11 +4,14 @@
 #include "Guard.h"
 #include "PlayerObject.h"
 #include "Level.h"
+#include "SpriteManager.h"
 
 namespace esc
 {
-	Baton::Baton(bool p_bHasCharges, int p_iAmountOfCharges, float p_fDelay, float p_fDuration, std::vector<GameObject*> *p_vObjects, Level *p_xLevel) : Weapon(EWeaponType::WEAPONBATON, p_bHasCharges, p_iAmountOfCharges, p_fDelay, p_fDuration, p_vObjects)
+	Baton::Baton(bool p_bHasCharges, int p_iAmountOfCharges, float p_fDelay, float p_fDuration, std::vector<GameObject*> *p_vObjects, Level *p_xLevel, GameObjectManager *p_xGameObjectManager, SpriteManager *p_xSpriteManager) : Weapon(EWeaponType::WEAPONBATON, p_bHasCharges, p_iAmountOfCharges, p_fDelay, p_fDuration, p_vObjects)
 	{
+		m_xGameObjectManager = p_xGameObjectManager;
+		m_xSpriteManager = p_xSpriteManager;
 		m_xLevel = p_xLevel;
 	}
 
@@ -186,5 +189,22 @@ namespace esc
 				m_fAttackTimer = 0;
 			}
 		}
+	}
+
+	void Baton::Throw()
+	{
+		Item *Baton = new Item(m_xAttachedObject->getPosition(), m_xSpriteManager->loadSprite("Baton_pu.png", 0, 0, 64, 64), true, m_v2fTarget, 9999, BATON);
+		m_vObjects->push_back(Baton);
+	}
+
+	void Baton::drop()
+	{
+		Item *Baton = new Item(m_xAttachedObject->getPosition(), m_xSpriteManager->loadSprite("baton_pu.png", 0, 0, 64, 64), false, sf::Vector2f(0.0f, 0.0f), 9999, BATON);
+		m_vObjects->push_back(Baton);
+	}
+
+	void Baton::setTarget(sf::Vector2f p_v2fTarget)
+	{
+		m_v2fTarget = p_v2fTarget;
 	}
 }

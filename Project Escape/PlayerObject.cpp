@@ -28,7 +28,7 @@ namespace esc
 		m_walkspeed = 8.0f;
 		m_sneakspeed = 4.0f;
 
-		m_iCurWep = 0;
+		m_iCurWep = 2;
 		m_bHasCard = false;
 
 		m_bRblock = false;
@@ -51,13 +51,18 @@ namespace esc
 
 		m_xWeapon = nullptr;
 
+
 		m_xAnimator = p_xAnimator;
 
 		m_xAnimator->loadAnimations("playerAnims.txt");
+
 	}
 
 	void PlayerObject::update(float deltaTime, std::vector<GameObject*> objects)
 	{
+		if (m_xWeapon->getAttachedObject() == nullptr)
+			m_xWeapon->setAttachedObject(this);
+
 		if (m_xWeapon != nullptr)
 			m_xWeapon->update(deltaTime);
 
@@ -97,23 +102,23 @@ namespace esc
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::F))
 		{
-			if (m_iCurWep != 0)
-			{
-				if (m_iCurWep == 1)
-				{
-					//Item *baton = m_xGobjManager->createItem(getPosition(), sf::Vector2f(64, 64), BATON, m_xLevel->getspritemanager()->loadSprite("Baton_pu.png", 0, 0, 64, 64));
-					//m_xLevel->addToLobjects(baton);
-					m_iCurWep = 0;
-				}
-			}
+			if (m_xWeapon == nullptr)
+				return;
+
+			m_xWeapon->drop();
+			m_xWeapon = new Garrote(0.0f, 1.0f, m_xLevel->getObjects());
+			m_iCurWep = 0;
 		}
 
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
 		{
-			if (m_xWeapon != nullptr)
+			if (m_xWeapon->getCurrentWeaponType() != BATON && m_xWeapon != nullptr)
 			{
 				m_xWeapon->setTarget(sf::Vector2f(sf::Mouse::getPosition(*p_window)) + getPosition() - sf::Vector2f(960, 540));
 				m_xWeapon->Throw();
+				m_iCurWep = 0;
+				m_xWeapon = new Garrote(1.f, 3.f, m_xLevel->getObjects());
+				m_xWeapon->setAttachedObject(this);
 			}
 
 			if (m_iCurWep != 0)
@@ -139,7 +144,6 @@ namespace esc
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 			{
 				m_sneaking = true;
-				
 			}
 			else
 				m_sneaking = false;
@@ -170,6 +174,7 @@ namespace esc
 					move(0, m_sneakspeed);
 					m_xAnimator->setCurrentAnimation("Spy_sneak.txt");
 				}
+					
 				else
 				{
 					if (m_noiseCir->getRadius() < m_Walknoise)
@@ -196,8 +201,8 @@ namespace esc
 						m_noiseCir->setRadius(m_noiseCir->getRadius() + 20.0f);
 						m_noiseCir->setOrigin(m_noiseCir->getOrigin().x + 20.0f, m_noiseCir->getOrigin().x + 20.0f);
 					}
-					move(-m_walkspeed, 0);
 					m_xAnimator->setCurrentAnimation("Spy_walk.txt");
+					move(-m_walkspeed, 0);
 				}
 			}
 
@@ -205,8 +210,8 @@ namespace esc
 			{
 				if (m_sneaking)
 				{
-					m_xAnimator->setCurrentAnimation("Spy_sneak.txt");
 					move(m_sneakspeed, 0);
+					m_xAnimator->setCurrentAnimation("Spy_sneak.txt");
 				}
 				else
 				{
@@ -242,7 +247,6 @@ namespace esc
 
 		static_cast<AnimatedSprite*>(m_xSprite)->update(deltaTime);
 
-		m_xAnimator->update(deltaTime);
 	}
 
 	float PlayerObject::calcAngle(float mouse_x, float mouse_y)
@@ -273,6 +277,8 @@ namespace esc
 	{
 		setPosition(m_startpos);
 		m_xTimer->restart();
+		//m_xWeapon = new Gun(true, 10, 1.f, 1.f, m_xLevel->getObjects(), m_xGobjManager, m_xLevel->getSpriteManager());
+		//m_iCurWep = 2;
 	}
 
 	void PlayerObject::setcurwep(int newWep)
@@ -330,8 +336,10 @@ namespace esc
 		}
 		else if (p_xInteractObj->getType() == BATON)
 		{
+			if (p_xInteractObj->getIsRemoved() != false)
+				return;
 
-			m_xWeapon = new Baton(true, 10, 1.f, 1.f, m_xLevel->getObjects(), m_xLevel);
+			m_xWeapon = new Baton(true, 10, 1.f, 1.f, m_xLevel->getObjects(), m_xLevel, m_xGobjManager, m_xLevel->getSpriteManager());
 			
 			m_iCurWep = 1;
 			p_xInteractObj->setIsRemoved(true);
@@ -339,23 +347,33 @@ namespace esc
 		}
 		else if (p_xInteractObj->getType() == KEYCARD)
 		{
+			if (p_xInteractObj->getIsRemoved() != false)
+				return;
+
 			m_bHasCard = true;
 			p_xInteractObj->setIsRemoved(true);
 		}
 		else if (p_xInteractObj->getType() == PDA)
 		{
+			if (p_xInteractObj->getIsRemoved() != false)
+				return;
+
 			m_bHasObj = true;
 			p_xInteractObj->setIsRemoved(true);
 		}
 		else if (p_xInteractObj->getType() == GUN)
 		{
-			//m_xWeapon = new Gun(true, 10, 1.f, 1.f, m_xLevel->getObjects(), m_xGobjManager, m_xLevel->getSpriteManager());
-			//m_iCurWep = 2;
+			if (p_xInteractObj->getIsRemoved() != false)
+				return;
+
+			m_xWeapon = new Gun(true, 10, 1.f, 1.f, m_xLevel->getObjects(), m_xGobjManager, m_xLevel->getSpriteManager());
+			m_xWeapon->setAttachedObject(this);
+			m_iCurWep = 2;
+			p_xInteractObj->setIsRemoved(true);
 		}
 		else if (p_xInteractObj->getType() == DOORH || p_xInteractObj->getType() == DOORV)
 		{
-			if (m_bHasCard == true
-				&& p_xInteractObj->getIsRemoved() == false)
+			if (m_bHasCard == true&& p_xInteractObj->getIsRemoved() == false)
 			{
 				m_bHasCard = false;
 				p_xInteractObj->setIsRemoved(true);

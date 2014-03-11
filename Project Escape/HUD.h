@@ -13,7 +13,7 @@ namespace esc
 	public:
 		HUD(sf::View *p_xView, SpriteManager *p_xSpriteManager, PlayerObject *p_xpObj);
 
-		virtual void update(float p_fDeltaTime, sf::Time p_xTimer);
+		virtual void update(float p_fDeltaTime, sf::Time p_cTimer);
 
 		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
@@ -28,6 +28,9 @@ namespace esc
 
 		sf::Sprite *m_xRightLargeCircle;
 		sf::Sprite *m_xRightLargeCircleItem;
+		sf::Sprite *m_xRightLargeCircleGarotte;
+		sf::Sprite *m_xRightLargeCircleBaton;
+		sf::Sprite *m_xRightLargeCircleGun;
 
 		sf::Sprite *m_xLeftLargeCircle;
 		sf::Sprite *m_xLeftLargeCircleItem;

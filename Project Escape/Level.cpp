@@ -645,4 +645,9 @@ namespace esc
 		return &m_vPathNodes;
 	}
 
+	SpriteManager* Level::getSpriteManager()
+	{
+		return m_xSpriteManager;
+	}
+
 }
