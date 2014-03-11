@@ -245,6 +245,8 @@ namespace esc
 		if (m_xWeapon != nullptr)
 			m_xWeapon->update(deltaTime);
 
+		m_xAnimator->update(deltaTime);
+
 		static_cast<AnimatedSprite*>(m_xSprite)->update(deltaTime);
 
 	}
@@ -427,29 +429,29 @@ namespace esc
 			float xDiff = p_oObject->getPosition().x - getPosition().x;
 			float yDiff = p_oObject->getPosition().y - getPosition().y;
 
-			if (fabs(xDiff) > 59 || fabs(yDiff) > 59)
+			if (fabs(xDiff) > 64 || fabs(yDiff) > 64)
 				return false;
 
 			if (fabs(xDiff) > fabs(yDiff))
 			{
 				if (xDiff < 0)
 				{
-					setPosition(p_oObject->getPosition().x + 59, getPosition().y);
+					setPosition(p_oObject->getPosition().x + 64, getPosition().y);
 				}
 				else
 				{
-					setPosition(p_oObject->getPosition().x - 59, getPosition().y);
+					setPosition(p_oObject->getPosition().x - 64, getPosition().y);
 				}
 			}
 			else
 			{
 				if (yDiff < 0)
 				{
-					setPosition(getPosition().x, p_oObject->getPosition().y + 59);
+					setPosition(getPosition().x, p_oObject->getPosition().y + 64);
 				}
 				else
 				{
-					setPosition(getPosition().x, p_oObject->getPosition().y - 59);
+					setPosition(getPosition().x, p_oObject->getPosition().y - 64);
 				}
 			}
 		}
