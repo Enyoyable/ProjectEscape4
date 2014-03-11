@@ -1,0 +1,3 @@
+Spy_idle.txt
+Spy_walk.txt
+Spy_sneak.txt
