@@ -112,30 +112,13 @@ namespace esc
 
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
 		{
-			if (m_xWeapon->getCurrentWeaponType() != BATON && m_xWeapon != nullptr)
+			if (m_xWeapon != nullptr)
 			{
 				m_xWeapon->setTarget(sf::Vector2f(sf::Mouse::getPosition(*p_window)) + getPosition() - sf::Vector2f(960, 540));
 				m_xWeapon->Throw();
 				m_iCurWep = 0;
 				m_xWeapon = new Garrote(1.f, 3.f, m_xLevel->getObjects());
 				m_xWeapon->setAttachedObject(this);
-			}
-
-			if (m_iCurWep != 0)
-			{
-				if (m_iCurWep == 1)
-				{
-					/*Item *baton = m_xGobjManager->createItem(getPosition(), sf::Vector2f(64, 64), BATON, m_xLevel->getspritemanager()->loadSprite("Baton_pu.png", 0, 0, 64, 64));
-					float xDir = sf::Mouse::getPosition().x - getPosition().x;
-					float yDir = sf::Mouse::getPosition().y > getPosition().y;
-					float angle = calcAngle(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y);
-					float xDir = cos(angle);
-					float yDir = sinf(angle);
-					baton->setSpeed(sf::Vector2f(xDir, yDir));
-					baton->setIsFlying(true);
-					m_xLevel->addToLobjects(baton);
-					m_iCurWep = 0;*/
-				}
 			}
 		}
 
@@ -248,7 +231,7 @@ namespace esc
 		m_xAnimator->update(deltaTime);
 
 		static_cast<AnimatedSprite*>(m_xSprite)->update(deltaTime);
-
+		m_xAnimator->update(deltaTime);
 	}
 
 	float PlayerObject::calcAngle(float mouse_x, float mouse_y)
@@ -349,7 +332,7 @@ namespace esc
 		}
 		else if (p_xInteractObj->getType() == KEYCARD)
 		{
-			if (p_xInteractObj->getIsRemoved() != false)
+			if (p_xInteractObj->getIsRemoved() == true)
 				return;
 
 			m_bHasCard = true;
@@ -357,7 +340,7 @@ namespace esc
 		}
 		else if (p_xInteractObj->getType() == PDA)
 		{
-			if (p_xInteractObj->getIsRemoved() != false)
+			if (p_xInteractObj->getIsRemoved() == true)
 				return;
 
 			m_bHasObj = true;
@@ -365,7 +348,7 @@ namespace esc
 		}
 		else if (p_xInteractObj->getType() == GUN)
 		{
-			if (p_xInteractObj->getIsRemoved() != false)
+			if (p_xInteractObj->getIsRemoved() == true)
 				return;
 
 			m_xWeapon = new Gun(true, 10, 1.f, 1.f, m_xLevel->getObjects(), m_xGobjManager, m_xLevel->getSpriteManager());
@@ -375,7 +358,7 @@ namespace esc
 		}
 		else if (p_xInteractObj->getType() == DOORH || p_xInteractObj->getType() == DOORV)
 		{
-			if (m_bHasCard == true&& p_xInteractObj->getIsRemoved() == false)
+			if (m_bHasCard == true && p_xInteractObj->getIsRemoved() == false)
 			{
 				m_bHasCard = false;
 				p_xInteractObj->setIsRemoved(true);

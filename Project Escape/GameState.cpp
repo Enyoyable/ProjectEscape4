@@ -15,6 +15,7 @@
 #include "Animator.h"
 #include "AIManager.h"
 #include "PathFind.h"
+#include "HUD.h"
 
 namespace esc
 {
@@ -27,11 +28,13 @@ namespace esc
 		m_xEngine = p_xEngine;
 		m_xLevel = p_xLevel;
 
-		m_fTimer = 0;
+		m_tTimer = sf::Time();
 	}
 
 	void GameState::init()
 	{
+		m_cClock = sf::Clock();
+
 		sf::Clock *xTimer = new sf::Clock;
 		//m_xPlayer = m_xGameObjectManager->createPlayer(m_xSpriteManager->loadSprite("spy.txt"), sf::Vector2f(64 * 48, 64 * 8), m_xEngine->m_window, 1, m_xLevel, xTimer);
 		m_xPlayer = m_xGameObjectManager->createPlayer(new Animator(m_xSpriteManager, "../resources/Spritesheets/"), m_xSpriteManager->loadAnimatedSprite("Spy_walk.txt"), sf::Vector2f(64 * 48, 64 * 8), m_xEngine->m_window, 1, m_xLevel, xTimer);
@@ -69,6 +72,7 @@ namespace esc
 				guard->attachAi(new AIManager(guard, path, m_xPlayer));
 			}
 		}
+		hud = new HUD(m_xView, m_xSpriteManager, m_xPlayer);
 	}
 
 	void GameState::update(float p_fDeltaTime)
@@ -100,6 +104,10 @@ namespace esc
 		m_xView->setCenter(m_xPlayer->getPosition());
 
 		m_xEngine->m_window->setView(*m_xView);
+
+
+		m_tTimer = m_cClock.getElapsedTime();
+		hud->update(p_fDeltaTime, m_tTimer);
 	}
 
 	void GameState::draw()
@@ -110,6 +118,7 @@ namespace esc
 		{
 			m_xGameObjectManager->drawObjects(&vGameObjects);
 		}
+		m_xEngine->m_window->draw(*hud);
 	}
 
 	void GameState::exit()
