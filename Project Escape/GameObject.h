@@ -31,8 +31,12 @@ namespace esc
 		RADIO,
 		KEYCARD,
 		PDA,
-		DOORH,
-		DOORV,
+		LOCKEDH,
+		LOCKEDV,
+		OPENH,
+		OPENV,
+		CLOSEDH,
+		CLOSEDV,
 		BULLET
 	};
 

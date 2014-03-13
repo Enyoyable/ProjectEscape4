@@ -360,12 +360,13 @@ namespace esc
 			m_iCurWep = 2;
 			p_xInteractObj->setIsRemoved(true);
 		}
-		else if (p_xInteractObj->getType() == DOORH || p_xInteractObj->getType() == DOORV)
+		else if (p_xInteractObj->getType() == LOCKEDH || p_xInteractObj->getType() == LOCKEDV)
 		{
 			if (m_bHasCard == true && p_xInteractObj->getIsRemoved() == false)
 			{
 				m_bHasCard = false;
 				p_xInteractObj->setIsRemoved(true);
+				//Lägg till ny dörr
 			}
 		}
 	}

@@ -8,6 +8,7 @@
 #include <fstream>
 #include "PathNode.h"
 #include "PathFind.h"
+#include "Item.h"
 
 namespace esc
 {
@@ -86,10 +87,19 @@ namespace esc
 				eObjectIdentifier = EObjectType::KEYCARD;
 			else if (sObjectIdentifier.compare("PDA") == 0)
 				eObjectIdentifier = EObjectType::PDA;
-			else if (sObjectIdentifier.compare("DOORH") == 0)
-				eObjectIdentifier = EObjectType::DOORH;
-			else if (sObjectIdentifier.compare("DOORV") == 0)
-				eObjectIdentifier = EObjectType::DOORV;
+			else if (sObjectIdentifier.compare("LOCKEDH") == 0)
+				eObjectIdentifier = EObjectType::LOCKEDH;
+			else if (sObjectIdentifier.compare("LOCKEDV") == 0)
+				eObjectIdentifier = EObjectType::LOCKEDV;
+			else if (sObjectIdentifier.compare("OPENH") == 0)
+				eObjectIdentifier = EObjectType::OPENH;
+			else if (sObjectIdentifier.compare("OPENV") == 0)
+				eObjectIdentifier = EObjectType::OPENV;
+			else if (sObjectIdentifier.compare("CLOSEDH") == 0)
+				eObjectIdentifier = EObjectType::CLOSEDH;
+			else if (sObjectIdentifier.compare("CLOSEDV") == 0)
+				eObjectIdentifier = EObjectType::CLOSEDV;
+
 
 			sf::Color *color = new sf::Color(r, g, b, a);
 
@@ -301,17 +311,47 @@ namespace esc
 								   
 								   break;
 				}
-				case esc::DOORH:
+				case esc::LOCKEDH:
 				{
-								   GameObject *obj = m_xGameObjectManager->createObject(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, EObjectType::EXIT, m_xSpriteManager->loadSprite("door_h.png", 0, 0, 64, 64));
+									GameObject *obj = m_xGameObjectManager->createObject(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, EObjectType::LOCKEDH, m_xSpriteManager->loadSprite("Reddoor.png", 0, 0, 64, 64));
 								   m_vLevelObjects.push_back(obj);
 								   break;
 				}
-				case esc::DOORV:
+				case esc::LOCKEDV:
 				{
-								   GameObject *obj = m_xGameObjectManager->createObject(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, EObjectType::EXIT, m_xSpriteManager->loadSprite("door_v.png", 0, 0, 64, 64));
+									GameObject *obj = m_xGameObjectManager->createObject(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, EObjectType::LOCKEDV, m_xSpriteManager->loadSprite("reddoor2.png", 0, 0, 64, 64));
 								   m_vLevelObjects.push_back(obj);
 								   break;
+				}
+				case esc::OPENH:
+				{
+									GameObject *obj = m_xGameObjectManager->createObject(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, EObjectType::OPENH, m_xSpriteManager->loadSprite("yellowdoor.png", 0, 0, 64, 64));
+								   m_vLevelObjects.push_back(obj);
+								   break;
+				}
+				case esc::OPENV:
+				{
+									GameObject *obj = m_xGameObjectManager->createObject(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, EObjectType::OPENV, m_xSpriteManager->loadSprite("yellowdoor2.png", 0, 0, 64, 64));
+								   m_vLevelObjects.push_back(obj);
+								   break;
+				}
+				case esc::CLOSEDH:
+				{
+									GameObject *obj = m_xGameObjectManager->createObject(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, EObjectType::CLOSEDH, m_xSpriteManager->loadSprite("greydoor.png", 0, 0, 64, 64));
+								   m_vLevelObjects.push_back(obj);
+								   break;
+				}
+				case esc::CLOSEDV:
+				{
+									GameObject *obj = m_xGameObjectManager->createObject(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, EObjectType::CLOSEDV, m_xSpriteManager->loadSprite("greydoor2.png", 0, 0, 64, 64));
+								   m_vLevelObjects.push_back(obj);
+								   break;
+				}
+				case esc::KEYCARD:
+				{
+									 Item *card = m_xGameObjectManager->createItem(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), EObjectType::KEYCARD, m_xSpriteManager->loadSprite("Keycard_pu.png", 0, 0, 64, 64));
+									 m_vLevelObjects.push_back(card);
+									 break;
 				}
 				}
 
