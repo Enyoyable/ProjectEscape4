@@ -385,6 +385,11 @@ namespace esc
 
 	void PlayerObject::Attack()
 	{
+		if (m_xWeapon->getCurrentWeaponType() == EWeaponType::WEAPONGARROTE)
+		{
+			Garrote *garrote = static_cast<Garrote*>(m_xWeapon);
+			garrote->trigger();
+		}
 		if (m_xWeapon->getCurrentWeaponType() == EWeaponType::WEAPONBATON)
 		{
 			Baton *baton = static_cast<Baton*>(m_xWeapon);

@@ -42,8 +42,6 @@ namespace esc
 
 	void Garrote::attack(bool p_bIsFinished)
 	{
-		
-
 		PlayerObject *xPlayer = static_cast<PlayerObject*>(m_xAttachedObject);
 
 		float fMiddleAngle = xPlayer->getRotation();
@@ -132,7 +130,7 @@ namespace esc
 					{
 						float fTotDiff = sqrtf(xDiff * xDiff + yDiff * yDiff);
 
-						if (fTotDiff < 60.f)
+						if (fTotDiff < 100.f)
 						{
 							float fGuardRotation = xGuard->m_fWatchAngle;
 
@@ -165,20 +163,13 @@ namespace esc
 									xGuard->m_bAngleLocked = false;
 									m_fAttackTimer = 0;
 								}
-								
 								return;
 							}
-
-							
 						}
 					}
 				}
 			}
-
-
 		}
-
-		
 	}
 
 	void Garrote::trigger()
@@ -189,5 +180,4 @@ namespace esc
 			m_fAttackTimer = 0;
 		}
 	}
-
 }
