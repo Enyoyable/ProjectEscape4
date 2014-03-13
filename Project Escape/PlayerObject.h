@@ -66,6 +66,8 @@ namespace esc
 
 		std::vector<sf::Vector2f> m_vPath;
 
+		void setStateObjects(std::vector<GameObject*> &p_vStateObjects);
+
 		Weapon *m_xWeapon;
 
 	protected:
@@ -82,6 +84,8 @@ namespace esc
 		sf::CircleShape *m_rAttack;
 
 		GameObjectManager *m_xGobjManager;
+
+		std::vector<GameObject*> *m_vStateObjects;
 
 		bool m_bHasCard;
 		bool m_bHasObj;

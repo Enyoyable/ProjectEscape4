@@ -11,6 +11,7 @@
 #include "Garrote.h"
 #include "AnimatedSprite.h"
 #include "Animator.h"
+#include "GameObject.h"
 
 
 namespace esc
@@ -51,6 +52,7 @@ namespace esc
 
 		m_xWeapon = nullptr;
 
+		m_vStateObjects = nullptr;
 
 		m_xAnimator = p_xAnimator;
 
@@ -106,7 +108,7 @@ namespace esc
 				return;
 
 			m_xWeapon->drop();
-			m_xWeapon = new Garrote(0.0f, 1.0f, m_xLevel->getObjects());
+			m_xWeapon = new Garrote(0.0f, 1.0f, m_vStateObjects);
 			m_iCurWep = 0;
 		}
 
@@ -117,7 +119,8 @@ namespace esc
 				m_xWeapon->setTarget(sf::Vector2f(sf::Mouse::getPosition(*p_window)) + getPosition() - sf::Vector2f(960, 540));
 				m_xWeapon->Throw();
 				m_iCurWep = 0;
-				m_xWeapon = new Garrote(1.f, 3.f, m_xLevel->getObjects());
+				m_xWeapon = nullptr;
+				m_xWeapon = new Garrote(1.f, 3.f, m_vStateObjects);
 				m_xWeapon->setAttachedObject(this);
 			}
 		}
@@ -324,8 +327,8 @@ namespace esc
 			if (p_xInteractObj->getIsRemoved() != false)
 				return;
 
-			m_xWeapon = new Baton(true, 10, 1.f, 1.f, m_xLevel->getObjects(), m_xLevel, m_xGobjManager, m_xLevel->getSpriteManager());
-			
+			m_xWeapon = nullptr;
+			m_xWeapon = new Baton(true, 10, 1.f, 1.f, m_vStateObjects, m_xLevel, m_xGobjManager, m_xLevel->getSpriteManager());
 			m_iCurWep = 1;
 			p_xInteractObj->setIsRemoved(true);
 
@@ -351,7 +354,8 @@ namespace esc
 			if (p_xInteractObj->getIsRemoved() == true)
 				return;
 
-			m_xWeapon = new Gun(true, 10, 1.f, 1.f, m_xLevel->getObjects(), m_xGobjManager, m_xLevel->getSpriteManager());
+			m_xWeapon = nullptr;
+			m_xWeapon = new Gun(true, 10, 1.f, 1.f, m_vStateObjects, m_xGobjManager, m_xLevel->getSpriteManager());
 			m_xWeapon->setAttachedObject(this);
 			m_iCurWep = 2;
 			p_xInteractObj->setIsRemoved(true);
@@ -401,8 +405,6 @@ namespace esc
 			garrote->setTarget(sf::Vector2f(sf::Mouse::getPosition(*p_window)) + getPosition() - sf::Vector2f(960, 540));
 			garrote->Throw();
 		}
-
-
 	}
 
 	bool PlayerObject::HandleCollision(GameObject *p_oObject)
@@ -492,5 +494,8 @@ namespace esc
 		return sf::Vector2f();
 	}
 
-
+	void PlayerObject::setStateObjects(std::vector<GameObject*> &p_vStateObjects)
+	{
+		m_vStateObjects = &p_vStateObjects;
+	}
 }
