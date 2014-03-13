@@ -325,25 +325,25 @@ namespace esc
 				}
 				case esc::OPENH:
 				{
-									GameObject *obj = m_xGameObjectManager->createObject(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, EObjectType::OPENH, m_xSpriteManager->loadSprite("yellowdoor.png", 0, 0, 64, 64));
+									GameObject *obj = m_xGameObjectManager->createObject(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, EObjectType::OPENH, m_xSpriteManager->loadSprite("yellowdoor2.png", 0, 0, 64, 64));
 								   m_vLevelObjects.push_back(obj);
 								   break;
 				}
 				case esc::OPENV:
 				{
-									GameObject *obj = m_xGameObjectManager->createObject(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, EObjectType::OPENV, m_xSpriteManager->loadSprite("yellowdoor2.png", 0, 0, 64, 64));
+									GameObject *obj = m_xGameObjectManager->createObject(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, EObjectType::OPENV, m_xSpriteManager->loadSprite("yellowdoor.png", 0, 0, 64, 64));
 								   m_vLevelObjects.push_back(obj);
 								   break;
 				}
 				case esc::CLOSEDH:
 				{
-									GameObject *obj = m_xGameObjectManager->createObject(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, EObjectType::CLOSEDH, m_xSpriteManager->loadSprite("greydoor.png", 0, 0, 64, 64));
+									GameObject *obj = m_xGameObjectManager->createObject(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, EObjectType::CLOSEDH, m_xSpriteManager->loadSprite("greydoor2.png", 0, 0, 64, 64));
 								   m_vLevelObjects.push_back(obj);
 								   break;
 				}
 				case esc::CLOSEDV:
 				{
-									GameObject *obj = m_xGameObjectManager->createObject(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, EObjectType::CLOSEDV, m_xSpriteManager->loadSprite("greydoor2.png", 0, 0, 64, 64));
+									GameObject *obj = m_xGameObjectManager->createObject(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, EObjectType::CLOSEDV, m_xSpriteManager->loadSprite("greydoor.png", 0, 0, 64, 64));
 								   m_vLevelObjects.push_back(obj);
 								   break;
 				}
