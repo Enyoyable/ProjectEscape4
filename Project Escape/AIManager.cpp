@@ -5,11 +5,6 @@
 #include "PathFind.h"
 #include "GameObject.h"
 #include "AIStateChasing.h"
-#include "AIStatePatrolling.h"
-#include "AIStateSearching.h"
-#include "AIStateStationary.h"
-
-#include "Guard.h"
 
 namespace esc
 {
@@ -19,25 +14,9 @@ namespace esc
 		m_xPlayer = p_xPlayer;
 
 		AIStateChasing *chase = new AIStateChasing(this, p_xObject, p_xPathFind, p_xPlayer);
-		AIStatePatrolling *patrol = new AIStatePatrolling(this, p_xObject, p_xPathFind, p_xPlayer);
-		AIStateSearching *search = new AIStateSearching(this, p_xObject, p_xPathFind, p_xPlayer);
-		AIStateStationary *stationary = new AIStateStationary(this, p_xObject, p_xPathFind, p_xPlayer);
 
 		m_mAIStates.insert(std::pair<EAIStates, AIState*>(EAIStates::CHASING, chase));
-		m_mAIStates.insert(std::pair<EAIStates, AIState*>(EAIStates::PATROLLING, patrol));
-		m_mAIStates.insert(std::pair<EAIStates, AIState*>(EAIStates::SEARCHING, search));
-		m_mAIStates.insert(std::pair<EAIStates, AIState*>(EAIStates::STATIONARY, stationary));
-
-		Guard *guard = static_cast<Guard*>(m_xObject);
-
-		if (guard->getIsPatrolling())
-		{
-			m_eCurrentState = PATROLLING;
-		}
-		else 
-		{
-			m_eCurrentState = STATIONARY;
-		}
+		m_eCurrentState = CHASING;
 	}
 
 	void AIManager::update(float p_fDeltaTime)

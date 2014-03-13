@@ -99,8 +99,6 @@ namespace esc
 		vertex1.color = red;
 		vertex2.color = red;
 
-		
-
 
 		target.draw(&vertices[0], vertices.size(), sf::TrianglesFan);
 
@@ -119,9 +117,8 @@ namespace esc
 		if (m_bAngleLocked)
 			return;
 			
-		m_xAIManager->update(p_fDeltaTime);
 
-		/*m_bIsChasing = false;
+		m_bIsChasing = false;
 
 		float fTurnRate = p_fDeltaTime * 20.f;
 
@@ -197,9 +194,9 @@ namespace esc
 			setRotation(m_fWatchAngle);
 
 			//move((m_xPlayerObject->getPosition() - getPosition()) / fDistance * m_fGuardChaseSpeed * p_fDeltaTime);
-			//setPosition(getPosition() + ((m_xPlayerObject->getPosition() - getPosition()) / fDistance * m_fGuardChaseSpeed * p_fDeltaTime));
+			setPosition(getPosition() + ((m_xPlayerObject->getPosition() - getPosition()) / fDistance * m_fGuardChaseSpeed * p_fDeltaTime));
 
-			m_xAIManager->update(p_fDeltaTime);
+			//m_xAIManager->update(p_fDeltaTime);
 		}
 		else if (m_bIsChasing == false &&
 			fabs(getPosition().x - m_v2fStartPosition.x) >= 10 &&
@@ -327,7 +324,7 @@ namespace esc
 			}
 
 			setRotation(m_fWatchAngle);
-		}*/
+		}
 	}
 
 	void Guard::searchForPlayer(float p_fxDiff, float p_fyDiff, float p_fDistance, float p_fAngle)
@@ -477,10 +474,5 @@ namespace esc
 	{
 		m_xAIManager = p_xAIManager;
 		m_bHasAI = true;
-	}
-
-	void Guard::addDrawPath(std::vector<sf::Vector2f*> p_vPath)
-	{
-		m_vPath = p_vPath;
 	}
 }

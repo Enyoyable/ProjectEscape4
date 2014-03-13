@@ -87,7 +87,6 @@
     <ClCompile Include="AIManager.cpp" />
     <ClCompile Include="AIStateChasing.cpp" />
     <ClCompile Include="AIStatePatrolling.cpp" />
-    <ClCompile Include="AIStateSearching.cpp" />
     <ClCompile Include="AIStateStationary.cpp" />
     <ClCompile Include="AnimatedSprite.cpp" />
     <ClCompile Include="Animator.cpp" />
@@ -116,7 +115,6 @@
     <ClCompile Include="PlayerObject.cpp" />
     <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="AIState.cpp" />
-    <ClCompile Include="SoundRipple.cpp" />
     <ClCompile Include="SpriteManager.cpp" />
     <ClCompile Include="StateManager.cpp" />
     <ClCompile Include="stdafx.cpp" />
@@ -127,7 +125,6 @@
     <ClInclude Include="AIState.h" />
     <ClInclude Include="AIStateChasing.h" />
     <ClInclude Include="AIStatePatrolling.h" />
-    <ClInclude Include="AIStateSearching.h" />
     <ClInclude Include="AIStateStationary.h" />
     <ClInclude Include="AnimatedSprite.h" />
     <ClInclude Include="Animator.h" />
@@ -155,7 +152,6 @@
     <ClInclude Include="PathNode.h" />
     <ClInclude Include="PlayerObject.h" />
     <ClInclude Include="SoundManager.h" />
-    <ClInclude Include="SoundRipple.h" />
     <ClInclude Include="SpriteManager.h" />
     <ClInclude Include="State.h" />
     <ClInclude Include="StateManager.h" />

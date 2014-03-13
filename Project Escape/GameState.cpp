@@ -15,7 +15,7 @@
 #include "Animator.h"
 #include "AIManager.h"
 #include "PathFind.h"
-#include "SoundRipple.h"
+#include "HUD.h"
 
 namespace esc
 {
@@ -28,18 +28,21 @@ namespace esc
 		m_xEngine = p_xEngine;
 		m_xLevel = p_xLevel;
 
-		m_fTimer = 0;
-		m_fRippleTimer = 0;
+		m_tTimer = sf::Time();
 	}
 
 	void GameState::init()
 	{
+		m_cClock = sf::Clock();
+
 		sf::Clock *xTimer = new sf::Clock;
 		//m_xPlayer = m_xGameObjectManager->createPlayer(m_xSpriteManager->loadSprite("spy.txt"), sf::Vector2f(64 * 48, 64 * 8), m_xEngine->m_window, 1, m_xLevel, xTimer);
 		m_xPlayer = m_xGameObjectManager->createPlayer(new Animator(m_xSpriteManager, "../resources/Spritesheets/"), m_xSpriteManager->loadAnimatedSprite("Spy_walk.txt"), sf::Vector2f(64 * 48, 64 * 8), m_xEngine->m_window, 1, m_xLevel, xTimer);
 		m_vGameObjects[MAIN].push_back(m_xPlayer);
 
 		m_vGameObjects[MAIN].insert(m_vGameObjects[MAIN].end(), m_xLevel->getObjects()->begin(), m_xLevel->getObjects()->end());
+
+		m_xPlayer->setStateObjects(m_vGameObjects[MAIN]);
 
 		m_xView = new sf::View();
 		//kommentar
@@ -48,10 +51,10 @@ namespace esc
 		m_xPlayer->m_xWeapon = new Gun(true, 10, 1.f, 1.f, &m_vGameObjects[MAIN], m_xGameObjectManager, m_xSpriteManager);
 		m_xPlayer->m_xWeapon->setAttachedObject(m_xPlayer);
 
-		/*m_xPlayer->m_xWeapon = new Baton(true, 10, 1.f, 1.f, &m_vGameObjects[MAIN], m_xLevel);
+		/*m_xPlayer->m_xWeapon = new Baton(true, 10, 1.f, 1.f, &m_vGameObjects[MAIN], m_xLevel, m_xGameObjectManager, m_xSpriteManager);
 		m_xPlayer->m_xWeapon->setAttachedObject(m_xPlayer);*/
 
-		/*m_xPlayer->m_xWeapon = new Garrote(1.f, 3.f, &m_vGameObjects[MAIN]);
+		/*m_xPlayer->m_xWeapon = new Garrote(1.f, 3.f, &m_vGameObjects[MAIN], m_xGameObjectManager, m_xSpriteManager);
 		m_xPlayer->m_xWeapon->setAttachedObject(m_xPlayer);*/
 
 		SoundManager soundmanager("../resources/Music/");
@@ -71,11 +74,11 @@ namespace esc
 				guard->attachAi(new AIManager(guard, path, m_xPlayer));
 			}
 		}
+		hud = new HUD(m_xView, m_xSpriteManager, m_xPlayer);
 	}
 
 	void GameState::update(float p_fDeltaTime)
 	{
-		m_fRippleTimer += p_fDeltaTime;
 		if (m_bHasInitialized == false)
 		{
 			m_bHasInitialized = true;
@@ -104,14 +107,9 @@ namespace esc
 
 		m_xEngine->m_window->setView(*m_xView);
 
-		if (m_fRippleTimer > 0.5)
-		{
-			m_fRippleTimer = 0;
 
-			SoundRipple *ripple = new SoundRipple(m_xPlayer->getPosition(), 20, 200, 0.5);
-			m_vGameObjects[MAIN].push_back(ripple);
-		}
-		
+		m_tTimer = m_cClock.getElapsedTime();
+		hud->update(p_fDeltaTime, m_tTimer);
 	}
 
 	void GameState::draw()
@@ -122,6 +120,7 @@ namespace esc
 		{
 			m_xGameObjectManager->drawObjects(&vGameObjects);
 		}
+		m_xEngine->m_window->draw(*hud);
 	}
 
 	void GameState::exit()
