@@ -17,8 +17,8 @@ namespace esc
 		{
 			PATROLLING,
 			STATIONARY,
-			ROTATING,
-			CHASING
+			CHASING,
+			SEARCHING
 		};
 
 	public:

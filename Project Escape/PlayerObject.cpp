@@ -286,22 +286,8 @@ namespace esc
 
 	void PlayerObject::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
-		if (m_vPath.size() > 0)
-		{
-			for (auto path : m_vPath)
-			{
-				sf::CircleShape shape(10, 30);
-				shape.setOrigin(10, 10);
-				shape.setPosition(path);
-				
-				shape.setFillColor(sf::Color::Red);
-
-				target.draw(shape);
-			}
-		}
 
 		states.transform *= getTransform();
-		target.draw(*m_noiseCir);
 		target.draw(*static_cast<AnimatedSprite*>(m_xAnimator->getCurrentAnimation()), states);
 	}
 

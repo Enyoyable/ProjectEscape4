@@ -61,6 +61,8 @@ namespace esc
 
 		void attachAi(AIManager *p_xAIManager);
 
+		void addDrawPath(std::vector<sf::Vector2f*> p_vPath);
+
 	private:
 		bool m_bIsPatrolling;
 
@@ -107,6 +109,8 @@ namespace esc
 		GameObjectManager *m_xGobjManager;
 
 		Level *m_xLevel;
+
+		std::vector<sf::Vector2f*> m_vPath;
 	};
 
 }

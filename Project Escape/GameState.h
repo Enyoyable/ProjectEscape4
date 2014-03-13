@@ -13,7 +13,6 @@ namespace esc
 	class CollisionManager;
 	class Level;
 	class PlayerObject;
-	class HUD;
 
 	class GameState : public State
 	{
@@ -37,15 +36,13 @@ namespace esc
 
 		sf::View *m_xView;
 
-		HUD *hud;
-
-		sf::Time m_tTimer;
-
-		sf::Clock m_cClock;
+		float m_fTimer;
 
 		sf::Music *m_sIngame;
 
 		bool m_bHasInitialized = false;
+
+		float m_fRippleTimer;
 	};
 
 }

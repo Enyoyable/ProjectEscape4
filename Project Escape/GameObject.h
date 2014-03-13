@@ -37,7 +37,8 @@ namespace esc
 		OPENV,
 		CLOSEDH,
 		CLOSEDV,
-		BULLET
+		BULLET,
+		SOUNDRIPPLE
 	};
 
 	class GameObject : public sf::Drawable, public sf::Transformable

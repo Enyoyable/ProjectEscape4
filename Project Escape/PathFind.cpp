@@ -132,8 +132,8 @@ namespace esc
 
 		m_xTargetNode = m_vPathNodes[v2fTargetNode.y][v2fTargetNode.x];
 
-		v2fCurrentNode.x = (int)(p_xPathingObject->getPosition().x + 32) / 64;
-		v2fCurrentNode.y = (int)(p_xPathingObject->getPosition().y + 32) / 64;
+		v2fCurrentNode.x = (int)(p_xPathingObject->getPosition().x) / 64;
+		v2fCurrentNode.y = (int)(p_xPathingObject->getPosition().y) / 64;
 
 		m_xCurrentNode = m_vPathNodes[v2fCurrentNode.y][v2fCurrentNode.x];
 		m_xStartingNode = m_xCurrentNode;
@@ -306,6 +306,12 @@ namespace esc
 	{
 		if (m_xCurrentNode == m_xTargetNode)
 			return;
+
+		/*if (m_xCurrentNode->getIllegal())
+			m_xCurrentNode->setIllegal(false);*/
+
+		if (m_xTargetNode->getIllegal())
+			m_xTargetNode->setIllegal(false);
 
 		bool bFinished = false;
 

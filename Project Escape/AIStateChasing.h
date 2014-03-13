@@ -20,6 +20,11 @@ namespace esc
 		virtual void update(float p_fDeltaTime);
 
 		virtual void takeDecision();
+
+	private:
+		std::vector<sf::Vector2f*> m_vCurrentPath;
+
+		float m_fPathTimer;
 	};
 
 }

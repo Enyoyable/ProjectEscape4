@@ -141,6 +141,12 @@
     <ClCompile Include="AIStatePatrolling.cpp">
       <Filter>AI</Filter>
     </ClCompile>
+    <ClCompile Include="AIStateSearching.cpp">
+      <Filter>AI</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundRipple.cpp">
+      <Filter>Rendering</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PlayerObject.h">
@@ -250,6 +256,12 @@
     </ClInclude>
     <ClInclude Include="AIStatePatrolling.h">
       <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="AIStateSearching.h">
+      <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundRipple.h">
+      <Filter>Rendering</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
