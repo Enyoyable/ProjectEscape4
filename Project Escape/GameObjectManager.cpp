@@ -1,9 +1,11 @@
 #include "GameObjectManager.h"
+#include "SpriteManager.h"
 #include "GameObject.h"
 #include "Guard.h"
 #include "PlayerObject.h"
 #include "Item.h"
 #include "PathFind.h"
+#include "Door.h"
 
 namespace esc
 {
@@ -99,5 +101,10 @@ namespace esc
 	Item *GameObjectManager::createItem(sf::Vector2f p_v2fPosition, sf::Vector2f p_v2fSize, EObjectType p_eType, sf::Sprite *p_xSprite)
 	{
 		return new Item(p_v2fPosition, p_xSprite, false, sf::Vector2f(0.0f, 0.0f), m_iCurrentObjectId++, p_eType);
+	}
+
+	Door *GameObjectManager::createDoor(sf::Vector2f p_v2fPosition, sf::Vector2f p_v2fSize, bool p_vVertical, int p_iLock, EObjectType p_eType, SpriteManager *p_xSpriteManager)
+	{
+		return new Door(p_v2fPosition, p_v2fSize, p_vVertical, p_iLock, p_xSpriteManager, m_iCurrentObjectId++);
 	}
 }

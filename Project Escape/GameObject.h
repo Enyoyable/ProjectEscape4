@@ -31,13 +31,16 @@ namespace esc
 		RADIO,
 		KEYCARD,
 		PDA,
+		DOOR,
 		LOCKEDH,
 		LOCKEDV,
 		OPENH,
 		OPENV,
 		CLOSEDH,
 		CLOSEDV,
-		BULLET
+		BULLET,
+		WRITER,
+		PLANTS
 	};
 
 	class GameObject : public sf::Drawable, public sf::Transformable

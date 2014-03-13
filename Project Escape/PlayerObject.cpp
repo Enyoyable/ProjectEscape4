@@ -12,6 +12,7 @@
 #include "AnimatedSprite.h"
 #include "Animator.h"
 #include "GameObject.h"
+#include "Door.h"
 
 
 namespace esc
@@ -21,7 +22,7 @@ namespace esc
 		: GameObject(position, sf::Vector2f(64, 64), false, p_iObjectId, PLAYER, sprite)
 	{
 		m_hiding = false;
-		m_interactionRange = 64.0f;
+		m_interactionRange = 65.0f;
 		setOrigin(32, 32);
 		p_window = window;
 
@@ -30,7 +31,7 @@ namespace esc
 		m_sneakspeed = 4.0f;
 
 		m_iCurWep = 2;
-		m_bHasCard = false;
+		m_bHasCard = true;
 
 		m_bRblock = false;
 		m_bLblock = false;
@@ -360,13 +361,24 @@ namespace esc
 			m_iCurWep = 2;
 			p_xInteractObj->setIsRemoved(true);
 		}
-		else if (p_xInteractObj->getType() == LOCKEDH || p_xInteractObj->getType() == LOCKEDV)
+		else if (p_xInteractObj->getType() == DOOR)
 		{
-			if (m_bHasCard == true && p_xInteractObj->getIsRemoved() == false)
+			Door *doorObj = static_cast<Door*>(p_xInteractObj);
+
+			if (doorObj->IsOpen() == false)
 			{
-				m_bHasCard = false;
-				p_xInteractObj->setIsRemoved(true);
-				//Lägg till ny dörr
+				if (doorObj->IsLocked() == 0)
+				{
+					doorObj->Open();
+				}
+				if (m_bHasCard == true)
+				{
+					if (doorObj->IsLocked() == 1)
+					{
+						doorObj->unlock();
+						m_bHasCard = false;
+					}
+				}
 			}
 		}
 	}
@@ -440,6 +452,82 @@ namespace esc
 					setPosition(getPosition().x, p_oObject->getPosition().y - 64);
 				}
 			}
+		}
+		else if (p_oObject->getType() == DOOR)
+		{
+			Door *doorObj = dynamic_cast<Door*>(p_oObject);
+
+			if (doorObj->getIsRemoved() == true)
+				return false;
+
+			if (doorObj->IsOpen() == true)
+				return false;
+
+			if (doorObj->IsVertical() == true)
+			{
+				float xDiff = p_oObject->getPosition().x - getPosition().x;
+				float yDiff = p_oObject->getPosition().y - getPosition().y;
+
+				if (fabs(xDiff) > 64 || fabs(yDiff) > 64)
+					return false;
+
+				if (fabs(xDiff) > fabs(yDiff))
+				{
+					if (xDiff < 0)
+					{
+						setPosition(p_oObject->getPosition().x + 10, getPosition().y);
+					}
+					else
+					{
+						setPosition(p_oObject->getPosition().x - 64, getPosition().y);
+					}
+					
+				}
+				else
+				{
+					if (yDiff < 0)
+					{
+						setPosition(getPosition().x, p_oObject->getPosition().y + 64);
+					}
+					else
+					{
+						setPosition(getPosition().x, p_oObject->getPosition().y - 64);
+					}
+				}
+			}
+			else
+			{
+				float xDiff = p_oObject->getPosition().x - getPosition().x;
+				float yDiff = p_oObject->getPosition().y - getPosition().y;
+
+				if (fabs(xDiff) > 64 || fabs(yDiff) > 64)
+					return false;
+
+				if (fabs(xDiff) > fabs(yDiff))
+				{
+					if (xDiff < 0)
+					{
+						setPosition(p_oObject->getPosition().x, getPosition().y + 64);
+					}
+					else
+					{
+						setPosition(p_oObject->getPosition().x, getPosition().y - 64);
+					}
+				}
+				else
+				{
+					if (yDiff < 0)
+					{
+						setPosition(getPosition().x, p_oObject->getPosition().y + 31);
+					}
+					else
+					{
+						setPosition(getPosition().x, p_oObject->getPosition().y - 45);
+					}
+				}
+			}
+
+			
 		}
 		else if (p_oObject->getType() == PATROLLINGGUARD || p_oObject->getType() == STATIONARYGUARD)
 		{

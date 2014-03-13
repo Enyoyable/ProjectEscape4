@@ -7,7 +7,7 @@
 namespace esc
 {
 	Item::Item(sf::Vector2f p_v2Pos, sf::Sprite *p_sSprite, bool p_bIsFlying, sf::Vector2f p_v2target, int p_iObjectId, EObjectType p_eType)
-		:GameObject(p_v2Pos, sf::Vector2f(p_sSprite->getGlobalBounds().width, p_sSprite->getGlobalBounds().height), true, p_iObjectId, p_eType, p_sSprite)
+		:GameObject(p_v2Pos, sf::Vector2f(p_sSprite->getGlobalBounds().width - 20, p_sSprite->getGlobalBounds().height -20), true, p_iObjectId, p_eType, p_sSprite)
 	{
 		setOrigin(32, 32);
 
