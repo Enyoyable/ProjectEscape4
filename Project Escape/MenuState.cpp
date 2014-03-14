@@ -1,5 +1,6 @@
 #include "MenuState.h"
 #include "GameObjectManager.h"
+#include "GameObject.h"
 #include "StateManager.h"
 #include "Button.h"
 #include "SpriteManager.h"
@@ -39,7 +40,9 @@ namespace esc
 		m_vTextObjects.push_back(smallTitleText);
 		m_vTextObjects.push_back(largeTitleText);*/
 
-		m_xStartButton = new Button(sf::Vector2f(300, 300), sf::Vector2f(715, 126), false, 0, m_xSpriteManager->loadSprite("NG1.png", 0, 0, 715, 126));
+		m_xMenuBack = m_xGameObjectManager->createObject(sf::Vector2f(0, 0), sf::Vector2f(1920, 1080), false, BACKGROUND, m_xSpriteManager->loadSprite("TitleBG.png", 0, 0, 1920, 1080));
+
+		m_xStartButton = new Button(sf::Vector2f(615, 452), sf::Vector2f(715, 126), false, 0, m_xSpriteManager->loadSprite("NG1.png", 0, 0, 715, 126));
 
 		m_xStartButton->setFunction([&](){
 			m_xStateManager->setCurrentState(StateManager::EStates::GAME);
@@ -50,7 +53,27 @@ namespace esc
 
 		m_xStartButton->setOrigin(0, 0);
 
-		m_xExitButton = new Button(sf::Vector2f(300, 600), sf::Vector2f(715, 126), false, 0, m_xSpriteManager->loadSprite("Exit1.png", 0, 0, 715, 126));
+		m_xOptionsButton = new Button(sf::Vector2f(615, 596), sf::Vector2f(715, 126), false, 0, m_xSpriteManager->loadSprite("OP1.png", 0, 0, 715, 126));
+
+		m_xOptionsButton->setHoverSprite(m_xSpriteManager->loadAnimatedSprite("OptionsAnim.txt"));
+	
+		m_xOptionsButton->setOrigin(0, 0);
+
+		//m_xOptionsButton->setfunction([&](){
+				//stuff
+		//});
+
+		m_xCreditsButton = new Button(sf::Vector2f(615, 737), sf::Vector2f(715, 126), false, 0, m_xSpriteManager->loadSprite("Cred1.png", 0, 0, 715, 126));
+
+		m_xCreditsButton->setHoverSprite(m_xSpriteManager->loadAnimatedSprite("CredAnim.txt"));
+
+		m_xCreditsButton->setOrigin(0, 0);
+
+		//m_xCreditsButton->setfunction([&](){
+		//stuff
+		//});
+
+		m_xExitButton = new Button(sf::Vector2f(615, 875), sf::Vector2f(715, 126), false, 0, m_xSpriteManager->loadSprite("Exit1.png", 0, 0, 715, 126));
 
 		m_xExitButton->setFunction([&](){
 			m_xEngine->m_window->close();
@@ -60,8 +83,12 @@ namespace esc
 
 		m_xExitButton->setOrigin(0, 0);
 
+		m_vGameObjects[MAIN].push_back(m_xMenuBack);
 		m_vGameObjects[MAIN].push_back(m_xStartButton);
+		m_vGameObjects[MAIN].push_back(m_xOptionsButton);
+		m_vGameObjects[MAIN].push_back(m_xCreditsButton);
 		m_vGameObjects[MAIN].push_back(m_xExitButton);
+
 
 		SoundManager soundmanager("../resources/Music/");
 		m_sTitle = soundmanager.getMusic("Title_screen.ogg");
@@ -104,6 +131,7 @@ namespace esc
 		{
 			//m_xGameObjectManager->m_xWindow->draw(*text);
 		}
+		
 	}
 
 	void MenuState::exit()

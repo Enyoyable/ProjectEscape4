@@ -266,8 +266,8 @@ namespace esc
 	{
 		setPosition(m_startpos);
 		m_xTimer->restart();
-		//m_xWeapon = new Gun(true, 10, 1.f, 1.f, m_xLevel->getObjects(), m_xGobjManager, m_xLevel->getSpriteManager());
-		//m_iCurWep = 2;
+		m_xWeapon = new Gun(true, 10, 1.f, 1.f, m_xLevel->getObjects(), m_xGobjManager, m_xLevel->getSpriteManager());
+		m_iCurWep = 2;
 	}
 
 	void PlayerObject::setcurwep(int newWep)
@@ -547,6 +547,7 @@ namespace esc
 
 			reset();
 			m_xLevel->reset();
+			
 		}
 		else if (p_oObject->getType() == EXIT)
 		{

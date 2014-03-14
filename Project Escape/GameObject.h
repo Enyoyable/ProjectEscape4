@@ -11,6 +11,7 @@ namespace esc
 	enum EObjectType
 	{
 		WALL,
+		BACKGROUND,
 		LOCKERD,
 		LOCKERU,
 		LOCKERR,

@@ -79,6 +79,12 @@ namespace esc
 
 	void GameState::update(float p_fDeltaTime)
 	{
+		
+		//if (m_xPlayer->getKilled() == true)
+		{
+
+		}
+
 		if (m_bHasInitialized == false)
 		{
 			m_bHasInitialized = true;
@@ -91,8 +97,6 @@ namespace esc
 				m_xGameObjectManager->updateObjects(&vGameObjects, p_fDeltaTime);
 			}
 		}
-
-		
 		
 		for (auto vGameObjects : m_vGameObjects)
 		{

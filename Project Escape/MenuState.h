@@ -33,7 +33,11 @@ namespace esc
 
 		sf::Music *m_sTitle;
 
+		GameObject *m_xMenuBack;
+
 		Button *m_xStartButton;
+		Button *m_xOptionsButton;
+		Button *m_xCreditsButton;
 		Button *m_xExitButton;
 	};
 
