@@ -660,7 +660,7 @@ namespace esc
 			}
 			else if (object->getType() == KEYCARD || object->getType() == PDA)
 			{
-				object->setIsRemoved = false;
+				object->setIsRemoved(false);
 			}
 			else if (object->getType() == BATON)
 			{
