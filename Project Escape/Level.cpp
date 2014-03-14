@@ -658,9 +658,13 @@ namespace esc
 			{
 				static_cast<Guard*>(object)->reset();
 			}
-			else if (object->getType() == BATON || object->getType() == PDA || object->getType() == KEYCARD)
+			else if (object->getType() == KEYCARD || object->getType() == PDA)
 			{
-				object->setIsRemoved(false);
+				object->setIsRemoved = false;
+			}
+			else if (object->getType() == BATON)
+			{
+				object->setIsRemoved(true);
 			}
 		}
 	}
