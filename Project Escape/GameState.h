@@ -37,15 +37,18 @@ namespace esc
 
 		sf::View *m_xView;
 
+		sf::Music *m_sIngame;
+
+		bool m_bHasInitialized = false;
+
+		float m_fRippleTimer;
+
 		HUD *hud;
 
 		sf::Time m_tTimer;
 
 		sf::Clock m_cClock;
 
-		sf::Music *m_sIngame;
-
-		bool m_bHasInitialized = false;
 	};
 
 }

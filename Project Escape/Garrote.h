@@ -22,6 +22,8 @@ namespace esc
 		bool m_bHasStarted;
 
 		bool m_bHasAttacked;
+
+		float m_fSoundTimer;
 	};
 
 }

@@ -13,6 +13,7 @@ namespace esc
 
 	enum EStateLayers
 	{
+		BACKGROUND,
 		MAIN,
 		FOREGROUND,
 		COUNT

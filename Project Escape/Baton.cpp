@@ -123,7 +123,7 @@ namespace esc
 					{
 						Guard *xGuard = static_cast<Guard*>(object);
 
-						float fAttackWidth = 40.f;
+						float fAttackWidth = 90.f;
 
 						float fLowestAngle = fMiddleAngle - fAttackWidth * 0.5;
 
@@ -148,7 +148,7 @@ namespace esc
 							{
 								float fTotDiff = sqrtf(xDiff * xDiff + yDiff * yDiff);
 
-								if (fTotDiff < 60.f)
+								if (fTotDiff < 100.f)
 								{
 									xGuard->m_isDead = true;
 									xGuard->setIsRemoved(true);
@@ -162,7 +162,7 @@ namespace esc
 							{
 								float fTotDiff = sqrtf(xDiff * xDiff + yDiff * yDiff);
 
-								if (fTotDiff < 60.f)
+								if (fTotDiff < 100.f)
 								{
 									xGuard->m_isDead = true;
 									xGuard->setIsRemoved(true);

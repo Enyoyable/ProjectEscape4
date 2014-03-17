@@ -44,6 +44,12 @@ namespace esc
 
 		bool onLastFrame();
 
+		void setTriggers(std::vector<int> p_vTriggers);
+
+		void clearTriggers();
+
+		bool getIsTrigger();
+
 	private:
 		bool m_bIsPlaying;
 
@@ -58,6 +64,10 @@ namespace esc
 		bool m_bSpecialCondition;
 
 		std::vector<int> m_vFramesToAnimate;
+
+		std::vector<int> m_vTriggers;
+
+		bool m_bIsTriggered;
 	};
 
 }

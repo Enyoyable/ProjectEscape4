@@ -20,6 +20,19 @@ namespace esc
 			{
 				m_iCurrentFrame = (m_iCurrentFrame + 1) % m_vFrames.size();
 				m_fTimeSinceLastFrame = 0;
+
+				for (auto trigger : m_vTriggers)
+				{
+					if (m_iCurrentFrame == trigger)
+					{
+						m_bIsTriggered = true;
+						break;
+					}
+					else
+					{
+						m_bIsTriggered = false;
+					}
+				}
 			}
 		}
 	}
@@ -92,4 +105,24 @@ namespace esc
 		return m_iCurrentFrame == (m_vFrames.size() - 1);
 	}
 
+	void AnimatedSprite::setTriggers(std::vector<int> p_vTriggers)
+	{
+		m_vTriggers = p_vTriggers;
+	}
+
+	void AnimatedSprite::clearTriggers()
+	{
+		m_vTriggers.clear();
+	}
+
+	bool AnimatedSprite::getIsTrigger()
+	{
+		if (m_bIsTriggered)
+		{
+			m_bIsTriggered = false;
+			return true;
+		}
+
+		return false;
+	}
 }

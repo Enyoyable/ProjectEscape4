@@ -12,8 +12,9 @@
 #include "AnimatedSprite.h"
 #include "Animator.h"
 #include "GameObject.h"
+#include "SoundRipple.h"
+#include "SoundManager.h"
 #include "Door.h"
-
 
 namespace esc
 {
@@ -27,11 +28,13 @@ namespace esc
 		p_window = window;
 
 		m_startpos = position;
-		m_walkspeed = 8.0f;
-		m_sneakspeed = 4.0f;
+		m_walkspeed = 5.0f;
+		m_sneakspeed = 2.0f;
+
+		m_sStepMusic = nullptr;
 
 		m_iCurWep = 2;
-		m_bHasCard = true;
+		m_bHasCard = false;
 
 		m_bRblock = false;
 		m_bLblock = false;
@@ -54,37 +57,51 @@ namespace esc
 		m_xWeapon = nullptr;
 
 		m_vStateObjects = nullptr;
-
+		
 		m_xAnimator = p_xAnimator;
 
 		m_xAnimator->loadAnimations("playerAnims.txt");
 
+		std::vector<int> triggers = {
+			3, 9
+		};
+
+		m_xAnimator->getAnimation("Spy_walk.txt")->setTriggers(triggers);
+
+		triggers.clear();
+
+		triggers.push_back(4);
+
+		m_xAnimator->getAnimation("Spy_shot.txt")->setTriggers(triggers);
+
+		m_xAnimator->getAnimation("Spy_baton.txt")->setTriggers(triggers);
 	}
 
 	void PlayerObject::update(float deltaTime, std::vector<GameObject*> objects)
 	{
+
+		bool bIsWalking = false;
+		
 		if (m_xWeapon->getAttachedObject() == nullptr)
 			m_xWeapon->setAttachedObject(this);
 
 		if (m_xWeapon != nullptr)
 			m_xWeapon->update(deltaTime);
 
-		if (m_rAttack != nullptr)
-		{
-			delete m_rAttack;
-			m_rAttack = nullptr;
-		}
-		//setPosition(getPosition() + m_velocity * deltaTime);
-		m_noiseCir->setPosition(getPosition());
-		if (m_noiseCir->getRadius() > 0)
-		{
-			m_noiseCir->setRadius(m_noiseCir->getRadius() - 1);
-			m_noiseCir->setOrigin(m_noiseCir->getOrigin().x - 1, m_noiseCir->getOrigin().x - 1);
-		}
-
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 		{
-			Attack();
+			if (m_xWeapon->getCurrentWeaponType() == WEAPONGUN)
+			{
+				m_xAnimator->setForcedAnimation("Spy_shot.txt");
+			}
+			else if (m_xWeapon->getCurrentWeaponType() == WEAPONGARROTE)
+			{
+				Attack();
+			}
+			else if (m_xWeapon->getCurrentWeaponType() == WEAPONBATON)
+			{
+				m_xAnimator->setForcedAnimation("Spy_baton.txt");
+			}
 		}
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
@@ -141,16 +158,13 @@ namespace esc
 				{
 					m_xAnimator->setCurrentAnimation("Spy_sneak.txt");
 					move(0, -m_sneakspeed);
+					bIsWalking = true;
 				}
 				else
 				{
-					if (m_noiseCir->getRadius() < m_Walknoise)
-					{
-						m_noiseCir->setRadius(m_noiseCir->getRadius() + 20.0f);
-						m_noiseCir->setOrigin(m_noiseCir->getOrigin().x + 20.0f, m_noiseCir->getOrigin().x + 20.0f);
-					}
 					move(0, -m_walkspeed);
 					m_xAnimator->setCurrentAnimation("Spy_walk.txt");
+					bIsWalking = true;
 				}
 			}
 
@@ -160,15 +174,12 @@ namespace esc
 				{
 					move(0, m_sneakspeed);
 					m_xAnimator->setCurrentAnimation("Spy_sneak.txt");
+					bIsWalking = true;
 				}
 					
 				else
 				{
-					if (m_noiseCir->getRadius() < m_Walknoise)
-					{
-						m_noiseCir->setRadius(m_noiseCir->getRadius() + 20.0f);
-						m_noiseCir->setOrigin(m_noiseCir->getOrigin().x + 20.0f, m_noiseCir->getOrigin().x + 20.0f);
-					}
+					bIsWalking = true;
 					move(0, m_walkspeed);
 					m_xAnimator->setCurrentAnimation("Spy_walk.txt");
 				}
@@ -180,14 +191,11 @@ namespace esc
 				{
 					m_xAnimator->setCurrentAnimation("Spy_sneak.txt");
 					move(-m_sneakspeed, 0);
+					bIsWalking = true;
 				}
 				else
 				{
-					if (m_noiseCir->getRadius() < m_Walknoise)
-					{
-						m_noiseCir->setRadius(m_noiseCir->getRadius() + 20.0f);
-						m_noiseCir->setOrigin(m_noiseCir->getOrigin().x + 20.0f, m_noiseCir->getOrigin().x + 20.0f);
-					}
+					bIsWalking = true;
 					m_xAnimator->setCurrentAnimation("Spy_walk.txt");
 					move(-m_walkspeed, 0);
 				}
@@ -199,14 +207,11 @@ namespace esc
 				{
 					move(m_sneakspeed, 0);
 					m_xAnimator->setCurrentAnimation("Spy_sneak.txt");
+					bIsWalking = true;
 				}
 				else
 				{
-					if (m_noiseCir->getRadius() < m_Walknoise)
-					{
-						m_noiseCir->setRadius(m_noiseCir->getRadius() + 20.0f);
-						m_noiseCir->setOrigin(m_noiseCir->getOrigin().x + 20.0f, m_noiseCir->getOrigin().x + 20.0f);
-					}
+					bIsWalking = true;
 					move(m_walkspeed, 0);
 					m_xAnimator->setCurrentAnimation("Spy_walk.txt");
 				}
@@ -232,10 +237,77 @@ namespace esc
 		if (m_xWeapon != nullptr)
 			m_xWeapon->update(deltaTime);
 
-		m_xAnimator->update(deltaTime);
+		if (!m_hiding)
+			m_xAnimator->update(deltaTime);
+
+		if (!bIsWalking && !m_sneaking)
+		{
+			m_xAnimator->setCurrentAnimation("Spy_idle.txt");
+		}
+		else if (!bIsWalking && m_sneaking)
+		{
+			m_xAnimator->setCurrentAnimation("Spy_idle.txt");
+		}
 
 		static_cast<AnimatedSprite*>(m_xSprite)->update(deltaTime);
 		m_xAnimator->update(deltaTime);
+
+		if (m_xAnimator->getCurrentAnimationID().compare("Spy_shot.txt") == 0)
+		{
+			if (m_xAnimator->getCurrentAnimation()->getIsTrigger())
+			{
+				Attack();
+				sf::Vector2f ripplePosition = getPosition();
+
+				printf("Rads: %f", ((getRotation() - 180) * 0.0174532925));
+
+				ripplePosition.x -= cosf((getRotation() - 180) * 0.0174532925) * 60;
+				ripplePosition.y -= sinf((getRotation() - 180) * 0.0174532925) * 60;
+				SoundRipple *ripple = new SoundRipple(ripplePosition, 8, 700, 0.7f);
+				m_vStateObjects->insert(m_vStateObjects->begin(), ripple);
+			}
+		}
+
+		if (m_xAnimator->getCurrentAnimationID().compare("Spy_baton.txt") == 0)
+		{
+			if (m_xAnimator->getCurrentAnimation()->getIsTrigger())
+			{
+				Attack();
+			}
+		}
+
+		if (m_xAnimator->getCurrentAnimationID().compare("Spy_walk.txt") == 0)
+		{
+			if (m_xAnimator->getCurrentAnimation()->getIsTrigger())
+			{
+
+				sf::Vector2f ripplePosition = getPosition();
+
+				printf("Rads: %f", ((getRotation() - 180) * 0.0174532925));
+
+				ripplePosition.x -= cosf((getRotation() - 180) * 0.0174532925) * 16;
+				ripplePosition.y -= sinf((getRotation() - 180) * 0.0174532925) * 16;
+
+				SoundRipple *ripple = new SoundRipple(ripplePosition, 8, 150, 1.f);
+				m_vStateObjects->insert(m_vStateObjects->begin(), ripple);
+
+				
+
+				if (m_sStepMusic == nullptr)
+				{
+					SoundManager soundmanager("../resources/Music/");
+					m_sStepMusic = soundmanager.getMusic("steps.wav");
+					m_sStepMusic->setVolume(100.0f);
+					m_sStepMusic->setLoop(false);
+					
+				}
+
+				m_sStepMusic->play();
+
+
+			}
+			
+		}
 	}
 
 	float PlayerObject::calcAngle(float mouse_x, float mouse_y)
@@ -266,8 +338,9 @@ namespace esc
 	{
 		setPosition(m_startpos);
 		m_xTimer->restart();
-		m_xWeapon = new Gun(true, 10, 1.f, 1.f, m_xLevel->getObjects(), m_xGobjManager, m_xLevel->getSpriteManager());
-		m_iCurWep = 2;
+		//m_xWeapon = new Gun(true, 10, 1.f, 1.f, m_xLevel->getObjects(), m_xGobjManager, m_xLevel->getSpriteManager());
+		//m_iCurWep = 2;
+
 	}
 
 	void PlayerObject::setcurwep(int newWep)
@@ -287,22 +360,8 @@ namespace esc
 
 	void PlayerObject::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
-		if (m_vPath.size() > 0)
-		{
-			for (auto path : m_vPath)
-			{
-				sf::CircleShape shape(10, 30);
-				shape.setOrigin(10, 10);
-				shape.setPosition(path);
-				
-				shape.setFillColor(sf::Color::Red);
-
-				target.draw(shape);
-			}
-		}
 
 		states.transform *= getTransform();
-		target.draw(*m_noiseCir);
 		target.draw(*static_cast<AnimatedSprite*>(m_xAnimator->getCurrentAnimation()), states);
 	}
 
@@ -379,7 +438,9 @@ namespace esc
 						m_bHasCard = false;
 					}
 				}
+
 			}
+			
 		}
 	}
 
@@ -390,16 +451,17 @@ namespace esc
 			Garrote *garrote = static_cast<Garrote*>(m_xWeapon);
 			garrote->trigger();
 		}
-		if (m_xWeapon->getCurrentWeaponType() == EWeaponType::WEAPONBATON)
+		else if (m_xWeapon->getCurrentWeaponType() == EWeaponType::WEAPONBATON)
 		{
 			Baton *baton = static_cast<Baton*>(m_xWeapon);
-			baton->trigger();
+			baton->attack();
 		}
 		else if (m_xWeapon->getCurrentWeaponType() == EWeaponType::WEAPONGUN)
 		{
+			
 			Gun *gun = static_cast<Gun*>(m_xWeapon);
 			gun->setTarget(sf::Vector2f(sf::Mouse::getPosition(*p_window)) + getPosition() - sf::Vector2f(960, 540));
-			gun->trigger();
+			gun->attack();
 		}
 	}
 
@@ -486,7 +548,7 @@ namespace esc
 					{
 						setPosition(p_oObject->getPosition().x - 64, getPosition().y);
 					}
-					
+
 				}
 				else
 				{
@@ -532,7 +594,7 @@ namespace esc
 				}
 			}
 
-			
+
 		}
 		else if (p_oObject->getType() == PATROLLINGGUARD || p_oObject->getType() == STATIONARYGUARD)
 		{
@@ -547,7 +609,6 @@ namespace esc
 
 			reset();
 			m_xLevel->reset();
-			
 		}
 		else if (p_oObject->getType() == EXIT)
 		{
@@ -589,8 +650,8 @@ namespace esc
 		return sf::Vector2f();
 	}
 
-	void PlayerObject::setStateObjects(std::vector<GameObject*> &p_vStateObjects)
+	void PlayerObject::setStateObjects(std::vector<GameObject*> *p_vStateObjects)
 	{
-		m_vStateObjects = &p_vStateObjects;
+		m_vStateObjects = p_vStateObjects;
 	}
 }

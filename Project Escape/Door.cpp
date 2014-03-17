@@ -1,6 +1,7 @@
 #include "Door.h"
 #include "GameObject.h"
 #include "GameObjectManager.h"
+#include "SpriteManager.h"
 
 namespace esc
 {

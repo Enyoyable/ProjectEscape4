@@ -11,7 +11,7 @@ namespace esc
 	enum EObjectType
 	{
 		WALL,
-		BACKGROUND,
+		BACKGROUNDOBJ,
 		LOCKERD,
 		LOCKERU,
 		LOCKERR,
@@ -32,7 +32,6 @@ namespace esc
 		RADIO,
 		KEYCARD,
 		PDA,
-		DOOR,
 		LOCKEDH,
 		LOCKEDV,
 		OPENH,
@@ -40,8 +39,10 @@ namespace esc
 		CLOSEDH,
 		CLOSEDV,
 		BULLET,
+		SOUNDRIPPLE,
 		WRITER,
-		PLANTS
+		PLANTS,
+		DOOR
 	};
 
 	class GameObject : public sf::Drawable, public sf::Transformable
@@ -79,7 +80,7 @@ namespace esc
 		void setType(EObjectType p_eObjectType);
 		EObjectType getType();
 
-		void GameObject::HandleCollision(GameObject *p_oGameObject);
+		void HandleCollision(GameObject *p_oGameObject);
 
 		bool m_bAngleLocked;
 

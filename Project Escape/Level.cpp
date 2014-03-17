@@ -9,6 +9,7 @@
 #include "PathNode.h"
 #include "PathFind.h"
 #include "Item.h"
+#include "AIManager.h"
 #include "Door.h"
 
 namespace esc
@@ -106,6 +107,7 @@ namespace esc
 				eObjectIdentifier = EObjectType::WRITER;
 			else if (sObjectIdentifier.compare("PLANTS") == 0)
 				eObjectIdentifier = EObjectType::PLANTS;
+
 
 
 			sf::Color *color = new sf::Color(r, g, b, a);
@@ -273,9 +275,9 @@ namespace esc
 				}
 				case esc::PLANTS:
 				{
-									 GameObject *obj = m_xGameObjectManager->createObject(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, EObjectType::PLANTS, m_xSpriteManager->loadSprite("flower_pot.png", 0, 0, 64, 64));
-									 m_vLevelObjects.push_back(obj);
-									 break;
+									GameObject *obj = m_xGameObjectManager->createObject(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, EObjectType::PLANTS, m_xSpriteManager->loadSprite("flower_pot.png", 0, 0, 64, 64));
+									m_vLevelObjects.push_back(obj);
+									break;
 				}
 				case esc::WRITER:
 				{
@@ -332,7 +334,7 @@ namespace esc
 				}
 				case esc::DOOR:
 				{
-								  
+
 				}
 				case esc::LOCKEDH:
 				{
@@ -658,6 +660,10 @@ namespace esc
 			{
 				static_cast<Guard*>(object)->reset();
 			}
+			else if (object->getType() == BATON || object->getType() == PDA || object->getType() == KEYCARD)
+			{
+				object->setIsRemoved(false);
+			}
 			else if (object->getType() == KEYCARD || object->getType() == PDA)
 			{
 				object->setIsRemoved(false);
@@ -666,6 +672,7 @@ namespace esc
 			{
 				object->setIsRemoved(true);
 			}
+
 		}
 	}
 

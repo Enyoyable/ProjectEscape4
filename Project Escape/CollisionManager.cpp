@@ -2,6 +2,7 @@
 #include "Button.h"
 #include "Bullet.h"
 #include "Item.h"
+#include "SoundRipple.h"
 
 namespace esc
 {
@@ -133,6 +134,48 @@ namespace esc
 									radio->HandleCollision(object2, &vRemoveVector);
 									bDelete = true;
 								}
+							}
+						}
+					}
+				}
+			}
+			else if (object->getType() == SOUNDRIPPLE)
+			{
+				for (auto object2 : *p_collisionObjects)
+				{
+					if (object2->getType() == PATROLLINGGUARD || object2->getType() == STATIONARYGUARD)
+					{
+						int pPosX = object->getPosition().x;
+						int pPosY = object->getPosition().y;
+						int pSizeX = object->getSize().x;
+						int pSizeY = object->getSize().y;
+
+						int oPosX = object2->getPosition().x;
+						int oPosY = object2->getPosition().y;
+						int oSizeX = object2->getSize().x;
+						int oSizeY = object2->getSize().y;
+
+						float A = pSizeX * 0.5;
+						float B = oSizeX * 0.5f;
+						float C = (pPosX + A) - (oPosX + B);
+
+						if (fabs(C) < A + B)
+						{
+							float Q = pSizeY * 0.5;
+							float P = oSizeY * 0.5f;
+							float Z = (pPosY + A) - (oPosY + B);
+							if (fabs(Z) < Q + P)
+							{
+								
+
+								Guard *ripple = dynamic_cast<Guard*>(object2);
+
+								if (ripple != nullptr)
+								{
+									ripple->HandleCollision(object);
+								}
+
+								
 							}
 						}
 					}

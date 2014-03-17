@@ -9,20 +9,21 @@ namespace esc
 	class AIState;
 	class PathFind;
 	class PlayerObject;
-
+	class Guard;
 	class AIManager
 	{
-
+	public:
 		enum EAIStates
 		{
 			PATROLLING,
 			STATIONARY,
-			ROTATING,
-			CHASING
+			CHASING,
+			SEARCHING,
+			ALERTED
 		};
 
 	public:
-		AIManager(GameObject *p_xObject, PathFind *p_xPathFind, PlayerObject *p_xPlayer);
+		AIManager(Guard *p_xGuard, PathFind *p_xPathFind, PlayerObject *p_xPlayer);
 
 		void update(float p_fDeltaTime);
 
@@ -30,10 +31,13 @@ namespace esc
 
 		void setCurrentState(EAIStates p_eNewState);
 
-		EAIStates getCurrentState();
+		void forceCurrentState(EAIStates p_eNewState);
+
+		EAIStates getCurrentStateID();
+		AIState *getCurrentState();
 
 	private:
-		GameObject *m_xObject;
+		Guard *m_xGuard;
 
 		std::map<EAIStates, AIState*> m_mAIStates;
 

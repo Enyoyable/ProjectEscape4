@@ -18,6 +18,8 @@ namespace esc
 
 		m_v2fMovementVector /= sqrtf(xDiff * xDiff + yDiff * yDiff);
 
+		setPosition(getPosition() + (m_v2fMovementVector * 60.f));
+
 		m_v2fMovementVector *= 2000.f;
 
 		m_xShootObject = p_xShootObject;
@@ -42,7 +44,7 @@ namespace esc
 
 			return true;
 		}
-		else if (p_xGameObject->getType() == WALL)
+		else if (p_xGameObject->getType() == WALL || p_xGameObject->getType() == DOOR)
 		{
 			p_vRemoveVector->push_back(this);
 

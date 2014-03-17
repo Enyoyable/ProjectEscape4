@@ -10,6 +10,8 @@ namespace esc
 	{
 		m_xSpriteManager = p_xSpriteManager;
 		m_sDirectoryPath = p_sDirectoryPath;
+
+		m_xForcedAnimation = nullptr;
 	}
 
 	void Animator::loadAnimations(std::string p_sFilePath)
@@ -38,7 +40,23 @@ namespace esc
 	void Animator::update(float p_fDeltaTime)
 	{
 
-		if (m_vQueuedAnimations.size() > 0)
+		if (m_xForcedAnimation != nullptr)
+		{
+			m_sCurrentAnimation = m_sForcedAnimation;
+			if (m_xForcedAnimation->onLastFrame())
+			{
+				m_xForcedAnimation->update(p_fDeltaTime);
+				if (!m_xForcedAnimation->onLastFrame())
+				{
+					m_xForcedAnimation = nullptr;
+				}
+			}
+			else
+			{
+				m_xForcedAnimation->update(p_fDeltaTime);
+			}
+		}
+		else if (m_vQueuedAnimations.size() > 0)
 		{
 			AnimatedSprite *currentAnimation = m_mAnimations.find(m_sCurrentAnimation)->second;
 
@@ -50,7 +68,7 @@ namespace esc
 				{
 					m_sCurrentAnimation = m_vQueuedAnimations[0];
 
-					m_vQueuedAnimations.erase(m_vQueuedAnimations.begin() + 1);
+					m_vQueuedAnimations.erase(m_vQueuedAnimations.begin());
 				}
 			}
 		}
@@ -87,4 +105,28 @@ namespace esc
 		m_sCurrentAnimation = p_sId;
 	}
 
+	std::string Animator::getCurrentAnimationID()
+	{
+		return m_sCurrentAnimation;
+	}
+
+	AnimatedSprite* Animator::getAnimation(std::string p_sID)
+	{
+		if (m_mAnimations.find(p_sID) != m_mAnimations.end())
+		{
+			return m_mAnimations.find(p_sID)->second;
+		}
+
+		return nullptr;
+	}
+
+	void Animator::setForcedAnimation(std::string p_sID)
+	{
+		if (m_mAnimations.find(p_sID) != m_mAnimations.end())
+		{
+			m_xForcedAnimation = m_mAnimations.find(p_sID)->second;
+			m_sForcedAnimation = p_sID;
+		}
+		
+	}
 }

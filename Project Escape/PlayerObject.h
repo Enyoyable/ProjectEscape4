@@ -66,15 +66,15 @@ namespace esc
 
 		std::vector<sf::Vector2f> m_vPath;
 
-		void setStateObjects(std::vector<GameObject*> &p_vStateObjects);
+		void setStateObjects(std::vector<GameObject*> *p_vStateObjects);
 
 		Weapon *m_xWeapon;
 
 	protected:
 		
 		int m_iCurWep;
-		float m_walkspeed = 10.f;
-		float m_sneakspeed = 5.f;
+		float m_walkspeed = 2.f;
+		float m_sneakspeed = 2.5f;
 		float m_Walknoise = 60.0f;
 		float m_fCurrentnoise;
 		sf::Vector2f m_velocity;
@@ -94,6 +94,8 @@ namespace esc
 		sf::Clock *m_xTimer;
 
 		Animator *m_xAnimator;
+
+		sf::Music *m_sStepMusic;
 	};
 
 }

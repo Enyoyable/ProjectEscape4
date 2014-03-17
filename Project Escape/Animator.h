@@ -25,6 +25,12 @@ namespace esc
 
 		void setCurrentAnimation(std::string p_sId);
 
+		std::string getCurrentAnimationID();
+
+		AnimatedSprite *getAnimation(std::string p_sID);
+
+		void setForcedAnimation(std::string p_sID);
+
 	private:
 		std::map<std::string, AnimatedSprite*> m_mAnimations;
 
@@ -39,6 +45,10 @@ namespace esc
 		AnimatedSprite *m_xTempAnim;
 
 		std::string m_sDefaultAnimation;
+
+		AnimatedSprite *m_xForcedAnimation;
+
+		std::string m_sForcedAnimation;
 	};
 
 }

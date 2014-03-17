@@ -2,6 +2,7 @@
 #include "PlayerObject.h"
 #include "AIManager.h"
 #include "PathFind.h"
+#include "AIStateAlerted.h"
 
 namespace esc
 {
@@ -99,6 +100,8 @@ namespace esc
 		vertex1.color = red;
 		vertex2.color = red;
 
+		
+
 
 		target.draw(&vertices[0], vertices.size(), sf::TrianglesFan);
 
@@ -117,8 +120,9 @@ namespace esc
 		if (m_bAngleLocked)
 			return;
 			
+		m_xAIManager->update(p_fDeltaTime);
 
-		m_bIsChasing = false;
+		/*m_bIsChasing = false;
 
 		float fTurnRate = p_fDeltaTime * 20.f;
 
@@ -194,9 +198,9 @@ namespace esc
 			setRotation(m_fWatchAngle);
 
 			//move((m_xPlayerObject->getPosition() - getPosition()) / fDistance * m_fGuardChaseSpeed * p_fDeltaTime);
-			setPosition(getPosition() + ((m_xPlayerObject->getPosition() - getPosition()) / fDistance * m_fGuardChaseSpeed * p_fDeltaTime));
+			//setPosition(getPosition() + ((m_xPlayerObject->getPosition() - getPosition()) / fDistance * m_fGuardChaseSpeed * p_fDeltaTime));
 
-			//m_xAIManager->update(p_fDeltaTime);
+			m_xAIManager->update(p_fDeltaTime);
 		}
 		else if (m_bIsChasing == false &&
 			fabs(getPosition().x - m_v2fStartPosition.x) >= 10 &&
@@ -265,93 +269,46 @@ namespace esc
 				//move(v2fMovementVector);
 			}
 		}
-		else
-		{
-			if (m_bIsRotating == true)
-			{
-				if (m_fMaxRotationAngle > m_fMinRotationAngle)
-				{
-					if (m_bIsRotatingClockwise == true)
-					{
-						m_fWatchAngle += fTurnRate;
-						if (m_fWatchAngle > m_fMaxRotationAngle)
-						{
-							m_bIsRotatingClockwise = false;
-						}
-					}
-					else
-					{
-						m_fWatchAngle -= fTurnRate;
-						if (m_fWatchAngle < m_fMinRotationAngle)
-						{
-							m_bIsRotatingClockwise = true;
-						}
-					}
-				}
-				else
-				{
-					if (m_bIsRotatingClockwise == true)
-					{
-						m_fWatchAngle += fTurnRate;
-						if (m_fWatchAngle > 360)
-						{
-							m_fWatchAngle -= 360;
-							m_bHasPassedZero = true;
-						}
-
-						if (m_fWatchAngle > m_fMaxRotationAngle && m_bHasPassedZero)
-						{
-							m_bHasPassedZero = false;
-							m_bIsRotatingClockwise = false;
-						}
-					}
-					else
-					{
-						m_fWatchAngle -= fTurnRate;
-						if (m_fWatchAngle < 0)
-						{
-							m_fWatchAngle += 360;
-							m_bHasPassedZero = true;;
-						}
-
-						if (m_fWatchAngle < m_fMinRotationAngle && m_bHasPassedZero)
-						{
-							m_bHasPassedZero = false;
-							m_bIsRotatingClockwise = true;
-						}
-					}
-				}
-			}
-
-			setRotation(m_fWatchAngle);
-		}
+		*/
 	}
 
-	void Guard::searchForPlayer(float p_fxDiff, float p_fyDiff, float p_fDistance, float p_fAngle)
+	bool Guard::searchForPlayer(PlayerObject *p_xObject)
 	{
-		sf::Vector2f v2fPlayerPos = m_xPlayerObject->getPosition();
+		sf::Vector2f v2fPlayerPos = p_xObject->getPosition();
+
+		float xDiff = getPosition().x - v2fPlayerPos.x;
+		float yDiff = getPosition().y - v2fPlayerPos.y;
+
+		float fDistance = sqrtf(xDiff * xDiff + yDiff * yDiff);
+
+		float fAngle = atan2f(yDiff, xDiff) / 0.017453292519943 + 180;
+
+		if (fDistance > m_fViewDistance)
+			return false;
 
 		if (m_fWatchAngle + m_fWatchArea / 2 > 360)
 		{
-			if (p_fAngle > m_fWatchAngle - m_fWatchArea/2 || p_fAngle < m_fWatchAngle + m_fWatchArea/2 - 360)
+			if (fAngle > m_fWatchAngle - m_fWatchArea/2 || fAngle < m_fWatchAngle + m_fWatchArea/2 - 360)
 			{
-				m_bIsChasing = true;
+				return true;
 			}
 		}
 		else if (m_fWatchAngle - m_fWatchArea / 2 < 0)
 		{
-			if (p_fAngle > m_fWatchAngle - m_fWatchArea / 2 + 360 || p_fAngle < m_fWatchAngle + m_fWatchArea / 2)
+			if (fAngle > m_fWatchAngle - m_fWatchArea / 2 + 360 || fAngle < m_fWatchAngle + m_fWatchArea / 2)
 			{
-				m_bIsChasing = true;
+				return true;
 			}
 		}
 		else
 		{
-			if (p_fAngle > m_fWatchAngle - m_fWatchArea / 2 && p_fAngle < m_fWatchAngle + m_fWatchArea / 2)
+			if (fAngle > m_fWatchAngle - m_fWatchArea / 2 && fAngle < m_fWatchAngle + m_fWatchArea / 2)
 			{
-				m_bIsChasing = true;
+				return true;
 			}
 		}
+
+		return false;
 	}
 
 	void Guard::setDirection(sf::Vector2f p_v2fDirection)
@@ -474,5 +431,204 @@ namespace esc
 	{
 		m_xAIManager = p_xAIManager;
 		m_bHasAI = true;
+	}
+
+	void Guard::addDrawPath(std::vector<sf::Vector2f*> p_vPath)
+	{
+		m_vPath = p_vPath;
+	}
+
+	void Guard::alert(sf::Vector2f p_v2fPosition)
+	{
+		m_xAIManager->setCurrentState(AIManager::ALERTED);
+		AIStateAlerted *alerted = static_cast<AIStateAlerted*>(m_xAIManager->getCurrentState());
+		alerted->setTarget(p_v2fPosition);
+		printf("ALERT");
+	}
+
+	void Guard::updateRotation(float p_fDeltaTime)
+	{
+		float fTurnRate = 45.f;
+
+		if (m_bHasConstantRotation)
+		{
+			if (m_bIsRotatingClockwise)
+			{
+				m_fWatchAngle += fTurnRate * p_fDeltaTime;
+				if (m_fWatchAngle > 360)
+				{
+					m_fWatchAngle -= 360;
+				}
+			}
+			else
+			{
+				m_fWatchAngle -= fTurnRate * p_fDeltaTime;
+				if (m_fWatchAngle < 0)
+				{
+					m_fWatchAngle += 360;
+				}
+			}
+		}
+		else
+		{
+			if (m_bIsRotating == true)
+			{
+				if (m_fMaxRotationAngle > m_fMinRotationAngle)
+				{
+					if (m_bIsRotatingClockwise == true)
+					{
+						m_fWatchAngle += fTurnRate * p_fDeltaTime;
+						if (m_fWatchAngle > m_fMaxRotationAngle)
+						{
+							m_bIsRotatingClockwise = false;
+						}
+					}
+					else
+					{
+						m_fWatchAngle -= fTurnRate * p_fDeltaTime;
+						if (m_fWatchAngle < m_fMinRotationAngle)
+						{
+							m_bIsRotatingClockwise = true;
+						}
+					}
+				}
+				else
+				{
+					if (m_bIsRotatingClockwise == true)
+					{
+						m_fWatchAngle += fTurnRate * p_fDeltaTime;
+						if (m_fWatchAngle > 360)
+						{
+							m_fWatchAngle -= 360;
+							m_bHasPassedZero = true;
+						}
+
+						if (m_fWatchAngle > m_fMaxRotationAngle && m_bHasPassedZero)
+						{
+							m_bHasPassedZero = false;
+							m_bIsRotatingClockwise = false;
+						}
+					}
+					else
+					{
+						m_fWatchAngle -= fTurnRate * p_fDeltaTime;
+						if (m_fWatchAngle < 0)
+						{
+							m_fWatchAngle += 360;
+							m_bHasPassedZero = true;;
+						}
+
+						if (m_fWatchAngle < m_fMinRotationAngle && m_bHasPassedZero)
+						{
+							m_bHasPassedZero = false;
+							m_bIsRotatingClockwise = true;
+						}
+					}
+				}
+			}
+		}
+
+		setRotation(m_fWatchAngle);
+	}
+
+	void Guard::updatePatrolling(float p_fDeltaTime)
+	{
+		if (m_iPatrolPointCount == 0)
+		{
+			return;
+		}
+
+		sf::Vector2f v2fCurrentTarget = *m_vPatrolPoints[m_iCurrentPatrolPointIndex];
+
+		float fTargetxDiff = v2fCurrentTarget.x - getPosition().x;
+		float fTargetyDiff = v2fCurrentTarget.y - getPosition().y;
+
+		float fTargetDistance = sqrt(fTargetxDiff * fTargetxDiff + fTargetyDiff * fTargetyDiff);
+
+		sf::Vector2f v2fMovementVector(fTargetxDiff / fTargetDistance * m_fGuardPatrolSpeed * p_fDeltaTime, fTargetyDiff / fTargetDistance * m_fGuardPatrolSpeed * p_fDeltaTime);
+
+		float fMovementDistance = sqrt(v2fMovementVector.x * v2fMovementVector.x + v2fMovementVector.y * v2fMovementVector.y);
+
+		if (fMovementDistance > fTargetDistance)
+		{
+			setPosition(v2fCurrentTarget);
+
+			m_iCurrentPatrolPointIndex++;
+
+			if (m_iCurrentPatrolPointIndex >= m_iPatrolPointCount)
+			{
+				m_iCurrentPatrolPointIndex = 0;
+			}
+		}
+		else
+		{
+			setDirection(v2fCurrentTarget);
+
+			setPosition(getPosition() + v2fMovementVector);
+		}
+
+		setRotation(m_fWatchAngle);
+	}
+
+	sf::Vector2f *Guard::getCurrentPatrolPoint()
+	{
+		return m_vPatrolPoints[m_iCurrentPatrolPointIndex];
+	}
+
+	bool Guard::followPath(float p_fDeltaTime)
+	{
+		if (m_vFollowPath.size() == 0)
+		{
+			return true;
+		}
+
+		sf::Vector2f v2fCurrentTarget = *m_vFollowPath[m_vFollowPath.size() - 1 - followPathCount];
+
+		float fTargetxDiff = v2fCurrentTarget.x - getPosition().x;
+		float fTargetyDiff = v2fCurrentTarget.y - getPosition().y;
+
+		float fTargetDistance = sqrt(fTargetxDiff * fTargetxDiff + fTargetyDiff * fTargetyDiff);
+
+		sf::Vector2f v2fMovementVector(fTargetxDiff / fTargetDistance * m_fGuardPatrolSpeed * p_fDeltaTime, fTargetyDiff / fTargetDistance * m_fGuardPatrolSpeed * p_fDeltaTime);
+
+		float fMovementDistance = sqrt(v2fMovementVector.x * v2fMovementVector.x + v2fMovementVector.y * v2fMovementVector.y);
+
+		if (fMovementDistance > fTargetDistance)
+		{
+			setPosition(v2fCurrentTarget);
+
+			followPathCount++;
+
+			if (followPathCount == m_vFollowPath.size())
+			{
+				if (getIsPatrolling())
+				{
+					setPosition(m_v2fStartPosition);
+					m_iCurrentPatrolPointIndex = 0;
+				}
+				else
+				{
+					setPosition(m_v2fStartPosition);
+				}
+				setRotation(m_fWatchAngle);
+				return true;
+			}
+				
+		}
+		else
+		{
+			setDirection(v2fCurrentTarget);
+
+			setPosition(getPosition() + v2fMovementVector);
+		}
+
+		setRotation(m_fWatchAngle);
+
+		return false;
+	}
+
+	void Guard::setFollowPath(std::vector<sf::Vector2f*> p_v2fFollowPath)
+	{
+		m_vFollowPath = p_v2fFollowPath;
 	}
 }

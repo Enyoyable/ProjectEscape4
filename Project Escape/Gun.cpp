@@ -1,6 +1,7 @@
 #include "Gun.h"
 #include "Bullet.h"
 #include "SpriteManager.h"
+#include "SoundManager.h"
 
 namespace esc
 {
@@ -9,6 +10,8 @@ namespace esc
 		m_xGameObjectManager = p_xGameObjectManager;
 		m_xSpriteManager = p_xSpriteManager;
 		m_bHasShot = false;
+
+		M_sGunshot = nullptr;
 	}
 
 	void Gun::update(float fDeltaTime)
@@ -39,6 +42,15 @@ namespace esc
 	{
 		Bullet *bullet = new Bullet(m_xAttachedObject->getPosition(), sf::Vector2f(44, 5), m_v2fTarget, m_xAttachedObject, m_xSpriteManager->loadSprite("bullet.png", 0, 0, 44, 5));
 		m_vObjects->push_back(bullet);
+
+		delete M_sGunshot;
+
+		SoundManager soundmanager("../resources/Music/");
+		M_sGunshot = soundmanager.getMusic("Gun_shot.wav");
+		M_sGunshot->setVolume(50.0f);
+		M_sGunshot->setLoop(false);
+
+		M_sGunshot->play();
 	}
 
 	void Gun::trigger()

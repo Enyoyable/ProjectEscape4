@@ -1,6 +1,7 @@
 #include "Garrote.h"
 #include "PlayerObject.h"
 #include "Guard.h"
+#include "SoundRipple.h"
 
 namespace esc
 {
@@ -9,6 +10,7 @@ namespace esc
 	{
 		m_bHasStarted = false;
 		m_bHasAttacked = false;
+		m_fSoundTimer = 0;
 	}
 
 	void Garrote::update(float fDeltaTime)
@@ -27,6 +29,22 @@ namespace esc
 				}
 				else
 				{
+					m_fSoundTimer += fDeltaTime;
+
+					if (m_fSoundTimer > 0.4f)
+					{
+						sf::Vector2f ripplePosition = m_xAttachedObject->getPosition();
+
+						//printf("Rads: %f", ((getRotation() - 180) * 0.0174532925));
+
+						ripplePosition.x -= cosf((m_xAttachedObject->getRotation() - 180) * 0.0174532925) * 60;
+						ripplePosition.y -= sinf((m_xAttachedObject->getRotation() - 180) * 0.0174532925) * 60;
+						SoundRipple *ripple = new SoundRipple(ripplePosition, 8, 150, 0.5f);
+						m_vObjects->insert(m_vObjects->begin(), ripple);
+
+						m_fSoundTimer = 0;
+					}
+
 					attack(false);
 				}
 			}
@@ -42,6 +60,8 @@ namespace esc
 
 	void Garrote::attack(bool p_bIsFinished)
 	{
+		
+
 		PlayerObject *xPlayer = static_cast<PlayerObject*>(m_xAttachedObject);
 
 		float fMiddleAngle = xPlayer->getRotation();
@@ -85,7 +105,7 @@ namespace esc
 					{
 						float fTotDiff = sqrtf(xDiff * xDiff + yDiff * yDiff);
 
-						if (fTotDiff < 60.f)
+						if (fTotDiff < 100.f)
 						{
 							float fGuardRotation = xGuard->m_fWatchAngle;
 
@@ -163,13 +183,20 @@ namespace esc
 									xGuard->m_bAngleLocked = false;
 									m_fAttackTimer = 0;
 								}
+								
 								return;
 							}
+
+							
 						}
 					}
 				}
 			}
+
+
 		}
+
+		
 	}
 
 	void Garrote::trigger()
@@ -180,4 +207,5 @@ namespace esc
 			m_fAttackTimer = 0;
 		}
 	}
+
 }

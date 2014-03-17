@@ -141,6 +141,15 @@
     <ClCompile Include="AIStatePatrolling.cpp">
       <Filter>AI</Filter>
     </ClCompile>
+    <ClCompile Include="AIStateSearching.cpp">
+      <Filter>AI</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundRipple.cpp">
+      <Filter>Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="AIStateAlerted.cpp">
+      <Filter>AI</Filter>
+    </ClCompile>
     <ClCompile Include="Door.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -252,6 +261,15 @@
       <Filter>AI</Filter>
     </ClInclude>
     <ClInclude Include="AIStatePatrolling.h">
+      <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="AIStateSearching.h">
+      <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundRipple.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="AIStateAlerted.h">
       <Filter>AI</Filter>
     </ClInclude>
     <ClInclude Include="Door.h">

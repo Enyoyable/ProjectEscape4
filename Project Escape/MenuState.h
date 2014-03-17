@@ -12,6 +12,8 @@ namespace esc
 	class SpriteManager;
 	class Engine;
 	class CollisionManager;
+	class SoundManager;
+	class GameObject;
 
 	class MenuState : public State
 	{
@@ -36,9 +38,12 @@ namespace esc
 		GameObject *m_xMenuBack;
 
 		Button *m_xStartButton;
+		Button *m_xExitButton;
 		Button *m_xOptionsButton;
 		Button *m_xCreditsButton;
-		Button *m_xExitButton;
+
+
+		SoundManager *m_xSoundManager;
 	};
 
 }

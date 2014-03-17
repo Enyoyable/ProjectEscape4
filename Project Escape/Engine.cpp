@@ -34,7 +34,7 @@ namespace esc
 	{
 		sf::ContextSettings settings;
 		settings.antialiasingLevel = 8;
-		m_window = new sf::RenderWindow(sf::VideoMode(1920, 1080), "Plans of Futura", sf::Style::Default, settings);
+		m_window = new sf::RenderWindow(sf::VideoMode(1920, 1080), "Plans of Futura", sf::Style::Fullscreen, settings);
 		m_window->setFramerateLimit(60);
 		m_window->setVerticalSyncEnabled(true);
 	}
@@ -76,10 +76,6 @@ namespace esc
 		level.getRotationsPaths("rotate.txt");
 		level.create("level.png", "patrol.txt");
 		level.createFloor("FirstFloor.png");
-
-
-
-		
 		
 		xStateManager->attachState(StateManager::GAME, new GameState(xGameObjectManager, xStateManager, &spriteManager, this, xCollisionManager, &level));
 		xStateManager->attachState(StateManager::MENU, new MenuState(xGameObjectManager, xStateManager, &spriteManager, this, xCollisionManager));

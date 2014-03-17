@@ -11,15 +11,27 @@ namespace esc
 	class GameObject;
 	class PathFind;
 	class PlayerObject;
+	class Guard;
 
 	class AIStateChasing : public AIState
 	{
 	public:
-		AIStateChasing(AIManager *p_xAIManager, GameObject *p_xGameObject, PathFind *p_xPathFind, PlayerObject *p_xPlayer);
+		AIStateChasing(AIManager *p_xAIManager, Guard *p_xGuard, PathFind *p_xPathFind, PlayerObject *p_xPlayer);
 
 		virtual void update(float p_fDeltaTime);
 
 		virtual void takeDecision();
+
+		virtual void enter();
+
+		virtual void exit();
+
+	private:
+		std::vector<sf::Vector2f*> m_vCurrentPath;
+
+		float m_fPathTimer;
+
+
 	};
 
 }

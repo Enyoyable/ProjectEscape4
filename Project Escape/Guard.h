@@ -19,6 +19,7 @@ namespace esc
 		friend class Baton;
 		friend class Bullet;
 		friend class Garrote;
+		friend class AIStateChasing;
 
 	public:
 		Guard(sf::Vector2f p_v2fPosition, sf::Vector2f p_v2fSize, bool p_bInteractable, int p_iObjectId, PlayerObject *p_xPlayer, GameObjectManager *p_xGameObjectManager, Level *level, PathFind *p_xPathFind, sf::Sprite *p_xSprite = nullptr);
@@ -27,7 +28,7 @@ namespace esc
 
 		virtual void update(float p_fDeltaTime);
 
-		void searchForPlayer(float p_fxDiff, float p_fyDiff, float p_fDistance, float p_fAngle);
+		bool searchForPlayer(PlayerObject *p_xObject);
 
 		void setDirection(sf::Vector2f p_v2fDirection);
 
@@ -61,6 +62,26 @@ namespace esc
 
 		void attachAi(AIManager *p_xAIManager);
 
+		void addDrawPath(std::vector<sf::Vector2f*> p_vPath);
+
+		void alert(sf::Vector2f p_v2fPosition);
+
+		void updateRotation(float p_fDeltaTime);
+
+		void updatePatrolling(float p_fDeltaTime);
+
+		sf::Vector2f *getCurrentPatrolPoint();
+
+		bool followPath(float p_fDeltaTime);
+
+		void setFollowPath(std::vector<sf::Vector2f*> p_v2fFollowPath);
+
+		AIManager *m_xAIManager;
+
+		int followPathCount = 0;
+
+		sf::Vector2f m_v2fStartPosition;
+
 	private:
 		bool m_bIsPatrolling;
 
@@ -82,7 +103,7 @@ namespace esc
 
 		float m_fStartAngle;
 
-		sf::Vector2f m_v2fStartPosition;
+		
 
 		float m_fViewDistance;
 
@@ -102,11 +123,15 @@ namespace esc
 
 		bool m_bHasAI;
 
-		AIManager *m_xAIManager;
+		std::vector<sf::Vector2f*> m_vFollowPath;
 
 		GameObjectManager *m_xGobjManager;
 
 		Level *m_xLevel;
+
+		std::vector<sf::Vector2f*> m_vPath;
+
+		
 	};
 
 }

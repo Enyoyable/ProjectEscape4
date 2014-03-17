@@ -3,10 +3,10 @@
 namespace esc
 {
 
-	AIState::AIState(AIManager *p_xAIManager, GameObject *p_xGameObject, PathFind *p_xPathFind, PlayerObject *p_xPlayer)
+	AIState::AIState(AIManager *p_xAIManager, Guard *p_xGuard, PathFind *p_xPathFind, PlayerObject *p_xPlayer)
 	{
 		m_xAiManager = p_xAIManager;
-		m_xGameObject = p_xGameObject;
+		m_xGuard = p_xGuard;
 		m_xPathFind = p_xPathFind;
 		m_xPlayer = p_xPlayer;
 	}
@@ -17,6 +17,16 @@ namespace esc
 	}
 
 	void AIState::takeDecision()
+	{
+
+	}
+
+	void AIState::enter()
+	{
+
+	}
+
+	void AIState::exit()
 	{
 
 	}

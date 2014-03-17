@@ -134,10 +134,7 @@ namespace esc
 
 	void GameObject::HandleCollision(GameObject *p_oGameObject)
 	{
-		if (getType() == PLAYER && p_oGameObject->getType() == LOCKER)
-		{
-
-		}
+		
 	}
 
 	void GameObject::setIsRemoved(bool p_bIsRemoved)

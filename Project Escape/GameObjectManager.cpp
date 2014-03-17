@@ -1,10 +1,10 @@
 #include "GameObjectManager.h"
-#include "SpriteManager.h"
 #include "GameObject.h"
 #include "Guard.h"
 #include "PlayerObject.h"
 #include "Item.h"
 #include "PathFind.h"
+#include "SpriteManager.h"
 #include "Door.h"
 
 namespace esc
@@ -107,4 +107,5 @@ namespace esc
 	{
 		return new Door(p_v2fPosition, p_v2fSize, p_vVertical, p_iLock, p_xSpriteManager, m_iCurrentObjectId++);
 	}
+
 }
