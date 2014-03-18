@@ -1,0 +1,12 @@
+guard alerted walking1 = 0 0 64 64
+guard alerted walking10 = 65 0 64 64
+guard alerted walking11 = 130 0 64 64
+guard alerted walking12 = 195 0 64 64
+guard alerted walking2 = 260 0 64 64
+guard alerted walking3 = 325 0 64 64
+guard alerted walking4 = 390 0 64 64
+guard alerted walking5 = 455 0 64 64
+guard alerted walking6 = 520 0 64 64
+guard alerted walking7 = 585 0 64 64
+guard alerted walking8 = 650 0 64 64
+guard alerted walking9 = 715 0 64 64

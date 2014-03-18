@@ -1,0 +1,4 @@
+guard idle alerted1 = 0 0 64 64
+guard idle alerted2 = 65 0 64 64
+guard idle alerted3 = 130 0 64 64
+guard idle alerted4 = 195 0 64 64

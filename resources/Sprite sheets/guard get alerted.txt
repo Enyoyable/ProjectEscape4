@@ -1,0 +1,6 @@
+guard alerted1 = 0 0 64 64
+guard alerted2 = 65 0 64 64
+guard alerted3 = 130 0 64 64
+guard alerted4 = 195 0 64 64
+guard alerted5 = 260 0 64 64
+guard alerted6 = 325 0 64 64
