@@ -17,6 +17,7 @@ namespace esc
 		m_xSpriteManager = p_xSpriteManager;
 
 		m_fTimeOpen = 0.0f;
+		m_fSpeed = 2.0f;
 		
 		m_bIsClosing = false;
 		m_bOpen = false;
@@ -34,7 +35,7 @@ namespace esc
 			{
 				if (getPosition().y < m_v2StartPos.y + 64)
 				{
-					setPosition(getPosition().x, getPosition().y + 1);
+					setPosition(getPosition().x, getPosition().y + m_fSpeed);
 				}
 				else
 				{
@@ -50,7 +51,7 @@ namespace esc
 				if (getPosition().x < m_v2StartPos.x + 64)
 				{
 					
-					setPosition(getPosition().x +1, getPosition().y);
+					setPosition(getPosition().x + m_fSpeed, getPosition().y);
 				}
 				else
 				{
@@ -68,7 +69,7 @@ namespace esc
 			{
 				if (getPosition().y > m_v2StartPos.y)
 				{
-					setPosition(getPosition().x, getPosition().y - 1);
+					setPosition(getPosition().x, getPosition().y - m_fSpeed);
 				}
 				else
 					m_bIsClosing = false;
@@ -77,7 +78,7 @@ namespace esc
 			{
 				if (getPosition().x > m_v2StartPos.x)
 				{
-					setPosition(getPosition().x - 1, getPosition().y);
+					setPosition(getPosition().x - m_fSpeed, getPosition().y);
 				}
 				else
 					m_bIsClosing = false;
@@ -118,6 +119,14 @@ namespace esc
 			{
 				m_xSprite = m_xSpriteManager->loadSprite("yellowdoor.png", 0, 0, 64, 64);
 			}
+		}
+	}
+
+	void Door::HandleCollision(GameObject* p_xObject)
+	{
+		if (p_xObject->getType() == PATROLLINGGUARD || p_xObject->getType() == STATIONARYGUARD)
+		{
+			m_bOpen = true;
 		}
 	}
 

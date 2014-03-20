@@ -3,6 +3,7 @@
 #include "Bullet.h"
 #include "Item.h"
 #include "SoundRipple.h"
+#include "Door.h"
 
 namespace esc
 {
@@ -133,6 +134,44 @@ namespace esc
 									Item *radio = static_cast<Item*>(object);
 									radio->HandleCollision(object2, &vRemoveVector);
 									bDelete = true;
+								}
+							}
+						}
+					}
+				}
+			}
+			else if (object->getType() == PATROLLINGGUARD || object->getType() == STATIONARYGUARD)
+			{
+				for (auto object2 : *p_collisionObjects)
+				{
+					if (object2->getType() == DOOR)
+					{
+						int pPosX = object->getPosition().x;
+						int pPosY = object->getPosition().y;
+						int pSizeX = object->getSize().x;
+						int pSizeY = object->getSize().y;
+
+						int oPosX = object2->getPosition().x;
+						int oPosY = object2->getPosition().y;
+						int oSizeX = object2->getSize().x;
+						int oSizeY = object2->getSize().y;
+
+						float A = pSizeX * 0.5;
+						float B = oSizeX * 0.5f;
+						float C = (pPosX + A) - (oPosX + B);
+
+						if (fabs(C) < A + B)
+						{
+							float Q = pSizeY * 0.5;
+							float P = oSizeY * 0.5f;
+							float Z = (pPosY + A) - (oPosY + B);
+							if (fabs(Z) < Q + P)
+							{
+								Door *door = dynamic_cast<Door*>(object2);
+
+								if (door != nullptr)
+								{
+									door->HandleCollision(object);
 								}
 							}
 						}

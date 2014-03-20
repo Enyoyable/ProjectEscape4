@@ -19,6 +19,7 @@ namespace esc
 		Door(sf::Vector2f p_v2Pos, sf::Vector2f p_v2Size, bool p_bVertical, int p_iLock, SpriteManager *p_xSpriteManager, int p_iObjId);
 
 		virtual void update(float p_fDeltaTime);
+		void HandleCollision(GameObject* p_xObject);
 
 		void Open();
 		void unlock();
@@ -42,6 +43,7 @@ namespace esc
 		bool m_bVertical;
 		int m_iLock;
 		float m_fTimeOpen;
+		float m_fSpeed;
 	};
 
 }
