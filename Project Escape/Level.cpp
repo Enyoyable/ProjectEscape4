@@ -25,11 +25,9 @@ namespace esc
 		{
 			for (int y = 0; y < 200; y++)
 			{
-				m_aWalls[x][y] = nullptr;
+				m_aAdjacantObjects[x][y] = nullptr;
 			}
 		}
-
-		
 	}
 
 	void Level::update(float p_fDeltaTime)
@@ -197,14 +195,21 @@ namespace esc
 				{
 								  GameObject *obj = m_xGameObjectManager->createObject(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, EObjectType::WALL, nullptr);
 								  m_vLevelObjects.push_back(obj);
-								  m_aWalls[x][y] = obj;
+								  m_aAdjacantObjects[x][y] = obj;
 								  xNode->setIllegal(true);
 								  break;
 				}
-					
+				case esc::COUCH:
+				{
+								  GameObject *obj = m_xGameObjectManager->createObject(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, EObjectType::COUCH, nullptr);
+								  m_vLevelObjects.push_back(obj);
+								  m_aAdjacantObjects[x][y] = obj;
+								  xNode->setIllegal(true);
+								  break;
+				}
 				case esc::LOCKERD:
 				{
-									 GameObject *obj = m_xGameObjectManager->createObject(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), true, EObjectType::LOCKER, m_xSpriteManager->loadSprite("LockerD.png", 0, 0, 64, 64));
+									 GameObject *obj = m_xGameObjectManager->createObject(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), true, EObjectType::LOCKERD, m_xSpriteManager->loadSprite("LockerD.png", 0, 0, 64, 64));
 									 m_vLevelObjects.push_back(obj);
 									 xNode->setIllegal(true);
 									 break;
@@ -212,7 +217,7 @@ namespace esc
 
 				case esc::LOCKERU:
 				{
-									 GameObject *obj = m_xGameObjectManager->createObject(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), true, EObjectType::LOCKER, m_xSpriteManager->loadSprite("LockerU.png", 0, 0, 64, 64));
+									 GameObject *obj = m_xGameObjectManager->createObject(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), true, EObjectType::LOCKERU, m_xSpriteManager->loadSprite("LockerU.png", 0, 0, 64, 64));
 									 m_vLevelObjects.push_back(obj);
 									 xNode->setIllegal(true);
 									 break;
@@ -220,7 +225,7 @@ namespace esc
 
 				case esc::LOCKERL:
 				{
-									 GameObject *obj = m_xGameObjectManager->createObject(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), true, EObjectType::LOCKER, m_xSpriteManager->loadSprite("LockerL.png", 0, 0, 64, 64));
+									 GameObject *obj = m_xGameObjectManager->createObject(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), true, EObjectType::LOCKERL, m_xSpriteManager->loadSprite("LockerL.png", 0, 0, 64, 64));
 									 m_vLevelObjects.push_back(obj);
 									 xNode->setIllegal(true);
 									 break;
@@ -228,7 +233,7 @@ namespace esc
 
 				case esc::LOCKERR:
 				{
-									 GameObject *obj = m_xGameObjectManager->createObject(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), true, EObjectType::LOCKER, m_xSpriteManager->loadSprite("LockerR.png", 0, 0, 64, 64));
+									 GameObject *obj = m_xGameObjectManager->createObject(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), true, EObjectType::LOCKERR, m_xSpriteManager->loadSprite("LockerR.png", 0, 0, 64, 64));
 									 m_vLevelObjects.push_back(obj);
 									 xNode->setIllegal(true);
 									 break;
@@ -262,13 +267,6 @@ namespace esc
 				case esc::DESKS:
 				{
 								  GameObject *obj = m_xGameObjectManager->createObject(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, EObjectType::WALL, m_xSpriteManager->loadSprite("desk 1 part 2 rotate down.png", 0, 0, 64, 64));
-								  m_vLevelObjects.push_back(obj);
-								  xNode->setIllegal(true);
-								  break;
-				}
-				case esc::COUCH:
-				{
-								  GameObject *obj = m_xGameObjectManager->createObject(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, EObjectType::WALL, m_xSpriteManager->loadSprite("Couch_rotate-1.png", 0, 0, 64, 64));
 								  m_vLevelObjects.push_back(obj);
 								  xNode->setIllegal(true);
 								  break;
@@ -338,43 +336,43 @@ namespace esc
 				}
 				case esc::LOCKEDH:
 				{
-									 Door *obj = m_xGameObjectManager->createDoor(sf::Vector2f(x * 64, (y * 64 + 26)), sf::Vector2f(64, 12), false, 1, EObjectType::LOCKEDH, m_xSpriteManager);
+									 Door *obj = m_xGameObjectManager->createDoor(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, 1, EObjectType::LOCKEDH, m_xSpriteManager);
 								   m_vLevelObjects.push_back(obj);
 								   break;
 				}
 				case esc::LOCKEDV:
 				{
-									 Door *obj = m_xGameObjectManager->createDoor(sf::Vector2f((x * 64 + 26), y * 64), sf::Vector2f(12, 64), true, 1, EObjectType::LOCKEDV, m_xSpriteManager);
+									 Door *obj = m_xGameObjectManager->createDoor(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), true, 1, EObjectType::LOCKEDV, m_xSpriteManager);
 								   m_vLevelObjects.push_back(obj);
 								   break;
 				}
 				case esc::OPENH:
 				{
-								   Door *obj = m_xGameObjectManager->createDoor(sf::Vector2f(x * 64, (y * 64 + 26)), sf::Vector2f(64, 12), false, 0, EObjectType::OPENH, m_xSpriteManager);
+								   Door *obj = m_xGameObjectManager->createDoor(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, 0, EObjectType::OPENH, m_xSpriteManager);
 								   m_vLevelObjects.push_back(obj);
 								   break;
 				}
 				case esc::OPENV:
 				{
-								   Door *obj = m_xGameObjectManager->createDoor(sf::Vector2f((x * 64 + 26), y * 64), sf::Vector2f(12, 64), true, 0, EObjectType::OPENH, m_xSpriteManager);
+								   Door *obj = m_xGameObjectManager->createDoor(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), true, 0, EObjectType::OPENH, m_xSpriteManager);
 								   m_vLevelObjects.push_back(obj);
 								   break;
 				}
 				case esc::CLOSEDH:
 				{
-									 Door *obj = m_xGameObjectManager->createDoor(sf::Vector2f(x * 64, (y * 64 + 26)), sf::Vector2f(64, 12), false, 2, EObjectType::CLOSEDH, m_xSpriteManager);
+									 Door *obj = m_xGameObjectManager->createDoor(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, 2, EObjectType::CLOSEDH, m_xSpriteManager);
 								   m_vLevelObjects.push_back(obj);
 								   break;
 				}
 				case esc::CLOSEDV:
 				{
-									 Door *obj = m_xGameObjectManager->createDoor(sf::Vector2f((x * 64 + 26), y * 64), sf::Vector2f(12, 64), true, 2, EObjectType::CLOSEDV, m_xSpriteManager);
+									 Door *obj = m_xGameObjectManager->createDoor(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), true, 2, EObjectType::CLOSEDV, m_xSpriteManager);
 								   m_vLevelObjects.push_back(obj);
 								   break;
 				}
 				case esc::KEYCARD:
 				{
-									 Item *card = m_xGameObjectManager->createItem(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), EObjectType::KEYCARD, m_xSpriteManager->loadSprite("Keycard_pu.png", 0, 0, 64, 64));
+									 Item *card = m_xGameObjectManager->createItem(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), EObjectType::KEYCARD, m_xSpriteManager->loadSprite("Keycard_pu.png", 0, 0, 64, 64), 0);
 									 m_vLevelObjects.push_back(card);
 									 break;
 				}
@@ -405,74 +403,137 @@ namespace esc
 			
 		}
 
-		for (int y = 0; y < 150; y++)
+		for (int y = 0; y < 200; y++)
 		{
-			for (int x = 0; x < 150; x++)
+			for (int x = 0; x < 200; x++)
 			{
-				GameObject *obj = m_aWalls[x][y];
+				GameObject *obj = m_aAdjacantObjects[x][y];
 
 				if (obj != nullptr)
 				{
 					bool upFree, downFree, leftFree, rightFree;
 
-					if (m_aWalls[x + 1][y] == nullptr)
+					if (m_aAdjacantObjects[x + 1][y] == nullptr || m_aAdjacantObjects[x + 1][y]->getType() == COUCH)
 						rightFree = true;
 					else
 						rightFree = false;
 
-					if (m_aWalls[x - 1][y] == nullptr)
+					if (m_aAdjacantObjects[x - 1][y] == nullptr || m_aAdjacantObjects[x - 1][y]->getType() == COUCH)
 						leftFree = true;
 					else
 						leftFree = false;
 
-					if (m_aWalls[x][y + 1] == nullptr)
+					if (m_aAdjacantObjects[x][y + 1] == nullptr || m_aAdjacantObjects[x][y + 1]->getType() == COUCH)
 						downFree = true;
 					else
 						downFree = false;
 
-					if (m_aWalls[x][y - 1] == nullptr)
+					if (m_aAdjacantObjects[x][y - 1] == nullptr || m_aAdjacantObjects[x][y - 1]->getType() == COUCH)
 						upFree = true;
 					else
 						upFree = false;
 
-					if (!upFree && !downFree && !leftFree && !rightFree)
-						obj->setSprite(m_xSpriteManager->loadSprite("Wall grey.png", 0, 0, 64, 64));
-					else if (upFree && downFree && !leftFree && rightFree)
-						obj->setSprite(m_xSpriteManager->loadSprite("Wall 1.png", 0, 0, 64, 64));
-					else if (upFree && !downFree && leftFree && rightFree)
-						obj->setSprite(m_xSpriteManager->loadSprite("Wall 2.png", 0, 0, 64, 64));
-					else if (upFree && downFree && leftFree && !rightFree)
-						obj->setSprite(m_xSpriteManager->loadSprite("Wall 3.png", 0, 0, 64, 64));
-					else if (!upFree && downFree && leftFree && rightFree)
-						obj->setSprite(m_xSpriteManager->loadSprite("Wall 4.png", 0, 0, 64, 64));
-					else if (upFree && downFree && !leftFree && rightFree)
-						obj->setSprite(m_xSpriteManager->loadSprite("Wall 5.png", 0, 0, 64, 64));
-					else if (!upFree && !downFree && leftFree && rightFree)
-						obj->setSprite(m_xSpriteManager->loadSprite("Wall 6.png", 0, 0, 64, 64));
-					else if (upFree && downFree && !leftFree && !rightFree)
-						obj->setSprite(m_xSpriteManager->loadSprite("Wall 7.png", 0, 0, 64, 64));
-					else if (upFree && !downFree && !leftFree && rightFree)
-						obj->setSprite(m_xSpriteManager->loadSprite("Wall 8.png", 0, 0, 64, 64));
-					else if (!upFree && downFree && !leftFree && rightFree)
-						obj->setSprite(m_xSpriteManager->loadSprite("Wall 9.png", 0, 0, 64, 64));
-					else if (upFree && !downFree && leftFree && !rightFree)
-						obj->setSprite(m_xSpriteManager->loadSprite("Wall 10.png", 0, 0, 64, 64));
-					else if (!upFree && downFree && leftFree && !rightFree)
-						obj->setSprite(m_xSpriteManager->loadSprite("Wall 11.png", 0, 0, 64, 64));
-					else if (!upFree && !downFree && leftFree && !rightFree)
-						obj->setSprite(m_xSpriteManager->loadSprite("Wall 12.png", 0, 0, 64, 64));
-					else if (!upFree && !downFree && !leftFree && rightFree)
-						obj->setSprite(m_xSpriteManager->loadSprite("Wall 13.png", 0, 0, 64, 64));
-					else if (!upFree && downFree && !leftFree && !rightFree)
-						obj->setSprite(m_xSpriteManager->loadSprite("Wall 14.png", 0, 0, 64, 64));
-					else if (upFree && !downFree && !leftFree && !rightFree)
-						obj->setSprite(m_xSpriteManager->loadSprite("Wall 15.png", 0, 0, 64, 64));
-					else
-						obj->setSprite(m_xSpriteManager->loadSprite("Wall grey.png", 0, 0, 64, 64));
+					if (obj->getType() == WALL)
+					{
+						if (!upFree && !downFree && !leftFree && !rightFree)
+							obj->setSprite(m_xSpriteManager->loadSprite("Wall grey.png", 0, 0, 64, 64));
+						else if (upFree && downFree && !leftFree && rightFree)
+							obj->setSprite(m_xSpriteManager->loadSprite("Wall 1.png", 0, 0, 64, 64));
+						else if (upFree && !downFree && leftFree && rightFree)
+							obj->setSprite(m_xSpriteManager->loadSprite("Wall 2.png", 0, 0, 64, 64));
+						else if (upFree && downFree && leftFree && !rightFree)
+							obj->setSprite(m_xSpriteManager->loadSprite("Wall 3.png", 0, 0, 64, 64));
+						else if (!upFree && downFree && leftFree && rightFree)
+							obj->setSprite(m_xSpriteManager->loadSprite("Wall 4.png", 0, 0, 64, 64));
+						else if (upFree && downFree && !leftFree && rightFree)
+							obj->setSprite(m_xSpriteManager->loadSprite("Wall 5.png", 0, 0, 64, 64));
+						else if (!upFree && !downFree && leftFree && rightFree)
+							obj->setSprite(m_xSpriteManager->loadSprite("Wall 6.png", 0, 0, 64, 64));
+						else if (upFree && downFree && !leftFree && !rightFree)
+							obj->setSprite(m_xSpriteManager->loadSprite("Wall 7.png", 0, 0, 64, 64));
+						else if (upFree && !downFree && !leftFree && rightFree)
+							obj->setSprite(m_xSpriteManager->loadSprite("Wall 8.png", 0, 0, 64, 64));
+						else if (!upFree && downFree && !leftFree && rightFree)
+							obj->setSprite(m_xSpriteManager->loadSprite("Wall 9.png", 0, 0, 64, 64));
+						else if (upFree && !downFree && leftFree && !rightFree)
+							obj->setSprite(m_xSpriteManager->loadSprite("Wall 10.png", 0, 0, 64, 64));
+						else if (!upFree && downFree && leftFree && !rightFree)
+							obj->setSprite(m_xSpriteManager->loadSprite("Wall 11.png", 0, 0, 64, 64));
+						else if (!upFree && !downFree && leftFree && !rightFree)
+							obj->setSprite(m_xSpriteManager->loadSprite("Wall 12.png", 0, 0, 64, 64));
+						else if (!upFree && !downFree && !leftFree && rightFree)
+							obj->setSprite(m_xSpriteManager->loadSprite("Wall 13.png", 0, 0, 64, 64));
+						else if (!upFree && downFree && !leftFree && !rightFree)
+							obj->setSprite(m_xSpriteManager->loadSprite("Wall 14.png", 0, 0, 64, 64));
+						else if (upFree && !downFree && !leftFree && !rightFree)
+							obj->setSprite(m_xSpriteManager->loadSprite("Wall 15.png", 0, 0, 64, 64));
+						else
+							obj->setSprite(m_xSpriteManager->loadSprite("Wall grey.png", 0, 0, 64, 64));
+					}
+					else if (obj->getType() == COUCH)
+					{
+						bool upCouch, downCouch, leftCouch, rightCouch, upFace, downFace, leftFace, rightFace;
+
+						if (m_aAdjacantObjects[x + 1][y] != nullptr && m_aAdjacantObjects[x + 1][y]->getType() == COUCH)
+							rightCouch = true;
+						else
+							rightCouch = false;
+
+						if (m_aAdjacantObjects[x - 1][y] != nullptr && m_aAdjacantObjects[x - 1][y]->getType() == COUCH)
+							leftCouch = true;
+						else
+							leftCouch = false;
+
+						if (m_aAdjacantObjects[x][y + 1] != nullptr && m_aAdjacantObjects[x][y + 1]->getType() == COUCH)
+							downCouch = true;
+						else
+							downCouch = false;
+
+						if (m_aAdjacantObjects[x][y - 1] != nullptr && m_aAdjacantObjects[x][y - 1]->getType() == COUCH)
+							upCouch = true;
+						else
+							upCouch = false;
+
+						if (m_aAdjacantObjects[x + 1][y] != nullptr && m_aAdjacantObjects[x + 1][y]->getType() == WALL)
+							leftFace = true;
+						else
+							leftFace = false;
+
+						if (m_aAdjacantObjects[x - 1][y] != nullptr && m_aAdjacantObjects[x - 1][y]->getType() == WALL)
+							rightFace = true;
+						else
+							rightFace = false;
+
+						if (m_aAdjacantObjects[x][y + 1] != nullptr && m_aAdjacantObjects[x][y + 1]->getType() == WALL)
+							upFace = true;
+						else
+							upFace = false;
+
+						if (m_aAdjacantObjects[x][y - 1] != nullptr && m_aAdjacantObjects[x][y - 1]->getType() == WALL)
+							downFace = true;
+						else
+							downFace = false;
+
+						if (upCouch && rightFace)
+							obj->setSprite(m_xSpriteManager->loadSprite("Couch_rotate4.png", 0, 0, 64, 64));
+						if (upCouch && leftFace)
+							obj->setSprite(m_xSpriteManager->loadSprite("Couch2_rotate2.png", 0, 0, 64, 64));
+						if (downCouch && rightFace)
+							obj->setSprite(m_xSpriteManager->loadSprite("Couch2_rotate4.png", 0, 0, 64, 64));
+						if (downCouch && leftFace)
+							obj->setSprite(m_xSpriteManager->loadSprite("Couch_rotate2.png", 0, 0, 64, 64));
+						if (rightCouch && downFace)
+							obj->setSprite(m_xSpriteManager->loadSprite("Couch_rotate1.png", 0, 0, 64, 64));
+						if (rightCouch && upFace)
+							obj->setSprite(m_xSpriteManager->loadSprite("Couch2_rotate3.png", 0, 0, 64, 64));
+						if (leftCouch && downFace)
+							obj->setSprite(m_xSpriteManager->loadSprite("Couch2_rotate1.png", 0, 0, 64, 64));
+						if (leftCouch && upFace)
+							obj->setSprite(m_xSpriteManager->loadSprite("Couch_rotate3.png", 0, 0, 64, 64));
+					}
 				}
 			}
 		}
-
 	}
 
 	void Level::createFloor(std::string p_sFilePath)

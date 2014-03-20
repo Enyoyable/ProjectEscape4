@@ -6,7 +6,7 @@
 
 namespace esc
 {
-	Item::Item(sf::Vector2f p_v2Pos, sf::Sprite *p_sSprite, bool p_bIsFlying, sf::Vector2f p_v2target, int p_iObjectId, EObjectType p_eType)
+	Item::Item(sf::Vector2f p_v2Pos, sf::Sprite *p_sSprite, bool p_bIsFlying, int p_iCharges, sf::Vector2f p_v2target, int p_iObjectId, EObjectType p_eType)
 		:GameObject(p_v2Pos, sf::Vector2f(p_sSprite->getGlobalBounds().width - 20, p_sSprite->getGlobalBounds().height - 20), true, p_iObjectId, p_eType, p_sSprite)
 	{
 		setOrigin(32, 32);
@@ -27,6 +27,8 @@ namespace esc
 
 		m_bIsFlying = p_bIsFlying;
 		//m_v2fTarget = p_v2target;
+
+		m_icharges = p_iCharges;
 	}
 
 	void Item::update(float p_fDeltaTime)
@@ -55,11 +57,14 @@ namespace esc
 	{
 		if (p_xGameObject->getType() == PATROLLINGGUARD || p_xGameObject->getType() == STATIONARYGUARD)
 		{
-			p_vRemoveVector->push_back(p_xGameObject);
-			//p_vRemoveVector->push_back(this);
+			if (m_bIsFlying == true && m_bIsRemoved == false)
+			{
+				p_vRemoveVector->push_back(p_xGameObject);
+				//p_vRemoveVector->push_back(this);
 
-			m_bIsFlying = false;
-			m_v2fTarget = sf::Vector2f(0, 0);
+				m_bIsFlying = false;
+				m_v2fTarget = sf::Vector2f(0, 0);
+			}
 		}
 		else if (p_xGameObject->getType() == WALL)
 		{
@@ -88,4 +93,8 @@ namespace esc
 		return m_bIsFlying;
 	}
 
+	int Item::getCharges()
+	{
+		return m_icharges;
+	}
 }

@@ -39,7 +39,6 @@ namespace esc
 
 		Button *m_xStartButton;
 		Button *m_xExitButton;
-		Button *m_xOptionsButton;
 		Button *m_xCreditsButton;
 
 

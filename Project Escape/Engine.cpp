@@ -34,7 +34,7 @@ namespace esc
 	{
 		sf::ContextSettings settings;
 		settings.antialiasingLevel = 8;
-		m_window = new sf::RenderWindow(sf::VideoMode(1920, 1080), "Plans of Futura", sf::Style::Fullscreen, settings);
+		m_window = new sf::RenderWindow(sf::VideoMode(1920, 1080), "Plans of Futura", sf::Style::Resize, settings);
 		m_window->setFramerateLimit(60);
 		m_window->setVerticalSyncEnabled(true);
 	}

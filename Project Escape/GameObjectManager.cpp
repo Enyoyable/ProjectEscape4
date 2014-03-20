@@ -98,9 +98,9 @@ namespace esc
 		return m_xPlayerObject;
 	}
 
-	Item *GameObjectManager::createItem(sf::Vector2f p_v2fPosition, sf::Vector2f p_v2fSize, EObjectType p_eType, sf::Sprite *p_xSprite)
+	Item *GameObjectManager::createItem(sf::Vector2f p_v2fPosition, sf::Vector2f p_v2fSize, EObjectType p_eType, sf::Sprite *p_xSprite, int p_icharges)
 	{
-		return new Item(p_v2fPosition, p_xSprite, false, sf::Vector2f(0.0f, 0.0f), m_iCurrentObjectId++, p_eType);
+		return new Item(p_v2fPosition, p_xSprite, false, p_icharges, sf::Vector2f(0.0f, 0.0f), m_iCurrentObjectId++, p_eType);
 	}
 
 	Door *GameObjectManager::createDoor(sf::Vector2f p_v2fPosition, sf::Vector2f p_v2fSize, bool p_vVertical, int p_iLock, EObjectType p_eType, SpriteManager *p_xSpriteManager)

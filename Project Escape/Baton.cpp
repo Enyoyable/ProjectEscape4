@@ -193,13 +193,13 @@ namespace esc
 
 	void Baton::Throw()
 	{
-		Item *Baton = new Item(m_xAttachedObject->getPosition(), m_xSpriteManager->loadSprite("Baton_pu.png", 0, 0, 64, 64), true, m_v2fTarget, 9999, BATON);
+		Item *Baton = new Item(m_xAttachedObject->getPosition(), m_xSpriteManager->loadSprite("Baton_pu.png", 0, 0, 64, 64), true, m_iCurrentCharges, m_v2fTarget, 9999, BATON);
 		m_vObjects->push_back(Baton);
 	}
 
 	void Baton::drop()
 	{
-		Item *Baton = new Item(m_xAttachedObject->getPosition(), m_xSpriteManager->loadSprite("baton_pu.png", 0, 0, 64, 64), false, sf::Vector2f(0.0f, 0.0f), 9999, BATON);
+		Item *Baton = new Item(m_xAttachedObject->getPosition(), m_xSpriteManager->loadSprite("baton_pu.png", 0, 0, 64, 64), false, m_iCurrentCharges, sf::Vector2f(0.0f, 0.0f), 9999, BATON);
 		m_vObjects->push_back(Baton);
 	}
 

@@ -11,7 +11,7 @@ namespace esc
 	class Item : public GameObject
 	{
 	public:
-		Item(sf::Vector2f p_v2Pos, sf::Sprite* p_sSprite, bool p_bIsFlying , sf::Vector2f p_v2Dir, int p_iObjectId, EObjectType p_eType);
+		Item(sf::Vector2f p_v2Pos, sf::Sprite* p_sSprite, bool p_bIsFlying, int p_iCharges, sf::Vector2f p_v2Dir, int p_iObjectId, EObjectType p_eType);
 
 		virtual void update(float p_fDeltaTime);
 		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
@@ -23,11 +23,15 @@ namespace esc
 		void setIsFlying(bool p_bflying);
 		bool getIsflying();
 
+		int getCharges();
+
 		void setTarget(sf::Vector2f p_v2fTarget);
 
 	private:
 
 		sf::Vector2f m_v2fTarget;
+
+		int m_icharges;
 
 		bool m_bIsFlying;	
 	};

@@ -30,11 +30,13 @@ namespace esc
 		m_startpos = position;
 		m_walkspeed = 5.0f;
 		m_sneakspeed = 2.0f;
+		m_fTimehidden = 0.0f;
+		m_fTimeUnhidden = 0.0f;
 
 		m_sStepMusic = nullptr;
 
 		m_iCurWep = 2;
-		m_bHasCard = false;
+		m_bHasCard = true;
 
 		m_bRblock = false;
 		m_bLblock = false;
@@ -66,6 +68,8 @@ namespace esc
 			3, 9
 		};
 
+		m_vRemoveObjects = new std::vector<GameObject*>();
+
 		m_xAnimator->getAnimation("Spy_walk.txt")->setTriggers(triggers);
 
 		triggers.clear();
@@ -79,9 +83,8 @@ namespace esc
 
 	void PlayerObject::update(float deltaTime, std::vector<GameObject*> objects)
 	{
-
 		bool bIsWalking = false;
-		
+			
 		if (m_xWeapon->getAttachedObject() == nullptr)
 			m_xWeapon->setAttachedObject(this);
 
@@ -89,7 +92,7 @@ namespace esc
 			m_xWeapon->update(deltaTime);
 
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-		{
+		{   
 			if (m_xWeapon->getCurrentWeaponType() == WEAPONGUN)
 			{
 				m_xAnimator->setForcedAnimation("Spy_shot.txt");
@@ -115,12 +118,16 @@ namespace esc
 						object->getInteractable() == true)
 					{
 						Interract(object);
+						if (object->getIsRemoved())
+						{
+							m_vRemoveObjects->push_back(object);
+						}
 					}
 				}
 			}
 		}
 
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::F))
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
 		{
 			if (m_xWeapon == nullptr)
 				return;
@@ -222,12 +229,17 @@ namespace esc
 
 		if (m_hiding == true)
 		{
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
+			m_fTimeUnhidden = 0.0f;
+			m_fTimehidden += deltaTime;
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::E) && m_fTimehidden > 2)
 			{
 				m_hiding = false;
 				move(0, 0);
+				m_fTimehidden = 0.0f;
 			}
 		}
+		else
+			m_fTimeUnhidden += deltaTime;
 
 		m_bRblock = false;
 		m_bLblock = false;
@@ -259,7 +271,6 @@ namespace esc
 				Attack();
 				sf::Vector2f ripplePosition = getPosition();
 
-				printf("Rads: %f", ((getRotation() - 180) * 0.0174532925));
 
 				ripplePosition.x -= cosf((getRotation() - 180) * 0.0174532925) * 60;
 				ripplePosition.y -= sinf((getRotation() - 180) * 0.0174532925) * 60;
@@ -283,7 +294,6 @@ namespace esc
 
 				sf::Vector2f ripplePosition = getPosition();
 
-				printf("Rads: %f", ((getRotation() - 180) * 0.0174532925));
 
 				ripplePosition.x -= cosf((getRotation() - 180) * 0.0174532925) * 16;
 				ripplePosition.y -= sinf((getRotation() - 180) * 0.0174532925) * 16;
@@ -303,11 +313,27 @@ namespace esc
 				}
 
 				m_sStepMusic->play();
-
-
 			}
-			
 		}
+
+		/*if (m_vRemoveObjects->size() > 0)
+		{
+			for (auto object : m_vRemoveObjects)
+			{
+				for (auto it = m_vStateObjects->begin(); it != m_vStateObjects->end(); ++it)
+				{
+					if (object == *it)
+					{
+						delete object;
+						object = nullptr;
+
+						m_vStateObjects->erase(it);
+						break;
+					}
+				}
+			}
+			m_vRemoveObjects.clear();
+		}*/
 	}
 
 	float PlayerObject::calcAngle(float mouse_x, float mouse_y)
@@ -338,8 +364,8 @@ namespace esc
 	{
 		setPosition(m_startpos);
 		m_xTimer->restart();
-		//m_xWeapon = new Gun(true, 10, 1.f, 1.f, m_xLevel->getObjects(), m_xGobjManager, m_xLevel->getSpriteManager());
-		//m_iCurWep = 2;
+		m_xWeapon = new Gun(true, 2, 1.f, 1.f, m_xLevel->getObjects(), m_xGobjManager, m_xLevel->getSpriteManager());
+		m_iCurWep = 2;
 
 	}
 
@@ -372,23 +398,36 @@ namespace esc
 
 	void PlayerObject::Interract(GameObject *p_xInteractObj)
 	{
-		if (p_xInteractObj->getType() == LOCKER ||
-			p_xInteractObj->getType() == LOCKERD ||
-			p_xInteractObj->getType() == LOCKERL ||
-			p_xInteractObj->getType() == LOCKERR ||
+
+		if (p_xInteractObj->getType() == LOCKERL ||
+			p_xInteractObj->getType() == LOCKERR)
+		{
+			if (m_fTimeUnhidden > 1.0f)
+			{
+				setPosition(p_xInteractObj->getPosition().x, p_xInteractObj->getPosition().y);
+				m_hiding = true;
+				setRotation(0.0f);
+			}
+		}
+		else if (p_xInteractObj->getType() == LOCKERD ||
 			p_xInteractObj->getType() == LOCKERU)
 		{
-			m_hiding = true;
-			setPosition(p_xInteractObj->getPosition().x, p_xInteractObj->getPosition().y);
-			setRotation(0.0f);
+			if (m_fTimeUnhidden > 1.0f)
+			{
+				setPosition(p_xInteractObj->getPosition().x, p_xInteractObj->getPosition().y);
+				m_hiding = true;
+				setRotation(90.0f);
+			}
 		}
 		else if (p_xInteractObj->getType() == BATON)
 		{
 			if (p_xInteractObj->getIsRemoved() != false)
 				return;
 
+			Item *baton = static_cast<Item*>(p_xInteractObj);
+
 			m_xWeapon = nullptr;
-			m_xWeapon = new Baton(true, 10, 1.f, 1.f, m_vStateObjects, m_xLevel, m_xGobjManager, m_xLevel->getSpriteManager());
+			m_xWeapon = new Baton(true, baton->getCharges(), 1.f, 1.f, m_vStateObjects, m_xLevel, m_xGobjManager, m_xLevel->getSpriteManager());
 			m_iCurWep = 1;
 			p_xInteractObj->setIsRemoved(true);
 
@@ -413,9 +452,8 @@ namespace esc
 		{
 			if (p_xInteractObj->getIsRemoved() == true)
 				return;
-
-			m_xWeapon = nullptr;
-			m_xWeapon = new Gun(true, 10, 1.f, 1.f, m_vStateObjects, m_xGobjManager, m_xLevel->getSpriteManager());
+			Item *gun = static_cast<Item*>(p_xInteractObj);
+			m_xWeapon = new Gun(true, gun->getCharges(), 1.f, 1.f, m_vStateObjects, m_xGobjManager, m_xLevel->getSpriteManager());
 			m_xWeapon->setAttachedObject(this);
 			m_iCurWep = 2;
 			p_xInteractObj->setIsRemoved(true);
@@ -438,9 +476,7 @@ namespace esc
 						m_bHasCard = false;
 					}
 				}
-
 			}
-			
 		}
 	}
 
@@ -461,7 +497,7 @@ namespace esc
 			
 			Gun *gun = static_cast<Gun*>(m_xWeapon);
 			gun->setTarget(sf::Vector2f(sf::Mouse::getPosition(*p_window)) + getPosition() - sf::Vector2f(960, 540));
-			gun->attack();
+			gun->trigger();
 		}
 	}
 
@@ -489,7 +525,7 @@ namespace esc
 
 	bool PlayerObject::HandleCollision(GameObject *p_oObject)
 	{
-		if (p_oObject->getType() == WALL)
+		if (p_oObject->getType() == WALL || p_oObject->getType() == COUCH || p_oObject->getType() == PLANTS || p_oObject->getType() == DESKS)
 		{
 			float xDiff = p_oObject->getPosition().x - getPosition().x;
 			float yDiff = p_oObject->getPosition().y - getPosition().y;
@@ -522,79 +558,47 @@ namespace esc
 		}
 		else if (p_oObject->getType() == DOOR)
 		{
-			Door *doorObj = dynamic_cast<Door*>(p_oObject);
+			Door *doorObj = static_cast<Door*>(p_oObject);
 
 			if (doorObj->getIsRemoved() == true)
 				return false;
 
-			if (doorObj->IsOpen() == true)
+			if (doorObj->IsLocked() == 0)
+			{
+				if (doorObj->getIsClosing())
+				{
+					doorObj->Open();
+				}
+			}
+
+			float xDiff = p_oObject->getPosition().x - getPosition().x;
+			float yDiff = p_oObject->getPosition().y - getPosition().y;
+
+			if (fabs(xDiff) > 64 || fabs(yDiff) > 64)
 				return false;
 
-			if (doorObj->IsVertical() == true)
+			if (fabs(xDiff) > fabs(yDiff))
 			{
-				float xDiff = p_oObject->getPosition().x - getPosition().x;
-				float yDiff = p_oObject->getPosition().y - getPosition().y;
-
-				if (fabs(xDiff) > 64 || fabs(yDiff) > 64)
-					return false;
-
-				if (fabs(xDiff) > fabs(yDiff))
+				if (xDiff < 0)
 				{
-					if (xDiff < 0)
-					{
-						setPosition(p_oObject->getPosition().x + 10, getPosition().y);
-					}
-					else
-					{
-						setPosition(p_oObject->getPosition().x - 64, getPosition().y);
-					}
-
+					setPosition(p_oObject->getPosition().x + 64, getPosition().y);
 				}
 				else
 				{
-					if (yDiff < 0)
-					{
-						setPosition(getPosition().x, p_oObject->getPosition().y + 64);
-					}
-					else
-					{
-						setPosition(getPosition().x, p_oObject->getPosition().y - 64);
-					}
+					setPosition(p_oObject->getPosition().x - 64, getPosition().y);
 				}
 			}
 			else
 			{
-				float xDiff = p_oObject->getPosition().x - getPosition().x;
-				float yDiff = p_oObject->getPosition().y - getPosition().y;
-
-				if (fabs(xDiff) > 64 || fabs(yDiff) > 64)
-					return false;
-
-				if (fabs(xDiff) > fabs(yDiff))
+				if (yDiff < 0)
 				{
-					if (xDiff < 0)
-					{
-						setPosition(p_oObject->getPosition().x, getPosition().y + 64);
-					}
-					else
-					{
-						setPosition(p_oObject->getPosition().x, getPosition().y - 64);
-					}
+					setPosition(getPosition().x, p_oObject->getPosition().y + 64);
 				}
 				else
 				{
-					if (yDiff < 0)
-					{
-						setPosition(getPosition().x, p_oObject->getPosition().y + 31);
-					}
-					else
-					{
-						setPosition(getPosition().x, p_oObject->getPosition().y - 45);
-					}
+					setPosition(getPosition().x, p_oObject->getPosition().y - 64);
 				}
 			}
-
-
 		}
 		else if (p_oObject->getType() == PATROLLINGGUARD || p_oObject->getType() == STATIONARYGUARD)
 		{

@@ -43,6 +43,7 @@ namespace esc
 		else if (m_xPlayerObject->getCurWep() == 0)
 		{
 			m_xRightLargeCircleItem = m_xRightLargeCircleGarotte;
+			//m_xRightLargeCircleItem->setPosition();
 		}
 
 		sf::Vector2f screensize(1920, 1080);

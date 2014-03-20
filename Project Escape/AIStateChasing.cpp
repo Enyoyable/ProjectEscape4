@@ -32,9 +32,8 @@ namespace esc
 
 			v2fMovement = v2fMovement / fMovementLength;
 
-			m_xGuard->move(v2fMovement * p_fDeltaTime * 180.0f);
+			m_xGuard->move(v2fMovement * p_fDeltaTime * 60.0f);
 			m_xGuard->setDirection(v2fTargetPosition);
-			m_xGuard->setRotation(m_xGuard->m_fWatchAngle);
 			return;
 		}
 		
@@ -53,9 +52,8 @@ namespace esc
 
 			v2fMovement = v2fMovement / fMovementLength;
 
-			m_xGuard->move(v2fMovement * p_fDeltaTime * 180.0f);
+			m_xGuard->move(v2fMovement * p_fDeltaTime * 60.0f);
 			m_xGuard->setDirection(v2fTargetPosition);
-			m_xGuard->setRotation(m_xGuard->m_fWatchAngle);
 		}
 		else
 		{
@@ -67,9 +65,8 @@ namespace esc
 
 			v2fMovement = v2fMovement / fMovementLength;
 
-			m_xGuard->move(v2fMovement * p_fDeltaTime * 180.0f);
+			m_xGuard->move(v2fMovement * p_fDeltaTime * 60.0f);
 			m_xGuard->setDirection(m_xPlayer->getPosition());
-			m_xGuard->setRotation(m_xGuard->m_fWatchAngle);
 		}
 
 		if (vPathToPlayer.size() > 0)

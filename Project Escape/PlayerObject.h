@@ -77,6 +77,8 @@ namespace esc
 		float m_sneakspeed = 2.5f;
 		float m_Walknoise = 60.0f;
 		float m_fCurrentnoise;
+		float m_fTimehidden;
+		float m_fTimeUnhidden;
 		sf::Vector2f m_velocity;
 		sf::Vector2f m_startpos;
 		sf::RenderWindow *p_window;
@@ -86,6 +88,7 @@ namespace esc
 		GameObjectManager *m_xGobjManager;
 
 		std::vector<GameObject*> *m_vStateObjects;
+		std::vector<GameObject*> *m_vRemoveObjects;
 
 		bool m_bHasCard;
 		bool m_bHasObj;

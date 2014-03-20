@@ -83,7 +83,7 @@ namespace esc
 
 		std::vector<SGuardRotation*> m_vGuardRotations;
 
-		GameObject *m_aWalls[200][200];
+		GameObject *m_aAdjacantObjects[200][200];
 
 		int m_ixDimensions;
 		int m_iyDimensions;

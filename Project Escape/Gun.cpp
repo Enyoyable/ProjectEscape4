@@ -73,14 +73,14 @@ namespace esc
 
 	void Gun::Throw()
 	{
-		Item *gun = new Item(m_xAttachedObject->getPosition(), m_xSpriteManager->loadSprite("Gun_pu.png", 0, 0, 64, 64), true, m_v2fTarget, 9999, GUN);
+		Item *gun = new Item(m_xAttachedObject->getPosition(), m_xSpriteManager->loadSprite("Gun_pu.png", 0, 0, 64, 64), true, m_iCurrentCharges, m_v2fTarget, 9999, GUN);
 		gun->setIsRemoved(false);
 		m_vObjects->push_back(gun);
 	}
 
 	void Gun::drop()
 	{
-		Item *gun = new Item(m_xAttachedObject->getPosition(), m_xSpriteManager->loadSprite("Gun_pu.png", 0, 0, 64, 64), false, sf::Vector2f(0.0f,0.0f), 9999, GUN);
+		Item *gun = new Item(m_xAttachedObject->getPosition(), m_xSpriteManager->loadSprite("Gun_pu.png", 0, 0, 64, 64), false, m_iCurrentCharges, sf::Vector2f(0.0f, 0.0f), 9999, GUN);
 		m_vObjects->push_back(gun);
 	}
 
