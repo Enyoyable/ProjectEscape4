@@ -66,6 +66,8 @@ namespace esc
 				eObjectIdentifier = EObjectType::TOILET;
 			else if (sObjectIdentifier.compare("URINAL") == 0)
 				eObjectIdentifier = EObjectType::URINAL;
+			else if (sObjectIdentifier.compare("URINAL2") == 0)
+				eObjectIdentifier = EObjectType::URINAL2;
 			else if (sObjectIdentifier.compare("SINK") == 0)
 				eObjectIdentifier = EObjectType::SINK;
 			else if (sObjectIdentifier.compare("HIDINGUP") == 0)
@@ -477,7 +479,7 @@ namespace esc
 					}
 				case esc::GUN:
 					{
-						Item *gun = m_xGameObjectManager->createItem(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), EObjectType::GUN, m_xSpriteManager->loadSprite("Gun_pu.png", 0, 0, 64, 64), 0);
+						Item *gun = m_xGameObjectManager->createItem(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), EObjectType::GUN, m_xSpriteManager->loadSprite("Gun_pu.png", 0, 0, 64, 64), 2);
 						m_vLevelObjects.push_back(gun);
 						break;
 					}
