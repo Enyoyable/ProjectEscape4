@@ -38,7 +38,6 @@ namespace esc
 				static_cast<Guard*>(object)->update(p_fDeltaTime);
 				break;
 			}
-
 			object->update(p_fDeltaTime);
 		}
 	}
@@ -48,6 +47,22 @@ namespace esc
 		for (auto object : *p_vObjects)
 		{
 			m_xWindow->draw(*object);
+		}
+		for (auto object : *p_vObjects)
+		{
+			if (object->getType() == TUTOBJ)
+			{
+				m_xWindow->draw(*object);
+			}
+			else if (object->getType() == PLAYER)
+				m_xWindow->draw(*object);
+		}
+		for (auto object : *p_vObjects)
+		{
+			if (object->getType() == LOCKERD || object->getType() == LOCKERU || object->getType() == LOCKERL || object->getType() == LOCKERR)
+			{
+				m_xWindow->draw(*object);
+			}
 		}
 	}
 

@@ -8,6 +8,8 @@
 #include "GameObjectManager.h"
 #include "MenuState.h"
 #include "GameState.h"
+#include "WinState.h"
+#include "LoseState.h"
 #include "PlayerObject.h"
 #include "Guard.h"
 #include "CollisionManager.h"
@@ -78,13 +80,17 @@ namespace esc
 		level.create("level.png", "patrol.txt");
 		level.createFloor("FirstFloor.png");
 		
+		xStateManager->attachState(StateManager::WIN, new WinState(xGameObjectManager, xStateManager, &spriteManager, this, xCollisionManager));
+		xStateManager->attachState(StateManager::LOSE, new LoseState(xGameObjectManager, xStateManager, &spriteManager, this, xCollisionManager));
 		xStateManager->attachState(StateManager::GAME, new GameState(xGameObjectManager, xStateManager, &spriteManager, this, xCollisionManager, &level));
 		xStateManager->attachState(StateManager::MENU, new MenuState(xGameObjectManager, xStateManager, &spriteManager, this, xCollisionManager));
+		
 
 		xStateManager->setCurrentState(StateManager::MENU);
 
 		while (m_window->isOpen())
 		{
+
 			sf::Event event;
 
 			while (m_window->pollEvent(event))
@@ -103,6 +109,15 @@ namespace esc
 				{
 					m_window->close();
 				}
+
+				if (event.key.code == sf::Keyboard::Y)
+				{
+					xStateManager->setCurrentState(StateManager::LOSE);
+				}
+				if (event.key.code == sf::Keyboard::U)
+				{
+					xStateManager->setCurrentState(StateManager::WIN);
+				}
 					
 			}
 
@@ -111,11 +126,17 @@ namespace esc
 			if (fDeltaTime > 0.1)
 				fDeltaTime = 0.1;
 
+			StateManager::EStates firststate = xStateManager->getCurrentState();
+
 			xStateManager->updateCurrentState(fDeltaTime);
+			
+			if (level.getStateNum() != xStateManager->getCurrentState())
+				level.setStateNum(xStateManager->getCurrentState());
 
 			m_window->clear();
 
-			xStateManager->drawCurrentState();
+			if (xStateManager->getCurrentState() == firststate)
+				xStateManager->drawCurrentState();
 
 			m_window->display();
 		}

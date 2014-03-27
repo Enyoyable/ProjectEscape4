@@ -21,6 +21,8 @@ namespace esc
 		m_xSpriteManager = p_xSpriteManager;
 		m_xGameObjectManager = p_xGameObjectManager;
 
+		m_iStateNum = 0;
+
 		for (int x = 0; x < 200; x++)
 		{
 			for (int y = 0; y < 200; y++)
@@ -30,7 +32,7 @@ namespace esc
 			}
 		}
 
-		
+
 	}
 
 	void Level::update(float p_fDeltaTime)
@@ -108,7 +110,24 @@ namespace esc
 				eObjectIdentifier = EObjectType::WRITER;
 			else if (sObjectIdentifier.compare("PLANTS") == 0)
 				eObjectIdentifier = EObjectType::PLANTS;
-
+			else if (sObjectIdentifier.compare("RECMID") == 0)
+				eObjectIdentifier = EObjectType::RECMID;
+			else if (sObjectIdentifier.compare("RECTOP") == 0)
+				eObjectIdentifier = EObjectType::RECTOP;
+			else if (sObjectIdentifier.compare("RECLOW") == 0)
+				eObjectIdentifier = EObjectType::RECLOW;
+			else if (sObjectIdentifier.compare("FIKABORD") == 0)
+				eObjectIdentifier = EObjectType::FIKABORD;
+			else if (sObjectIdentifier.compare("STOLARUPP") == 0)
+				eObjectIdentifier = EObjectType::STOLARUPP;
+			else if (sObjectIdentifier.compare("STOLARNER") == 0)
+				eObjectIdentifier = EObjectType::STOLARNER;
+			else if (sObjectIdentifier.compare("STOLARV") == 0)
+				eObjectIdentifier = EObjectType::STOLARV;
+			else if (sObjectIdentifier.compare("STOLARH") == 0)
+				eObjectIdentifier = EObjectType::STOLARH;
+			else if (sObjectIdentifier.compare("OBJECTIVE") == 0)
+				eObjectIdentifier = EObjectType::OBJECTIVE;
 
 
 			sf::Color *color = new sf::Color(r, g, b, a);
@@ -153,7 +172,7 @@ namespace esc
 	void Level::create(std::string p_sFilePath, std::string p_sPatrolPath)
 	{
 		sf::Image xImage;
-		
+
 		xImage.loadFromFile(m_sDirectoryPath + p_sFilePath);
 
 		int iCurrentGuardCount = 0;
@@ -181,7 +200,7 @@ namespace esc
 						colorPointer = color;
 						break;
 					}
-						
+
 				}
 
 				auto iterCurrentObjectType = m_mColorCodes.find(colorPointer);
@@ -195,59 +214,59 @@ namespace esc
 				switch (iterCurrentObjectType->second)
 				{
 				case esc::WALL:
-				{
-								  GameObject *obj = m_xGameObjectManager->createObject(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, EObjectType::WALL, nullptr);
-								  m_vLevelObjects.push_back(obj);
-								  m_aAdjacantObjects[x][y] = obj;
-								  m_aWalls[x][y] = obj;
-								  xNode->setIllegal(true);
-								  break;
+					{
+						GameObject *obj = m_xGameObjectManager->createObject(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, EObjectType::WALL, nullptr);
+						m_vLevelObjects.push_back(obj);
+						m_aAdjacantObjects[x][y] = obj;
+						m_aWalls[x][y] = obj;
+						xNode->setIllegal(true);
+						break;
 
-				}
+					}
 				case esc::COUCH:
-				{
-								   GameObject *obj = m_xGameObjectManager->createObject(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, EObjectType::COUCH, nullptr);
-								   m_vLevelObjects.push_back(obj);
-								   m_aAdjacantObjects[x][y] = obj;
-								   xNode->setIllegal(true);
-								   break;
-				}
+					{
+						GameObject *obj = m_xGameObjectManager->createObject(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, EObjectType::COUCH, nullptr);
+						m_vLevelObjects.push_back(obj);
+						m_aAdjacantObjects[x][y] = obj;
+						xNode->setIllegal(true);
+						break;
+					}
 				case esc::LOCKERD:
-				{
-									 GameObject *obj = m_xGameObjectManager->createObject(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), true, EObjectType::LOCKERD, m_xSpriteManager->loadSprite("LockerD.png", 0, 0, 64, 64));
-									 m_vLevelObjects.push_back(obj);
-									 xNode->setIllegal(true);
-									 break;
-				}
+					{
+						GameObject *obj = m_xGameObjectManager->createObject(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), true, EObjectType::LOCKERD, m_xSpriteManager->loadSprite("LockerD.png", 0, 0, 64, 64));
+						m_vLevelObjects.push_back(obj);
+						xNode->setIllegal(true);
+						break;
+					}
 
 				case esc::LOCKERU:
-				{
-									 GameObject *obj = m_xGameObjectManager->createObject(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), true, EObjectType::LOCKERU, m_xSpriteManager->loadSprite("LockerU.png", 0, 0, 64, 64));
-									 m_vLevelObjects.push_back(obj);
-									 xNode->setIllegal(true);
-									 break;
-				}
+					{
+						GameObject *obj = m_xGameObjectManager->createObject(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), true, EObjectType::LOCKERU, m_xSpriteManager->loadSprite("LockerU.png", 0, 0, 64, 64));
+						m_vLevelObjects.push_back(obj);
+						xNode->setIllegal(true);
+						break;
+					}
 
 				case esc::LOCKERL:
-				{
-									 GameObject *obj = m_xGameObjectManager->createObject(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), true, EObjectType::LOCKERL, m_xSpriteManager->loadSprite("LockerL.png", 0, 0, 64, 64));
-									 m_vLevelObjects.push_back(obj);
-									 xNode->setIllegal(true);
-									 break;
-				}
+					{
+						GameObject *obj = m_xGameObjectManager->createObject(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), true, EObjectType::LOCKERL, m_xSpriteManager->loadSprite("LockerL.png", 0, 0, 64, 64));
+						m_vLevelObjects.push_back(obj);
+						xNode->setIllegal(true);
+						break;
+					}
 
 				case esc::LOCKERR:
-				{
-									 GameObject *obj = m_xGameObjectManager->createObject(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), true, EObjectType::LOCKERR, m_xSpriteManager->loadSprite("LockerR.png", 0, 0, 64, 64));
-									 m_vLevelObjects.push_back(obj);
-									 xNode->setIllegal(true);
-									 break;
-				}
-					
+					{
+						GameObject *obj = m_xGameObjectManager->createObject(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), true, EObjectType::LOCKERR, m_xSpriteManager->loadSprite("LockerR.png", 0, 0, 64, 64));
+						m_vLevelObjects.push_back(obj);
+						xNode->setIllegal(true);
+						break;
+					}
+
 				case esc::PLAYER:
-				{
-									break;
-				}
+					{
+						break;
+					}
 				case esc::TOILET:
 				{
 									GameObject *obj = m_xGameObjectManager->createObject(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, EObjectType::WALL, m_xSpriteManager->loadSprite("Toalett_NoBackF.png", 0, 0, 64, 64));
@@ -263,140 +282,231 @@ namespace esc
 									break;
 				}
 				case esc::URINAL:
-				{
-									GameObject *obj = m_xGameObjectManager->createObject(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, EObjectType::WALL, m_xSpriteManager->loadSprite("Pissoar_NoBackL.png", 0, 0, 64, 64));
-									m_vLevelObjects.push_back(obj);
-									xNode->setIllegal(true);
-									break;
-				}
+					{
+						GameObject *obj = m_xGameObjectManager->createObject(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, EObjectType::WALL, m_xSpriteManager->loadSprite("Pissoar_NoBackL.png", 0, 0, 64, 64));
+						m_vLevelObjects.push_back(obj);
+						xNode->setIllegal(true);
+						break;
+					}
+				case esc::URINAL2:
+					{
+						GameObject *obj = m_xGameObjectManager->createObject(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, EObjectType::WALL, m_xSpriteManager->loadSprite("Pissoar_NoBackR.png", 0, 0, 64, 64));
+						m_vLevelObjects.push_back(obj);
+						xNode->setIllegal(true);
+						break;
+					}
 				case esc::SINK:
-				{
-								  GameObject *obj = m_xGameObjectManager->createObject(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, EObjectType::WALL, m_xSpriteManager->loadSprite("Sink_NoBackD.png", 0, 0, 64, 64));
-								  m_vLevelObjects.push_back(obj);
-								  xNode->setIllegal(true);
-								  break;
-				}
+					{
+						GameObject *obj = m_xGameObjectManager->createObject(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, EObjectType::WALL, m_xSpriteManager->loadSprite("Sink.png", 0, 0, 64, 64));
+						m_vLevelObjects.push_back(obj);
+						xNode->setIllegal(true);
+						break;
+					}
 				case esc::DESKS:
-				{
-								  GameObject *obj = m_xGameObjectManager->createObject(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, EObjectType::WALL, m_xSpriteManager->loadSprite("desk 1 part 2 rotate down.png", 0, 0, 64, 64));
-								  m_vLevelObjects.push_back(obj);
-								  xNode->setIllegal(true);
-								  break;
-				}
+					{
+						GameObject *obj = m_xGameObjectManager->createObject(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, EObjectType::DESKS, m_xSpriteManager->loadSprite("desk1down.png", 0, 0, 64, 64));
+						m_vLevelObjects.push_back(obj);
+						m_aAdjacantObjects[x][y] = obj;
+						xNode->setIllegal(true);
+						break;
+					}
 				case esc::PLANTS:
-				{
-									GameObject *obj = m_xGameObjectManager->createObject(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, EObjectType::PLANTS, m_xSpriteManager->loadSprite("flower_pot.png", 0, 0, 64, 64));
-									m_vLevelObjects.push_back(obj);
-									break;
-				}
+					{
+						GameObject *obj = m_xGameObjectManager->createObject(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, EObjectType::PLANTS, m_xSpriteManager->loadSprite("flower_pot.png", 0, 0, 64, 64));
+						m_vLevelObjects.push_back(obj);
+						break;
+					}
 				case esc::WRITER:
-				{
-									GameObject *obj = m_xGameObjectManager->createObject(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, EObjectType::WRITER, m_xSpriteManager->loadSprite("printer.png", 0, 0, 64, 64));
-									m_vLevelObjects.push_back(obj);
-									break;
-				}
+					{
+						GameObject *obj = m_xGameObjectManager->createObject(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, EObjectType::WRITER, m_xSpriteManager->loadSprite("printer.png", 0, 0, 64, 64));
+						m_vLevelObjects.push_back(obj);
+						break;
+					}
 				case esc::EXIT:
-				{
-								  GameObject *obj = m_xGameObjectManager->createObject(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, EObjectType::EXIT, m_xSpriteManager->loadSprite("Exit.png", 0, 0, 64, 64));
-								  m_vLevelObjects.push_back(obj);
-								  break;
-				}
+					{
+						GameObject *obj = m_xGameObjectManager->createObject(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, EObjectType::EXIT, m_xSpriteManager->loadSprite("Exit.png", 0, 0, 64, 64));
+						m_vLevelObjects.push_back(obj);
+						break;
+					}
 				case esc::STATIONARYGUARD:
-				{
-									sf::Sprite *sprite = m_xSpriteManager->loadSprite("alpha_guard.png", 0, 0, 64, 64);
+					{
+						sf::Sprite *sprite = m_xSpriteManager->loadSprite("alpha_guard.png", 0, 0, 64, 64);
 
-									SGuardRotation *rotation = m_vGuardRotations[iCurrentRotationCount++];
+						SGuardRotation *rotation = m_vGuardRotations[iCurrentRotationCount++];
 
-									if (rotation->m_bConstant)
-									{
-										Guard *guard = m_xGameObjectManager->createGuard(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, sprite, this);
-										guard->setWatchSize(rotation->m_fSize);
-										guard->setVisionRange(rotation->m_fRange);
-										guard->setConstantRotation(rotation->m_bClockwise);
-										m_vLevelObjects.push_back(guard);
-									}
-									else
-									{
-										Guard *guard = m_xGameObjectManager->createGuard(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, sprite, this);
-										guard->setWatchSize(rotation->m_fSize);
-										guard->setVisionRange(rotation->m_fRange);
-										guard->setRotationPoints(rotation->m_fMaxAngle, rotation->m_fMinAngle, rotation->m_bClockwise);
-										m_vLevelObjects.push_back(guard);
-									}
-									
-									break;
-				}
+						if (rotation->m_bConstant)
+						{
+							Guard *guard = m_xGameObjectManager->createGuard(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, sprite, this);
+							guard->setWatchSize(rotation->m_fSize);
+							guard->setVisionRange(rotation->m_fRange);
+							guard->setConstantRotation(rotation->m_bClockwise);
+							m_vLevelObjects.push_back(guard);
+						}
+						else
+						{
+							Guard *guard = m_xGameObjectManager->createGuard(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, sprite, this);
+							guard->setWatchSize(rotation->m_fSize);
+							guard->setVisionRange(rotation->m_fRange);
+							guard->setRotationPoints(rotation->m_fMaxAngle, rotation->m_fMinAngle, rotation->m_bClockwise);
+							m_vLevelObjects.push_back(guard);
+						}
+
+						break;
+					}
 				case esc::PATROLLINGGUARD:
-				{
-								   sf::Sprite *sprite = m_xSpriteManager->loadSprite("alpha_guard.png", 0, 0, 64, 64);
+					{
+						sf::Sprite *sprite = m_xSpriteManager->loadSprite("alpha_guard.png", 0, 0, 64, 64);
 
-								   Guard *guard = m_xGameObjectManager->createGuard(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, sprite, this);
+						Guard *guard = m_xGameObjectManager->createGuard(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, sprite, this);
 
-								   guard->setWatchSize(70);
-								   guard->setVisionRange(250);
-								   /*guard->setPatrolPath(m_vPatrolPaths[iCurrentGuardCount]);
-								   guard->setIsPatrolling(true);*/
-								   m_vLevelObjects.push_back(guard);
-								   vPatrollingGuards.push_back(guard);
+						guard->setWatchSize(70);
+						guard->setVisionRange(250);
+						/*guard->setPatrolPath(m_vPatrolPaths[iCurrentGuardCount]);
+						guard->setIsPatrolling(true);*/
+						m_vLevelObjects.push_back(guard);
+						vPatrollingGuards.push_back(guard);
 
-								   
-								   break;
-				}
+
+						break;
+					}
 				case esc::DOOR:
-				{
+					{
 
-				}
+					}
 				case esc::LOCKEDH:
-				{
-									 Door *obj = m_xGameObjectManager->createDoor(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, 1, EObjectType::LOCKEDH, m_xSpriteManager);
-								   m_vLevelObjects.push_back(obj);
-								   break;
-				}
+					{
+						Door *obj = m_xGameObjectManager->createDoor(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, 1, EObjectType::LOCKEDH, m_xSpriteManager);
+						m_vLevelObjects.push_back(obj);
+						break;
+					}
 				case esc::LOCKEDV:
-				{
-									 Door *obj = m_xGameObjectManager->createDoor(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), true, 1, EObjectType::LOCKEDV, m_xSpriteManager);
-								   m_vLevelObjects.push_back(obj);
-								   break;
-				}
+					{
+						Door *obj = m_xGameObjectManager->createDoor(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), true, 1, EObjectType::LOCKEDV, m_xSpriteManager);
+						m_vLevelObjects.push_back(obj);
+						break;
+					}
 				case esc::OPENH:
-				{
-								   Door *obj = m_xGameObjectManager->createDoor(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, 0, EObjectType::OPENH, m_xSpriteManager);
-								   m_vLevelObjects.push_back(obj);
-								   break;
-				}
+					{
+						Door *obj = m_xGameObjectManager->createDoor(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, 0, EObjectType::OPENH, m_xSpriteManager);
+						m_vLevelObjects.push_back(obj);
+						break;
+					}
 				case esc::OPENV:
-				{
-								   Door *obj = m_xGameObjectManager->createDoor(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), true, 0, EObjectType::OPENH, m_xSpriteManager);
-								   m_vLevelObjects.push_back(obj);
-								   break;
-				}
+					{
+						Door *obj = m_xGameObjectManager->createDoor(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), true, 0, EObjectType::OPENH, m_xSpriteManager);
+						m_vLevelObjects.push_back(obj);
+						break;
+					}
 				case esc::CLOSEDH:
-				{
-									 Door *obj = m_xGameObjectManager->createDoor(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, 2, EObjectType::CLOSEDH, m_xSpriteManager);
-								   m_vLevelObjects.push_back(obj);
-								   break;
-				}
+					{
+						Door *obj = m_xGameObjectManager->createDoor(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, 2, EObjectType::CLOSEDH, m_xSpriteManager);
+						m_vLevelObjects.push_back(obj);
+						break;
+					}
 				case esc::CLOSEDV:
-				{
-									 Door *obj = m_xGameObjectManager->createDoor(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), true, 2, EObjectType::CLOSEDV, m_xSpriteManager);
-								   m_vLevelObjects.push_back(obj);
-								   break;
-				}
+					{
+						Door *obj = m_xGameObjectManager->createDoor(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), true, 2, EObjectType::CLOSEDV, m_xSpriteManager);
+						m_vLevelObjects.push_back(obj);
+						break;
+					}
 				case esc::KEYCARD:
-				{
-									 Item *card = m_xGameObjectManager->createItem(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), EObjectType::KEYCARD, m_xSpriteManager->loadSprite("Keycard_pu.png", 0, 0, 64, 64), 0);
-									 m_vLevelObjects.push_back(card);
-									 break;
-				}
+					{
+						Item *card = m_xGameObjectManager->createItem(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), EObjectType::KEYCARD, m_xSpriteManager->loadSprite("Keycard_pu.png", 0, 0, 64, 64), 0);
+						m_vLevelObjects.push_back(card);
+						break;
+					}
+				case esc::RECMID:
+					{
+						GameObject *obj = m_xGameObjectManager->createObject(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, EObjectType::RECMID, m_xSpriteManager->loadSprite("Lobydesk2.png", 0, 0, 64, 64));
+						m_vLevelObjects.push_back(obj);
+						break;
+					}
+				case esc::RECTOP:
+					{
+						GameObject *obj = m_xGameObjectManager->createObject(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, EObjectType::RECTOP, m_xSpriteManager->loadSprite("Lobydesk1.png", 0, 0, 64, 64));
+						m_vLevelObjects.push_back(obj);
+						break;
+					}
+				case esc::RECLOW:
+					{
+						GameObject *obj = m_xGameObjectManager->createObject(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, EObjectType::RECLOW, m_xSpriteManager->loadSprite("Lobydesk3.png", 0, 0, 64, 64));
+						m_vLevelObjects.push_back(obj);
+						break;
+					}
+				case esc::FIKABORD:
+					{
+						GameObject *obj = m_xGameObjectManager->createObject(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, EObjectType::WALL, m_xSpriteManager->loadSprite("coffe_table.png", 0, 0, 64, 64));
+						m_vLevelObjects.push_back(obj);
+						break;
+					}
+				case esc::STOLARUPP:
+					{
+						GameObject *obj = m_xGameObjectManager->createObject(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, EObjectType::STOLARUPP, m_xSpriteManager->loadSprite("chairn.png", 0, 0, 64, 64));
+						m_vLevelObjects.push_back(obj);
+						break;
+					}
+				case esc::STOLARNER:
+					{
+						GameObject *obj = m_xGameObjectManager->createObject(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, EObjectType::STOLARNER, m_xSpriteManager->loadSprite("chairu.png", 0, 0, 64, 64));
+						m_vLevelObjects.push_back(obj);
+						break;
+					}
+				case esc::STOLARV:
+					{
+						GameObject *obj = m_xGameObjectManager->createObject(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, EObjectType::STOLARV, m_xSpriteManager->loadSprite("chairh.png", 0, 0, 64, 64));
+						m_vLevelObjects.push_back(obj);
+						break;
+					}
+				case esc::STOLARH:
+					{
+						GameObject *obj = m_xGameObjectManager->createObject(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, EObjectType::STOLARH, m_xSpriteManager->loadSprite("chairv.png", 0, 0, 64, 64));
+						m_vLevelObjects.push_back(obj);
+						break;
+					}
+				case esc::OBJECTIVE:
+					{
+						Item *pda = m_xGameObjectManager->createItem(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), EObjectType::OBJECTIVE, m_xSpriteManager->loadSprite("PDA.png", 0, 0, 64, 64), 0);
+						m_vLevelObjects.push_back(pda);
+						break;
+					}
 				}
 
 				vPathNodes.push_back(xNode);
-				
+
 			}
 
 			m_vPathNodes.push_back(vPathNodes);
 
-			
+
+		}
+
+		GameObject *tutobj1 = m_xGameObjectManager->createObject(sf::Vector2f(47 * 64, 7 * 64), sf::Vector2f(192, 192), false, EObjectType::TUTOBJ, m_xSpriteManager->loadSprite("WASD.png", 0, 0, 192, 192));
+		m_vLevelObjects.push_back(tutobj1);
+		m_vTutorialObjects.push_back(tutobj1);
+
+		GameObject *tutobj2 = m_xGameObjectManager->createObject(sf::Vector2f(48 * 64, 11 * 64), sf::Vector2f(576, 64), false, EObjectType::TUTOBJ, m_xSpriteManager->loadSprite("SPACE.png", 0, 0, 576, 64));
+		m_vLevelObjects.push_back(tutobj2);
+		m_vTutorialObjects.push_back(tutobj2);
+
+		GameObject *tutobj3 = m_xGameObjectManager->createObject(sf::Vector2f(59 * 64, 12 * 64), sf::Vector2f(64, 64), false, EObjectType::TUTOBJ, m_xSpriteManager->loadSprite("E.png", 0, 0, 64, 64));
+		m_vLevelObjects.push_back(tutobj3);
+		m_vTutorialObjects.push_back(tutobj3);
+
+		GameObject *tutobj4 = m_xGameObjectManager->createObject(sf::Vector2f(50 * 64, 12 * 64), sf::Vector2f(64, 64), false, EObjectType::TUTOBJ, m_xSpriteManager->loadAnimatedSprite("Mouseindicator.txt"));
+		m_vLevelObjects.push_back(tutobj4);
+		m_vTutorialObjects.push_back(tutobj4);
+
+		GameObject *tutobj5 = m_xGameObjectManager->createObject(sf::Vector2f(64 * 20, 64 * 8), sf::Vector2f(64, 64), false, EObjectType::TUTOBJ, m_xSpriteManager->loadSprite("tut5.png", 0, 0, 64, 64));
+		m_vLevelObjects.push_back(tutobj5);
+		m_vTutorialObjects.push_back(tutobj5);
+
+		GameObject *tutobj6 = m_xGameObjectManager->createObject(sf::Vector2f(64 * 20, 64 * 8), sf::Vector2f(64, 64), false, EObjectType::TUTOBJ, m_xSpriteManager->loadSprite("tut6.png", 0, 0, 64, 64));
+		m_vLevelObjects.push_back(tutobj6);
+		m_vTutorialObjects.push_back(tutobj6);
+
+		for (auto object : m_vTutorialObjects)
+		{
+			object->setIsRemoved(true);
 		}
 
 		m_xPathFinder = new PathFind(this);
@@ -407,12 +517,12 @@ namespace esc
 
 		for (auto guard : vPatrollingGuards)
 		{
-				/*if (iCurrentGuardCount >= m_vPatrolPaths.size())
-					break;*/
-				guard->setPatrolPath(m_vPatrolPaths[iCurrentGuardCount]);
-				guard->setIsPatrolling(true);
-				iCurrentGuardCount++;
-			
+			/*if (iCurrentGuardCount >= m_vPatrolPaths.size())
+			break;*/
+			guard->setPatrolPath(m_vPatrolPaths[iCurrentGuardCount]);
+			guard->setIsPatrolling(true);
+			iCurrentGuardCount++;
+
 		}
 
 		for (int y = 0; y < 200; y++)
@@ -448,7 +558,7 @@ namespace esc
 					if (obj->getType() == WALL)
 					{
 						if (!upFree && !downFree && !leftFree && !rightFree)
-							obj->setSprite(m_xSpriteManager->loadSprite("Wall grey.png", 0, 0, 64, 64));
+							obj->setSprite(m_xSpriteManager->loadSprite("Wall black.png", 0, 0, 64, 64));
 						else if (upFree && downFree && !leftFree && rightFree)
 							obj->setSprite(m_xSpriteManager->loadSprite("Wall 1.png", 0, 0, 64, 64));
 						else if (upFree && !downFree && leftFree && rightFree)
@@ -544,6 +654,69 @@ namespace esc
 							obj->setSprite(m_xSpriteManager->loadSprite("Couch_rotate3.png", 0, 0, 64, 64));
 					}
 
+					else if (obj->getType() == DESKS)
+					{
+						bool upDesk, downDesk, leftDesk, rightDesk, upWall, downWall, leftWall, rightWall;
+
+						if (m_aAdjacantObjects[x + 1][y] != nullptr && m_aAdjacantObjects[x + 1][y]->getType() == DESKS)
+							rightDesk = true;
+						else
+							rightDesk = false;
+
+						if (m_aAdjacantObjects[x - 1][y] != nullptr && m_aAdjacantObjects[x - 1][y]->getType() == DESKS)
+							leftDesk = true;
+						else
+							leftDesk = false;
+
+						if (m_aAdjacantObjects[x][y + 1] != nullptr && m_aAdjacantObjects[x][y + 1]->getType() == DESKS)
+							downDesk = true;
+						else
+							downDesk = false;
+
+						if (m_aAdjacantObjects[x][y - 1] != nullptr && m_aAdjacantObjects[x][y - 1]->getType() == DESKS)
+							upDesk = true;
+						else
+							upDesk = false;
+
+
+						if (m_aAdjacantObjects[x + 1][y] != nullptr && m_aAdjacantObjects[x + 1][y]->getType() == WALL)
+							rightWall = true;
+						else
+							rightWall = false;
+
+						if (m_aAdjacantObjects[x - 1][y] != nullptr && m_aAdjacantObjects[x - 1][y]->getType() == WALL)
+							leftWall = true;
+						else
+							leftWall = false;
+
+						if (m_aAdjacantObjects[x][y + 1] != nullptr && m_aAdjacantObjects[x][y + 1]->getType() == WALL)
+							downWall = true;
+						else
+							downWall = false;
+
+						if (m_aAdjacantObjects[x][y - 1] != nullptr && m_aAdjacantObjects[x][y - 1]->getType() == WALL)
+							upWall = true;
+						else
+							upWall = false;
+
+						if (upDesk && rightWall)
+							obj->setSprite(m_xSpriteManager->loadSprite("desk2up.png", 0, 0, 64, 64));
+						if (upDesk && leftWall)
+							obj->setSprite(m_xSpriteManager->loadSprite("desk1up.png", 0, 0, 64, 64));
+						if (downDesk && rightWall)
+							obj->setSprite(m_xSpriteManager->loadSprite("desk1down.png", 0, 0, 64, 64));
+						if (downDesk && leftWall)
+							obj->setSprite(m_xSpriteManager->loadSprite("desk2down.png", 0, 0, 64, 64));
+						if (leftDesk && upWall)
+							obj->setSprite(m_xSpriteManager->loadSprite("desk2left.png", 0, 0, 64, 64));
+						if (leftDesk && downWall)
+							obj->setSprite(m_xSpriteManager->loadSprite("desk1left.png", 0, 0, 64, 64));
+						if (rightDesk && upWall)
+							obj->setSprite(m_xSpriteManager->loadSprite("desk1right.png", 0, 0, 64, 64));
+						if (rightDesk && downWall)
+							obj->setSprite(m_xSpriteManager->loadSprite("desk2right.png", 0, 0, 64, 64));
+					}
+
 				}
 			}
 		}
@@ -588,22 +761,22 @@ namespace esc
 				switch (iterCurrentObjectType->second)
 				{
 				case EFloorType::NORMAL:
-				{
-										   sf::Sprite *sprite = m_xSpriteManager->loadSprite("Floor1.png", 0, 0, 64, 64);
-										   sprite->setOrigin(32, 32);
-										   sprite->setPosition(sf::Vector2f(x * 64, y * 64));
-										   m_vFloorSprites.push_back(sprite);
-										   break;
-				}
+					{
+						sf::Sprite *sprite = m_xSpriteManager->loadSprite("Floor1.png", 0, 0, 64, 64);
+						sprite->setOrigin(32, 32);
+						sprite->setPosition(sf::Vector2f(x * 64, y * 64));
+						m_vFloorSprites.push_back(sprite);
+						break;
+					}
 
 				case EFloorType::NORMALFLOOR:
-				{
-										   sf::Sprite *sprite = m_xSpriteManager->loadSprite("Floor 5.png", 0, 0, 64, 64);
-										   sprite->setOrigin(32, 32);
-										   sprite->setPosition(sf::Vector2f(x * 64, y * 64));
-										   m_vFloorSprites.push_back(sprite);
-										   break;
-				}
+					{
+						sf::Sprite *sprite = m_xSpriteManager->loadSprite("Floor 5.png", 0, 0, 64, 64);
+						sprite->setOrigin(32, 32);
+						sprite->setPosition(sf::Vector2f(x * 64, y * 64));
+						m_vFloorSprites.push_back(sprite);
+						break;
+					}
 
 				}
 
@@ -659,7 +832,7 @@ namespace esc
 				vPatrolPaths.clear();
 			}
 
-			
+
 		}
 
 		m_vPatrolPaths = vAllPatrolPaths;
@@ -698,7 +871,7 @@ namespace esc
 
 				if (iCheckConstant == 0)
 				{
-					
+
 					rotation->m_bConstant = true;
 
 					if (iCheckClockWise == 0)
@@ -769,24 +942,38 @@ namespace esc
 
 		/*for (auto object : m_vLevelObjects)
 		{
-			if (object->getType() != PATROLLINGGUARD && object->getType() != STATIONARYGUARD)
-			{
-				target.draw(*object, states);
-			}
+		if (object->getType() != PATROLLINGGUARD && object->getType() != STATIONARYGUARD)
+		{
+		target.draw(*object, states);
+		}
 		}
 
 		for (auto object : m_vLevelObjects)
 		{
-			if (object->getType() == PATROLLINGGUARD || object->getType() == STATIONARYGUARD)
-			{
-				target.draw(*object, states);
-			}
+		if (object->getType() == PATROLLINGGUARD || object->getType() == STATIONARYGUARD)
+		{
+		target.draw(*object, states);
+		}
 		}*/
+	}
+
+	void Level::setStateNum(int p_statenum)
+	{
+		m_iStateNum = p_statenum;
+	}
+	int Level::getStateNum()
+	{
+		return m_iStateNum;
 	}
 
 	std::vector<GameObject*> *Level::getObjects()
 	{
 		return &m_vLevelObjects;
+	}
+
+	std::vector<GameObject*> *Level::getTutObjects()
+	{
+		return &m_vTutorialObjects;
 	}
 
 	std::vector<std::vector<PathNode*>> *Level::getPathNodes()
@@ -799,6 +986,16 @@ namespace esc
 		return m_xSpriteManager;
 	}
 
+
+	void Level::handleTutObjects(int p_iObjNum, bool p_bAddOrRemove)
+	{
+		GameObject* obj = m_vTutorialObjects[p_iObjNum - 1];
+		if (p_bAddOrRemove)
+			obj->setIsRemoved(false);
+		else
+			obj->setIsRemoved(true);
+	}
+
 	void Level::getWalls(GameObject *p_aWalls[200][200])
 	{
 		for (int y = 0; y < 200; y++)
@@ -808,5 +1005,6 @@ namespace esc
 				p_aWalls[x][y] = m_aWalls[x][y];
 			}
 		}
+
 	}
 }

@@ -6,7 +6,7 @@ namespace esc
 
 	StateManager::StateManager()
 	{
-		m_eCurrentState = EStates::MENU;
+		//m_eCurrentState = EStates::MENU;
 	}
 
 	void StateManager::setCurrentState(EStates p_eNewState)

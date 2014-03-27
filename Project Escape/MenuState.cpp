@@ -23,13 +23,14 @@ namespace esc
 
 	void MenuState::init()
 	{
-		m_xMenuBack = m_xGameObjectManager->createObject(sf::Vector2f(0, 0), sf::Vector2f(1920, 1080), false, BACKGROUNDOBJ, m_xSpriteManager->loadSprite("TitleBG.png", 0, 0, 1920, 1080));
+		m_xMenuBack = m_xGameObjectManager->createObject(sf::Vector2f(0, 0), sf::Vector2f(1920, 1080), false, BACKGROUNDOBJ, m_xSpriteManager->loadSprite("BGTitle.png", 0, 0, 1920, 1080));
 
 		m_xStartButton = new Button(sf::Vector2f(615, 452), sf::Vector2f(715, 126), false, 0, m_xSpriteManager->loadSprite("NG1.png", 0, 0, 715, 126));
 		m_xStartButton->setHoverSprite(m_xSpriteManager->loadAnimatedSprite("NewGameAnim.txt"));
 		m_xStartButton->setFunction([&](){
 			m_xStateManager->setCurrentState(StateManager::EStates::GAME);
 			m_sTitle->stop();
+			exit();
 		});
 
 		m_xCreditsButton = new Button(sf::Vector2f(615, 577), sf::Vector2f(715, 126), false, 0, m_xSpriteManager->loadSprite("Cred1.png", 0, 0, 715, 126));
@@ -74,16 +75,18 @@ namespace esc
 			m_sTitle->stop();
 		}
 		
-		for (auto vGameObjects : m_vGameObjects)
+		if (m_vGameObjects != nullptr)
 		{
-			for (auto object : vGameObjects)
+			for (auto vGameObjects : m_vGameObjects)
 			{
-				m_xGameObjectManager->updateObjects(&vGameObjects, p_fDeltaTime);
-				
-			}
-			m_xCollisionManager->getCollisionWithPoint(&vGameObjects, sf::Mouse::getPosition(*m_xEngine->m_window));
-		}
+				for (auto object : vGameObjects)
+				{
+					m_xGameObjectManager->updateObjects(&vGameObjects, p_fDeltaTime);
 
+				}
+				m_xCollisionManager->getCollisionWithPoint(&vGameObjects, sf::Mouse::getPosition(*m_xEngine->m_window));
+			}
+		}
 		m_xEngine->m_window->setView(m_xEngine->m_window->getDefaultView());
 	}
 

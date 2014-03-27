@@ -257,7 +257,9 @@ namespace esc
 					{
 						Button *button = static_cast<Button*>(object);
 						button->HandleCollision();
-						
+
+						return;
+
 					}
 				}
 
