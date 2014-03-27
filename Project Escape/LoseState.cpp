@@ -10,6 +10,7 @@
 #include "AnimatedSprite.h"
 #include "SoundManager.h"
 #include "GameObject.h"
+#include "GameState.h"
 
 namespace esc
 {
@@ -42,6 +43,8 @@ namespace esc
 		m_xRestartButton = new Button(sf::Vector2f(10, 368), sf::Vector2f(715, 126), false, 0, m_xSpriteManager->loadSprite("RestartButton.png", 0, 0, 715, 126));
 
 		m_xRestartButton->setFunction([&](){
+			m_xStateManager->detachState(StateManager::EStates::GAME);
+			m_xStateManager->attachState(StateManager::EStates::GAME, new GameState(m_xGameObjectManager, m_xStateManager, m_xSpriteManager, m_xEngine, m_xCollisionManager));
 			m_xStateManager->setCurrentState(StateManager::EStates::GAME);
 			if (m_sGameOver != nullptr)
 				m_sGameOver->stop();
@@ -82,8 +85,10 @@ namespace esc
 			{
 				m_xGameObjectManager->updateObjects(&vGameObjects, p_fDeltaTime);
 			}
-			m_xCollisionManager->getCollisionWithPoint(&vGameObjects, sf::Mouse::getPosition(*m_xEngine->m_window));
+			
 		}
+		m_xCollisionManager->getCollisionWithPoint(&m_vGameObjects[MAIN], sf::Mouse::getPosition(*m_xEngine->m_window));
+
 		m_xEngine->m_window->setView(m_xEngine->m_window->getDefaultView());
 	}
 
@@ -98,10 +103,32 @@ namespace esc
 
 	void LoseState::exit()
 	{
-		for (auto vGameObjects : m_vGameObjects)
+		/*for (auto vGameObjects : m_vGameObjects)
 		{
 			m_xGameObjectManager->cleanObjects(&vGameObjects);
 		}
+
+		for (auto object : m_vGameObjects[BACKGROUND])
+		{
+			delete object;
+			object = nullptr;
+		}
+
+		for (auto object : m_vGameObjects[MAIN])
+		{
+			delete object;
+			object = nullptr;
+		}
+
+		for (auto object : m_vGameObjects[FOREGROUND])
+		{
+			delete object;
+			object = nullptr;
+		}*/
+
+		m_vGameObjects[BACKGROUND].clear();
+		m_vGameObjects[MAIN].clear();
+		m_vGameObjects[FOREGROUND].clear();
 	}
 
 	void LoseState::pause()

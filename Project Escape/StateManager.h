@@ -38,6 +38,10 @@ namespace esc
 
 		void drawCurrentState();
 
+		bool m_bHasQueuedChange;
+
+		EStates queuedChange;
+
 	private:
 		EStates m_eCurrentState;
 

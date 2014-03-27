@@ -11,6 +11,7 @@ namespace esc
 	class Animator;
 	class GameObjectManager;
 	class Weapon;
+	class StateManager;
 
 	class PlayerObject : public GameObject
 	{
@@ -19,7 +20,7 @@ namespace esc
 		friend class Garrote;
 
 	public:
-		PlayerObject(Animator *p_xAnimator, sf::Sprite *p_sprite, sf::Vector2f p_position, sf::RenderWindow *p_window, int p_iObjectId, Level *p_xLevel, sf::Clock *p_xTimer, GameObjectManager *p_xGobjManager);
+		PlayerObject(Animator *p_xAnimator, sf::Sprite *p_sprite, sf::Vector2f p_position, sf::RenderWindow *p_window, int p_iObjectId, Level *p_xLevel, sf::Clock *p_xTimer, GameObjectManager *p_xGobjManager, StateManager *p_xStateManager);
 
 		virtual void update(float deltaTime, std::vector<GameObject*> Hideableobjects);
 
@@ -71,6 +72,8 @@ namespace esc
 
 		Weapon *m_xWeapon;
 
+		bool m_bHasCard;
+
 	protected:
 		
 		int m_iCurWep;
@@ -91,7 +94,7 @@ namespace esc
 		std::vector<GameObject*> *m_vStateObjects;
 		std::vector<GameObject*> *m_vRemoveObjects;
 
-		bool m_bHasCard;
+		
 		bool m_bHasObj;
 		bool m_bTutComplete;
 
@@ -101,6 +104,8 @@ namespace esc
 		Animator *m_xAnimator;
 
 		sf::Music *m_sStepMusic;
+
+		StateManager *m_xStateManager;
 	};
 
 }

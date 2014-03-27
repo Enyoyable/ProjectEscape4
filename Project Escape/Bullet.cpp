@@ -1,6 +1,7 @@
 #include "Bullet.h"
 #include "GameObject.h"
 #include "Guard.h"
+#include "PlayerObject.h"
 
 namespace esc
 {
@@ -41,6 +42,10 @@ namespace esc
 			p_vRemoveVector->push_back(this);
 
 			m_v2fMovementVector = sf::Vector2f(0, 0);
+
+			PlayerObject *player = static_cast<PlayerObject*>(m_xShootObject);
+
+			player->m_bHasCard = true;
 
 			return true;
 		}

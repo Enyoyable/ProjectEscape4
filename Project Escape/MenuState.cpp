@@ -8,6 +8,7 @@
 #include "AnimatedSprite.h"
 #include "SoundManager.h"
 #include "GameObject.h"
+#include "GameState.h"
 
 namespace esc
 {
@@ -28,6 +29,8 @@ namespace esc
 		m_xStartButton = new Button(sf::Vector2f(615, 452), sf::Vector2f(715, 126), false, 0, m_xSpriteManager->loadSprite("NG1.png", 0, 0, 715, 126));
 		m_xStartButton->setHoverSprite(m_xSpriteManager->loadAnimatedSprite("NewGameAnim.txt"));
 		m_xStartButton->setFunction([&](){
+			m_xStateManager->detachState(StateManager::EStates::GAME);
+			m_xStateManager->attachState(StateManager::EStates::GAME, new GameState(m_xGameObjectManager, m_xStateManager, m_xSpriteManager, m_xEngine, m_xCollisionManager));
 			m_xStateManager->setCurrentState(StateManager::EStates::GAME);
 			m_sTitle->stop();
 			exit();
@@ -84,9 +87,12 @@ namespace esc
 					m_xGameObjectManager->updateObjects(&vGameObjects, p_fDeltaTime);
 
 				}
-				m_xCollisionManager->getCollisionWithPoint(&vGameObjects, sf::Mouse::getPosition(*m_xEngine->m_window));
+				
 			}
 		}
+
+		m_xCollisionManager->getCollisionWithPoint(&m_vGameObjects[MAIN], sf::Mouse::getPosition(*m_xEngine->m_window));
+
 		m_xEngine->m_window->setView(m_xEngine->m_window->getDefaultView());
 	}
 
@@ -106,10 +112,11 @@ namespace esc
 
 	void MenuState::exit()
 	{
-		for (auto vGameObjects : m_vGameObjects)
-		{
-			m_xGameObjectManager->cleanObjects(&vGameObjects);
-		}
+	
+
+		m_vGameObjects[BACKGROUND].clear();
+		m_vGameObjects[MAIN].clear();
+		m_vGameObjects[FOREGROUND].clear();
 	}
 
 	void MenuState::pause()

@@ -148,6 +148,7 @@ namespace esc
 									m_bHasStarted = false;
 									m_bHasAttacked = false;
 									xPlayer->m_bAngleLocked = false;
+									xPlayer->m_bHasCard = true;
 									xGuard->m_bAngleLocked = false;
 									m_fAttackTimer = 0;
 									m_bAnimationSet = false;
@@ -206,6 +207,7 @@ namespace esc
 									xGuard->m_isDead = true;
 									xGuard->setIsRemoved(true);
 									m_bHasStarted = false;
+									xPlayer->m_bHasCard = true;
 									xPlayer->m_bAngleLocked = false;
 									xGuard->m_bAngleLocked = false;
 									m_fAttackTimer = 0;

@@ -18,7 +18,7 @@ namespace esc
 	class GameState : public State
 	{
 	public:
-		GameState(GameObjectManager *p_xGameObjectManager, StateManager *p_xStateManager, SpriteManager *p_xSpriteManager, Engine *p_xEngine, CollisionManager *p_xCollisionManager, Level *p_xLevel);
+		GameState(GameObjectManager *p_xGameObjectManager, StateManager *p_xStateManager, SpriteManager *p_xSpriteManager, Engine *p_xEngine, CollisionManager *p_xCollisionManager);
 
 		virtual void init();
 

@@ -36,7 +36,7 @@ namespace esc
 	{
 		sf::ContextSettings settings;
 		settings.antialiasingLevel = 8;
-		m_window = new sf::RenderWindow(sf::VideoMode(1920, 1080), "Plans of Futura", sf::Style::Default, settings);
+		m_window = new sf::RenderWindow(sf::VideoMode(1920, 1080), "Plans of Futura", sf::Style::Fullscreen, settings);
 		m_window->setFramerateLimit(60);
 		m_window->setVerticalSyncEnabled(true);
 	}
@@ -65,24 +65,18 @@ namespace esc
 
 		sf::Sprite *sprite = spriteManager.loadSprite("spy.txt");
 
-		Level level("../resources/level/", &spriteManager, xGameObjectManager);
-
 		sf::Clock timer;
 
 		Animator *animator = new Animator(&spriteManager, "../resources/Spritesheets/");
 
-		PlayerObject *pObj = xGameObjectManager->createPlayer(animator, sprite, sf::Vector2f(64 * 17, 64 * 8), m_window, 1, &level, &timer);
+		PlayerObject *pObj = xGameObjectManager->createPlayer(animator, sprite, sf::Vector2f(64 * 17, 64 * 8), m_window, 1, nullptr, &timer, xStateManager);
 		objects.push_back(pObj);
 		
-		level.loadColorCodes("colorcodes.txt");
-		level.loadFloorColorCodes("floorcolorcodes.txt");
-		level.getRotationsPaths("rotate.txt");
-		level.create("level.png", "patrol.txt");
-		level.createFloor("FirstFloor.png");
+		
 		
 		xStateManager->attachState(StateManager::WIN, new WinState(xGameObjectManager, xStateManager, &spriteManager, this, xCollisionManager));
 		xStateManager->attachState(StateManager::LOSE, new LoseState(xGameObjectManager, xStateManager, &spriteManager, this, xCollisionManager));
-		xStateManager->attachState(StateManager::GAME, new GameState(xGameObjectManager, xStateManager, &spriteManager, this, xCollisionManager, &level));
+		xStateManager->attachState(StateManager::GAME, new GameState(xGameObjectManager, xStateManager, &spriteManager, this, xCollisionManager));
 		xStateManager->attachState(StateManager::MENU, new MenuState(xGameObjectManager, xStateManager, &spriteManager, this, xCollisionManager));
 		
 
@@ -98,11 +92,6 @@ namespace esc
 				if (event.type == sf::Event::Closed)
 				{
 					m_window->close();
-				}
-
-				if (event.key.code == sf::Keyboard::R)
-				{
-					level.reset();
 				}
 
 				if (event.key.code == sf::Keyboard::Escape)
@@ -129,9 +118,6 @@ namespace esc
 			StateManager::EStates firststate = xStateManager->getCurrentState();
 
 			xStateManager->updateCurrentState(fDeltaTime);
-			
-			if (level.getStateNum() != xStateManager->getCurrentState())
-				level.setStateNum(xStateManager->getCurrentState());
 
 			m_window->clear();
 

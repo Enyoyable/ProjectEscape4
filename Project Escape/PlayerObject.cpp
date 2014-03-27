@@ -15,11 +15,12 @@
 #include "SoundRipple.h"
 #include "SoundManager.h"
 #include "Door.h"
+#include "StateManager.h"
 
 namespace esc
 {
 
-	PlayerObject::PlayerObject(Animator *p_xAnimator, sf::Sprite *sprite, sf::Vector2f position, sf::RenderWindow *window, int p_iObjectId, Level *p_xLevel, sf::Clock *p_xTimer, GameObjectManager *p_xGobjManager)
+	PlayerObject::PlayerObject(Animator *p_xAnimator, sf::Sprite *sprite, sf::Vector2f position, sf::RenderWindow *window, int p_iObjectId, Level *p_xLevel, sf::Clock *p_xTimer, GameObjectManager *p_xGobjManager, StateManager *p_xStateManager)
 		: GameObject(position, sf::Vector2f(64, 64), false, p_iObjectId, PLAYER, sprite)
 	{
 		m_hiding = false;
@@ -32,6 +33,8 @@ namespace esc
 		m_sneakspeed = 2.0f;
 		m_fTimehidden = 0.0f;
 		m_fTimeUnhidden = 0.0f;
+
+		m_xStateManager = p_xStateManager;
 
 		m_sStepMusic = nullptr;
 
@@ -84,6 +87,13 @@ namespace esc
 
 	void PlayerObject::update(float deltaTime, std::vector<GameObject*> objects)
 	{
+		if (m_bAngleLocked)
+		{
+			m_xAnimator->update(deltaTime);
+			if (m_xWeapon != nullptr)
+				m_xWeapon->update(deltaTime);
+			return;
+		}
 
 		bool bIsWalking = false;
 
@@ -657,11 +667,14 @@ namespace esc
 				return false;
 
 
-			m_xLevel->setStateNum(2);
+			m_xStateManager->m_bHasQueuedChange = true;
+			m_xStateManager->queuedChange = StateManager::LOSE;
+
 		}
 		else if (p_oObject->getType() == EXIT)
 		{
-			m_xLevel->setStateNum(3);
+			m_xStateManager->m_bHasQueuedChange = true;
+			m_xStateManager->queuedChange = StateManager::WIN;
 		}
 
 		return false;

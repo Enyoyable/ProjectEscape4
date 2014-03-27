@@ -7,10 +7,14 @@ namespace esc
 	StateManager::StateManager()
 	{
 		//m_eCurrentState = EStates::MENU;
+
+		m_bHasQueuedChange = false;
 	}
 
 	void StateManager::setCurrentState(EStates p_eNewState)
 	{
+		if (m_mStates.find(m_eCurrentState)->second != nullptr)
+			m_mStates.find(m_eCurrentState)->second->exit();
 		m_eCurrentState = p_eNewState;
 		m_mStates.find(m_eCurrentState)->second->init();
 	}
@@ -38,7 +42,15 @@ namespace esc
 
 	void StateManager::updateCurrentState(float p_fDeltaTime)
 	{
+		
 		m_mStates.find(m_eCurrentState)->second->update(p_fDeltaTime);
+
+		if (m_bHasQueuedChange)
+		{
+			setCurrentState(queuedChange);
+			m_bHasQueuedChange = false;
+		}
+		
 	}
 
 	void StateManager::drawCurrentState()

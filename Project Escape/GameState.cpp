@@ -21,23 +21,37 @@
 namespace esc
 {
 
-	GameState::GameState(GameObjectManager *p_xGameObjectManager, StateManager *p_xStateManager, SpriteManager *p_xSpriteManager, Engine *p_xEngine, CollisionManager *p_xCollisionManager, Level *p_xLevel)
+	GameState::GameState(GameObjectManager *p_xGameObjectManager, StateManager *p_xStateManager, SpriteManager *p_xSpriteManager, Engine *p_xEngine, CollisionManager *p_xCollisionManager)
 	{
 		m_xGameObjectManager = p_xGameObjectManager;
 		m_xStateManager = p_xStateManager;
 		m_xSpriteManager = p_xSpriteManager;
 		m_xEngine = p_xEngine;
-		m_xLevel = p_xLevel;
 		m_fRippleTimer = 0;
 		m_tTimer = sf::Time();
+		m_xLevel = nullptr;
 	}
 
 	void GameState::init()
 	{
+		if (m_xLevel != nullptr)
+		{
+			delete m_xLevel;
+			m_xLevel = nullptr;
+		}
+
+		m_xLevel = new Level("../resources/level/", m_xSpriteManager, m_xGameObjectManager);
+
+		m_xLevel->loadColorCodes("colorcodes.txt");
+		m_xLevel->loadFloorColorCodes("floorcolorcodes.txt");
+		m_xLevel->getRotationsPaths("rotate.txt");
+		m_xLevel->create("level.png", "patrol.txt");
+		m_xLevel->createFloor("FirstFloor.png");
+
 		sf::Clock *xTimer = new sf::Clock;
 		m_cClock = sf::Clock();
 		//m_xPlayer = m_xGameObjectManager->createPlayer(m_xSpriteManager->loadSprite("spy.txt"), sf::Vector2f(64 * 48, 64 * 8), m_xEngine->m_window, 1, m_xLevel, xTimer);
-		m_xPlayer = m_xGameObjectManager->createPlayer(new Animator(m_xSpriteManager, "../resources/Spritesheets/"), m_xSpriteManager->loadAnimatedSprite("Spy_walk.txt"), sf::Vector2f(64 * 48, 64 * 8), m_xEngine->m_window, 1, m_xLevel, xTimer);
+		m_xPlayer = m_xGameObjectManager->createPlayer(new Animator(m_xSpriteManager, "../resources/Spritesheets/"), m_xSpriteManager->loadAnimatedSprite("Spy_walk.txt"), sf::Vector2f(64 * 48, 64 * 8), m_xEngine->m_window, 1, m_xLevel, xTimer, m_xStateManager);
 		m_vGameObjects[MAIN].push_back(m_xPlayer);
 
 		m_vGameObjects[MAIN].insert(m_vGameObjects[MAIN].end(), m_xLevel->getObjects()->begin(), m_xLevel->getObjects()->end());
@@ -46,14 +60,14 @@ namespace esc
 		//kommentar
 		m_xView->reset(sf::FloatRect(0, 0, 1920 * 1, 1080 * 1));
 
-		m_xPlayer->m_xWeapon = new Gun(true, 2, 1.f, 1.f, &m_vGameObjects[MAIN], m_xGameObjectManager, m_xSpriteManager);
-		m_xPlayer->m_xWeapon->setAttachedObject(m_xPlayer);
+		/*m_xPlayer->m_xWeapon = new Gun(true, 2, 1.f, 1.f, &m_vGameObjects[MAIN], m_xGameObjectManager, m_xSpriteManager);
+		m_xPlayer->m_xWeapon->setAttachedObject(m_xPlayer);*/
 
 		/*m_xPlayer->m_xWeapon = new Baton(true, 10, 1.f, 1.f, &m_vGameObjects[MAIN], m_xLevel, m_xGameObjectManager, m_xSpriteManager);
 		m_xPlayer->m_xWeapon->setAttachedObject(m_xPlayer);*/
 
-		/*m_xPlayer->m_xWeapon = new Garrote(1.f, 2.5f, &m_vGameObjects[MAIN]);
-		m_xPlayer->m_xWeapon->setAttachedObject(m_xPlayer);*/
+		m_xPlayer->m_xWeapon = new Garrote(1.f, 2.5f, &m_vGameObjects[MAIN]);
+		m_xPlayer->m_xWeapon->setAttachedObject(m_xPlayer);
 
 		SoundManager soundmanager("../resources/Music/");
 		m_sIngame = soundmanager.getMusic("Ingame.ogg");
@@ -137,7 +151,7 @@ namespace esc
 			++iter;
 		}
 		
-		if (m_xLevel->getStateNum() != 1)
+		/*if (m_xLevel->getStateNum() != 1)
 		{
 			if (m_xLevel->getStateNum() == 0)
 			{
@@ -154,7 +168,7 @@ namespace esc
 				m_xStateManager->setCurrentState(StateManager::WIN);
 				exit();
 			}
-		}
+		}*/
 	}
 
 	void GameState::draw()
@@ -171,10 +185,32 @@ namespace esc
 
 	void GameState::exit()
 	{
-		for (auto vGameObjects : m_vGameObjects)
+		/*for (auto vGameObjects : m_vGameObjects)
 		{
 			m_xGameObjectManager->cleanObjects(&vGameObjects);
 		}
+
+		for (auto object : m_vGameObjects[BACKGROUND])
+		{
+			delete object;
+			object = nullptr;
+		}
+
+		for (auto object : m_vGameObjects[MAIN])
+		{
+			delete object;
+			object = nullptr;
+		}
+
+		for (auto object : m_vGameObjects[FOREGROUND])
+		{
+			delete object;
+			object = nullptr;
+		}*/
+
+		m_vGameObjects[BACKGROUND].clear();
+		m_vGameObjects[MAIN].clear();
+		m_vGameObjects[FOREGROUND].clear();
 	}
 
 	void GameState::pause()

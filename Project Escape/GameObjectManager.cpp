@@ -101,7 +101,7 @@ namespace esc
 		return new Guard(p_v2fPosition, p_v2fSize, p_bInteractable, m_iCurrentObjectId++, m_xPlayerObject, this, p_xLevel, nullptr, p_xSprite);
 	}
 
-	PlayerObject *GameObjectManager::createPlayer(Animator *p_xAnimator, sf::Sprite *p_sprite, sf::Vector2f p_position, sf::RenderWindow *p_window, int p_iObjectId, Level *level, sf::Clock *p_xTimer)
+	PlayerObject *GameObjectManager::createPlayer(Animator *p_xAnimator, sf::Sprite *p_sprite, sf::Vector2f p_position, sf::RenderWindow *p_window, int p_iObjectId, Level *level, sf::Clock *p_xTimer, StateManager *p_xStateManager)
 	{
 		if (m_xPlayerObject != nullptr)
 		{
@@ -109,7 +109,7 @@ namespace esc
 			m_xPlayerObject = nullptr;
 		}
 
-		m_xPlayerObject = new PlayerObject(p_xAnimator, p_sprite, p_position, p_window, m_iCurrentObjectId++, level, p_xTimer, this);
+		m_xPlayerObject = new PlayerObject(p_xAnimator, p_sprite, p_position, p_window, m_iCurrentObjectId++, level, p_xTimer, this, p_xStateManager);
 		return m_xPlayerObject;
 	}
 
