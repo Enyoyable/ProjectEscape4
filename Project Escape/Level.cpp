@@ -572,7 +572,7 @@ namespace esc
 					if (obj->getType() == WALL)
 					{
 						if (!upFree && !downFree && !leftFree && !rightFree)
-							obj->setSprite(m_xSpriteManager->loadSprite("Wall black.png", 0, 0, 64, 64));
+							obj->setSprite(m_xSpriteManager->loadSprite("Wall grey.png", 0, 0, 64, 64));
 						else if (upFree && downFree && !leftFree && rightFree)
 							obj->setSprite(m_xSpriteManager->loadSprite("Wall 5.png", 0, 0, 64, 64));
 						else if (upFree && !downFree && leftFree && rightFree)

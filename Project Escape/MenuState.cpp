@@ -36,17 +36,7 @@ namespace esc
 			exit();
 		});
 
-		m_xCreditsButton = new Button(sf::Vector2f(615, 577), sf::Vector2f(715, 126), false, 0, m_xSpriteManager->loadSprite("Cred1.png", 0, 0, 715, 126));
-
-		m_xCreditsButton->setHoverSprite(m_xSpriteManager->loadAnimatedSprite("CredAnim.txt"));
-
-		m_xCreditsButton->setOrigin(0, 0);
-
-		m_xCreditsButton->setFunction([&](){
-		//stuff
-		});
-
-		m_xExitButton = new Button(sf::Vector2f(615, 702), sf::Vector2f(715, 126), false, 0, m_xSpriteManager->loadSprite("Exit1.png", 0, 0, 715, 126));
+		m_xExitButton = new Button(sf::Vector2f(615, 602), sf::Vector2f(715, 126), false, 0, m_xSpriteManager->loadSprite("Exit1.png", 0, 0, 715, 126));
 
 		m_xExitButton->setFunction([&](){
 			m_xEngine->m_window->close();
@@ -58,7 +48,6 @@ namespace esc
 
 		m_vGameObjects[MAIN].push_back(m_xMenuBack);
 		m_vGameObjects[MAIN].push_back(m_xStartButton);
-		m_vGameObjects[MAIN].push_back(m_xCreditsButton);
 		m_vGameObjects[MAIN].push_back(m_xExitButton);
 
 

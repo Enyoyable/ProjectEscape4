@@ -98,16 +98,6 @@ namespace esc
 				{
 					m_window->close();
 				}
-
-				if (event.key.code == sf::Keyboard::Y)
-				{
-					xStateManager->setCurrentState(StateManager::LOSE);
-				}
-				if (event.key.code == sf::Keyboard::U)
-				{
-					xStateManager->setCurrentState(StateManager::WIN);
-				}
-					
 			}
 
 			float fDeltaTime = clock.restart().asSeconds();
