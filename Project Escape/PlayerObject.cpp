@@ -60,7 +60,7 @@ namespace esc
 		m_xWeapon = nullptr;
 
 		m_vStateObjects = nullptr;
-		
+
 		m_vRemoveObjects = new std::vector<GameObject*>();
 
 		m_xAnimator = p_xAnimator;
@@ -86,7 +86,7 @@ namespace esc
 	{
 
 		bool bIsWalking = false;
-		
+
 		if (m_xWeapon->getAttachedObject() == nullptr)
 			m_xWeapon->setAttachedObject(this);
 
@@ -185,7 +185,7 @@ namespace esc
 					m_xAnimator->setCurrentAnimation("Spy_sneak.txt");
 					bIsWalking = true;
 				}
-					
+
 				else
 				{
 					bIsWalking = true;
@@ -226,7 +226,7 @@ namespace esc
 				}
 			}
 			if (!m_bAngleLocked)
-			setRotation(calcAngle(sf::Mouse::getPosition(*p_window).x + getPosition().x - p_window->getSize().x * 0.5, sf::Mouse::getPosition(*p_window).y + getPosition().y - p_window->getSize().y * 0.5));
+				setRotation(calcAngle(sf::Mouse::getPosition(*p_window).x + getPosition().x - p_window->getSize().x * 0.5, sf::Mouse::getPosition(*p_window).y + getPosition().y - p_window->getSize().y * 0.5));
 		}
 
 		if (m_hiding == true)
@@ -248,7 +248,7 @@ namespace esc
 		m_bLblock = false;
 		m_bUblock = false;
 		m_bDblock = false;
-		
+
 		if (m_xWeapon != nullptr)
 			m_xWeapon->update(deltaTime);
 
@@ -274,7 +274,7 @@ namespace esc
 				Attack();
 				sf::Vector2f ripplePosition = getPosition();
 
-				
+
 
 				ripplePosition.x -= cosf((getRotation() - 180) * 0.0174532925) * 60;
 				ripplePosition.y -= sinf((getRotation() - 180) * 0.0174532925) * 60;
@@ -298,7 +298,7 @@ namespace esc
 
 				sf::Vector2f ripplePosition = getPosition();
 
-				
+
 
 				ripplePosition.x -= cosf((getRotation() - 180) * 0.0174532925) * 16;
 				ripplePosition.y -= sinf((getRotation() - 180) * 0.0174532925) * 16;
@@ -306,7 +306,7 @@ namespace esc
 				SoundRipple *ripple = new SoundRipple(ripplePosition, 8, 150, 1.f);
 				m_vStateObjects->insert(m_vStateObjects->begin(), ripple);
 
-				
+
 
 				if (m_sStepMusic == nullptr)
 				{
@@ -314,21 +314,19 @@ namespace esc
 					m_sStepMusic = soundmanager.getMusic("steps.wav");
 					m_sStepMusic->setVolume(100.0f);
 					m_sStepMusic->setLoop(false);
-					
+
 				}
 
 				m_sStepMusic->play();
 
 
 			}
-<<<<<<< HEAD
-			m_vRemoveObjects.clear();
-		}*/
-
+			m_vRemoveObjects->clear();
+		}
 		if (m_bTutComplete != true)
 		{
 			if (getPosition().x < 49 * 64)
-			m_xLevel->handleTutObjects(1, true);
+				m_xLevel->handleTutObjects(1, true);
 
 			if (getPosition().y > 9 * 64)
 			{
@@ -344,7 +342,7 @@ namespace esc
 				m_xLevel->handleTutObjects(3, true);
 			else
 				m_xLevel->handleTutObjects(3, false);
-			
+
 			if (getPosition().x > 60 * 64 || getPosition().y > 14 * 64)
 				m_xLevel->handleTutObjects(3, false);
 
@@ -368,9 +366,7 @@ namespace esc
 			}
 			if (getPosition().y > 19 * 64)
 				m_bTutComplete = true;
-=======
-			
->>>>>>> 45c0612b50f424944da1b53a50684c4efcb4882c
+
 		}
 	}
 
@@ -517,7 +513,7 @@ namespace esc
 				}
 
 			}
-			
+
 		}
 	}
 
@@ -535,7 +531,7 @@ namespace esc
 		}
 		else if (m_xWeapon->getCurrentWeaponType() == EWeaponType::WEAPONGUN)
 		{
-			
+
 			Gun *gun = static_cast<Gun*>(m_xWeapon);
 			gun->setTarget(sf::Vector2f(sf::Mouse::getPosition(*p_window)) + getPosition() - sf::Vector2f(960, 540));
 			gun->attack();
@@ -655,7 +651,7 @@ namespace esc
 			if (fabs(xDiff) > 25 || fabs(yDiff) > 25)
 				return false;
 
-			
+
 			m_xLevel->setStateNum(2);
 		}
 		else if (p_oObject->getType() == EXIT)
