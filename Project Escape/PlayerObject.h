@@ -16,6 +16,7 @@ namespace esc
 	{
 
 		friend class Baton;
+		friend class Garrote;
 
 	public:
 		PlayerObject(Animator *p_xAnimator, sf::Sprite *p_sprite, sf::Vector2f p_position, sf::RenderWindow *p_window, int p_iObjectId, Level *p_xLevel, sf::Clock *p_xTimer, GameObjectManager *p_xGobjManager);

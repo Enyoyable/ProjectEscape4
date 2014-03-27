@@ -5,6 +5,8 @@
 #include "PlayerObject.h"
 #include "Level.h"
 #include "AIManager.h"
+#include "Guard.h"
+#include "Animator.h"
 
 namespace esc
 {
@@ -73,6 +75,8 @@ namespace esc
 		m_fSearchTimer = 0;
 
 		setPeriodAngles();
+
+		m_xGuard->getAnimator()->setCurrentAnimation("guard_idle.txt");
 	}
 
 	void AIStateSearching::exit()

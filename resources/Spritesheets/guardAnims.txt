@@ -1,0 +1,3 @@
+guard_idle.txt
+guard_run.txt
+guard_walking.txt

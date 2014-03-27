@@ -38,6 +38,8 @@ namespace esc
 
 		GameObject *getAttachedObject();
 
+		int m_iCurrentCharges;
+
 	protected:
 		EWeaponType m_eCurrentWeaponType;
 
@@ -55,7 +57,7 @@ namespace esc
 
 		bool m_bHasCharges;
 
-		int m_iCurrentCharges;
+		
 
 		int m_iMaxCharges;
 

@@ -35,7 +35,7 @@ namespace esc
 
 		m_sStepMusic = nullptr;
 
-		m_iCurWep = 2;
+		m_iCurWep = 0;
 		m_bHasCard = true;
 
 		m_bRblock = false;
@@ -270,15 +270,29 @@ namespace esc
 		{
 			if (m_xAnimator->getCurrentAnimation()->getIsTrigger())
 			{
-				Attack();
-				sf::Vector2f ripplePosition = getPosition();
+				if (m_xWeapon->m_iCurrentCharges > 0)
+				{
+					sf::Vector2f ripplePosition = getPosition();
+					ripplePosition.x -= cosf((getRotation() - 180) * 0.0174532925) * 60;
+					ripplePosition.y -= sinf((getRotation() - 180) * 0.0174532925) * 60;
+					SoundRipple *ripple = new SoundRipple(ripplePosition, 8, 700, 0.7f);
+					m_vStateObjects->insert(m_vStateObjects->begin(), ripple);
+					Attack();
+				}
+				else
+				{
+					delete m_xWeapon;
+					m_xWeapon = nullptr;
+					m_xWeapon = new Garrote(1.f, 2.5f, m_vStateObjects);
+					m_xWeapon->setAttachedObject(this);
+				}
+
+				
+				
 
 				
 
-				ripplePosition.x -= cosf((getRotation() - 180) * 0.0174532925) * 60;
-				ripplePosition.y -= sinf((getRotation() - 180) * 0.0174532925) * 60;
-				SoundRipple *ripple = new SoundRipple(ripplePosition, 8, 700, 0.7f);
-				m_vStateObjects->insert(m_vStateObjects->begin(), ripple);
+				
 			}
 		}
 
@@ -352,10 +366,8 @@ namespace esc
 	{
 		setPosition(m_startpos);
 		m_xTimer->restart();
-		m_xWeapon = new Gun(true, 2, 1.f, 1.f, m_xLevel->getObjects(), m_xGobjManager, m_xLevel->getSpriteManager());
-		m_iCurWep = 2;
-
-
+		m_xWeapon = new Garrote(1.f, 2.5f, m_xLevel->getObjects());
+		m_iCurWep = 0;
 	}
 
 	void PlayerObject::setcurwep(int newWep)

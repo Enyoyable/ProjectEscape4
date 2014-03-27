@@ -5,6 +5,7 @@
 #include "PlayerObject.h"
 #include "AIManager.h"
 #include "Level.h"
+#include "Animator.h"
 
 namespace esc
 {
@@ -20,10 +21,14 @@ namespace esc
 		if (!m_bHasReturned)
 		{
 			m_bHasReturned = m_xGuard->followPath(p_fDeltaTime);
+			m_xGuard->getAnimator()->setCurrentAnimation("guard_walking.txt");
+
 		}
 		else if(m_xGuard->getIsRotating())
 		{
 			m_xGuard->updateRotation(p_fDeltaTime);
+
+			m_xGuard->getAnimator()->setCurrentAnimation("guard_idle.txt");
 		}
 		
 	}
@@ -47,6 +52,8 @@ namespace esc
 		std::vector<sf::Vector2f*> path(xPathFind.pathToPosition(m_xGuard, &m_xGuard->m_v2fStartPosition));
 
 		m_xGuard->setFollowPath(path);
+
+		m_xGuard->getAnimator()->setCurrentAnimation("guard_idle.txt");
 	}
 
 	void AIStateStationary::exit()

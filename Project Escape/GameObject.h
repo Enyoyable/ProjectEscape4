@@ -7,6 +7,7 @@ namespace esc
 	
 	class Corner;
 	class DrawManager;
+	class AnimatedSprite;
 
 	enum EObjectType
 	{
@@ -84,6 +85,8 @@ namespace esc
 
 		bool m_bAngleLocked;
 
+		void setAnimation(AnimatedSprite *p_xAnimatedSprite);
+
 	protected:
 		sf::Sprite *m_xSprite;
 
@@ -99,7 +102,9 @@ namespace esc
 
 		EObjectType m_eObjectType;
 
-		
+		AnimatedSprite *m_xAnimatedSprite;
+
+		bool m_bHasAnimation;
 	};
 }
 

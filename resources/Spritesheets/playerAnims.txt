@@ -3,3 +3,4 @@ Spy_walk.txt
 Spy_sneak.txt
 Spy_shot.txt
 Spy_baton.txt
+spy_strangle.txt

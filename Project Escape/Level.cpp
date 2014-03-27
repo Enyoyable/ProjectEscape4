@@ -255,6 +255,13 @@ namespace esc
 									xNode->setIllegal(true);
 									break;
 				}
+				case esc::PDA:
+				{
+									GameObject *obj = m_xGameObjectManager->createObject(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, EObjectType::WALL, m_xSpriteManager->loadSprite("Toalett_NoBackF.png", 0, 0, 64, 64));
+									m_vLevelObjects.push_back(obj);
+									obj->setAnimation(m_xSpriteManager->loadAnimatedSprite("PDAanim.txt"));
+									break;
+				}
 				case esc::URINAL:
 				{
 									GameObject *obj = m_xGameObjectManager->createObject(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, EObjectType::WALL, m_xSpriteManager->loadSprite("Pissoar_NoBackL.png", 0, 0, 64, 64));

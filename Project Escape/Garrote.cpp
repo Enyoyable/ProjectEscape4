@@ -2,6 +2,7 @@
 #include "PlayerObject.h"
 #include "Guard.h"
 #include "SoundRipple.h"
+#include "Animator.h"
 
 namespace esc
 {
@@ -11,6 +12,8 @@ namespace esc
 		m_bHasStarted = false;
 		m_bHasAttacked = false;
 		m_fSoundTimer = 0;
+
+		m_bAnimationSet = false;
 	}
 
 	void Garrote::update(float fDeltaTime)
@@ -113,6 +116,8 @@ namespace esc
 
 							if (fabs(fGuardRotation - fMiddleAngle) < fAttackWidth)
 							{
+								
+
 								m_bHasStarted = true;
 								fGuardRotation += 180;
 								m_bHasAttacked = true;
@@ -127,6 +132,15 @@ namespace esc
 								xPlayer->setPosition(xGuard->getPosition() + guardDirection);
 								xPlayer->m_bAngleLocked = true;
 								xGuard->m_bAngleLocked = true;
+
+								if (!m_bAnimationSet)
+								{
+									PlayerObject *xPlayer = static_cast<PlayerObject*>(m_xAttachedObject);
+
+									xPlayer->m_xAnimator->setForcedAnimation("spy_strangle.txt");
+									m_bAnimationSet = true;
+								}
+
 								if (p_bIsFinished)
 								{
 									xGuard->m_isDead = true;
@@ -136,12 +150,17 @@ namespace esc
 									xPlayer->m_bAngleLocked = false;
 									xGuard->m_bAngleLocked = false;
 									m_fAttackTimer = 0;
+									m_bAnimationSet = false;
 								}
 								return;
 							}
 
 							
 						}
+					}
+					else
+					{
+						m_bHasFired = false;
 					}
 				}
 				else
@@ -172,6 +191,14 @@ namespace esc
 								xPlayer->setPosition(xGuard->getPosition() + guardDirection);
 								xPlayer->m_bAngleLocked = true;
 								xGuard->m_bAngleLocked = true;
+
+								if (!m_bAnimationSet)
+								{
+									PlayerObject *xPlayer = static_cast<PlayerObject*>(m_xAttachedObject);
+
+									xPlayer->m_xAnimator->setForcedAnimation("spy_strangle.txt");
+									m_bAnimationSet = true;
+								}
 								
 								if (p_bIsFinished)
 								{
@@ -182,6 +209,7 @@ namespace esc
 									xPlayer->m_bAngleLocked = false;
 									xGuard->m_bAngleLocked = false;
 									m_fAttackTimer = 0;
+									m_bAnimationSet = false;
 								}
 								
 								return;
@@ -189,6 +217,10 @@ namespace esc
 
 							
 						}
+					}
+					else
+					{
+						m_bHasFired = false;
 					}
 				}
 			}

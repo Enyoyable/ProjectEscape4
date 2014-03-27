@@ -13,6 +13,7 @@ namespace esc
 	class Level;
 	class PathFind;
 	class SoundRipple;
+	class Animator;
 
 	class Guard : public GameObject
 	{
@@ -93,6 +94,10 @@ namespace esc
 
 		bool checkWalls(float p_fAngleToPlayer, float p_fDistanceToPlayer);
 
+		void attachAnimator(Animator *p_xAnimator);
+
+		Animator *getAnimator();
+
 	private:
 		bool m_bIsPatrolling;
 
@@ -151,6 +156,8 @@ namespace esc
 		sf::CircleShape *m_xTarget;
 
 		float m_fMovementSpeed;
+
+		Animator *m_xAnimator;
 	};
 
 }

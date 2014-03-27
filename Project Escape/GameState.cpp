@@ -52,7 +52,7 @@ namespace esc
 		/*m_xPlayer->m_xWeapon = new Baton(true, 10, 1.f, 1.f, &m_vGameObjects[MAIN], m_xLevel, m_xGameObjectManager, m_xSpriteManager);
 		m_xPlayer->m_xWeapon->setAttachedObject(m_xPlayer);*/
 
-		/*m_xPlayer->m_xWeapon = new Garrote(1.f, 3.f, &m_vGameObjects[MAIN], m_xGameObjectManager, m_xSpriteManager);
+		/*m_xPlayer->m_xWeapon = new Garrote(1.f, 2.5f, &m_vGameObjects[MAIN]);
 		m_xPlayer->m_xWeapon->setAttachedObject(m_xPlayer);*/
 
 		SoundManager soundmanager("../resources/Music/");
@@ -72,6 +72,8 @@ namespace esc
 				Guard *guard = static_cast<Guard*>(obj);
 
 				guard->attachAi(new AIManager(guard, m_xLevel, m_xPlayer));
+
+				guard->attachAnimator(new Animator(m_xSpriteManager, "../resources/Spritesheets/"));
 
 				if (guard->getIsRotating())
 					guard->m_xAIManager->forceCurrentState(AIManager::STATIONARY);

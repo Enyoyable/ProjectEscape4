@@ -6,6 +6,8 @@
 #include "SoundRipple.h"
 #include "Level.h"
 #include "CollisionManager.h"
+#include "Animator.h"
+#include "AnimatedSprite.h"
 
 namespace esc
 {
@@ -50,11 +52,12 @@ namespace esc
 		m_xLevel = p_xlevel;
 
 		m_xLastRipple = nullptr;
-		m_fMovementSpeed = 0.0f;
+		m_fMovementSpeed = 60.0f;
 
 		m_bOriginalVisionRangeSet = false;
 
 		m_bOriginalVisionSizeSet = false;
+		m_xAnimator = nullptr;
 	}
 
 	void Guard::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -112,11 +115,13 @@ namespace esc
 
 		
 
-
-		target.draw(&vertices[0], vertices.size(), sf::TrianglesFan);
+		if (!m_bAngleLocked)
+			target.draw(&vertices[0], vertices.size(), sf::TrianglesFan);
 
 		states.transform *= getTransform();
-		target.draw(*m_xSprite, states);
+
+		if (!m_bAngleLocked)
+			target.draw(*m_xAnimator->getCurrentAnimation(), states);
 	}
 
 	void Guard::update(float p_fDeltaTime)
@@ -131,6 +136,8 @@ namespace esc
 			return;
 			
 		m_xAIManager->update(p_fDeltaTime);
+
+		m_xAnimator->update(p_fDeltaTime);
 
 		/*m_bIsChasing = false;
 
@@ -801,5 +808,19 @@ namespace esc
 	float Guard::getMovementSpeed()
 	{
 		return m_fMovementSpeed;
+	}
+
+	void Guard::attachAnimator(Animator *p_xAnimator)
+	{
+		m_xAnimator = p_xAnimator;
+
+		m_xAnimator->loadAnimations("guardAnims.txt");
+
+		m_xAnimator->setCurrentAnimation("guard_idle.txt");
+	}
+
+	Animator *Guard::getAnimator()
+	{
+		return m_xAnimator;
 	}
 }

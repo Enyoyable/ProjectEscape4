@@ -40,6 +40,13 @@ namespace esc
 
 	void Gun::attack()
 	{
+		if (m_iCurrentCharges > 0)
+		{
+			m_iCurrentCharges--;
+		}
+		else
+			return;
+
 		Bullet *bullet = new Bullet(m_xAttachedObject->getPosition(), sf::Vector2f(44, 5), m_v2fTarget, m_xAttachedObject, m_xSpriteManager->loadSprite("bullet.png", 0, 0, 44, 5));
 		m_vObjects->push_back(bullet);
 

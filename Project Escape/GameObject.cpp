@@ -2,6 +2,7 @@
 
 #include "GameObject.h"
 #include "Corner.h"
+#include "AnimatedSprite.h"
 
 namespace esc
 {
@@ -25,6 +26,10 @@ namespace esc
 		m_bIsRemoved = false;
 
 		m_bAngleLocked = false;
+
+		m_bHasAnimation = false;
+
+		m_xAnimatedSprite = nullptr;
 	}
 
 	void GameObject::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -35,6 +40,12 @@ namespace esc
 		}
 		states.transform *= getTransform();
 
+		if (m_bHasAnimation)
+		{
+			target.draw(*m_xAnimatedSprite, states);
+			return;
+		}
+
 		if (m_xSprite != nullptr)
 		target.draw(*m_xSprite, states);
 	}
@@ -44,6 +55,9 @@ namespace esc
 		if (m_bIsRemoved)
 			return;
 		createCorners();
+
+		if (m_bHasAnimation)
+			m_xAnimatedSprite->update(deltaTime);
 	}
 
 	void GameObject::setSprite(sf::Sprite *p_xSprite)
@@ -146,5 +160,11 @@ namespace esc
 	bool GameObject::getIsRemoved()
 	{
 		return m_bIsRemoved;
+	}
+
+	void GameObject::setAnimation(AnimatedSprite *p_xAnimatedSprite)
+	{
+		m_xAnimatedSprite = p_xAnimatedSprite;
+		m_bHasAnimation = true;
 	}
 }

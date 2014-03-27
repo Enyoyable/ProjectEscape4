@@ -5,6 +5,7 @@
 #include "PlayerObject.h"
 #include "AIManager.h"
 #include "Level.h"
+#include "Animator.h"
 
 namespace esc
 {
@@ -23,6 +24,8 @@ namespace esc
 		else if (m_xGuard->getIsPatrolling())
 		{
 			m_xGuard->updatePatrolling(p_fDeltaTime);
+
+			m_xGuard->getAnimator()->setCurrentAnimation("guard_walking.txt");
 		}
 	}
 
@@ -46,6 +49,8 @@ namespace esc
 		m_xGuard->setFollowPath(xPathFind.pathToPosition(m_xGuard, &m_xGuard->m_v2fStartPosition));
 
 		m_xGuard->setMovementSpeed(120.f);
+
+		m_xGuard->getAnimator()->setCurrentAnimation("guard_walking.txt");
 	}
 
 	void AIStatePatrolling::exit()

@@ -24,6 +24,8 @@ namespace esc
 		bool m_bHasAttacked;
 
 		float m_fSoundTimer;
+
+		bool m_bAnimationSet;
 	};
 
 }

@@ -5,6 +5,7 @@
 #include "PlayerObject.h"
 #include "AIManager.h"
 #include "Level.h"
+#include "Animator.h"
 
 namespace esc
 {
@@ -100,7 +101,6 @@ namespace esc
 			{
 				m_xAiManager->setCurrentState(AIManager::STATIONARY);
 			}
-			
 		}
 		else
 		{
@@ -116,6 +116,8 @@ namespace esc
 
 		m_xGuard->setWatchSize(120);
 		m_xGuard->setVisionRange(250);
+
+		m_xGuard->getAnimator()->setCurrentAnimation("guard_run.txt");
 	}
 
 	void AIStateChasing::exit()

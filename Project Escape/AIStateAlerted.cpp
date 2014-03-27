@@ -5,6 +5,7 @@
 #include "Level.h"
 #include "AIManager.h"
 #include "PlayerObject.h"
+#include "Animator.h"
 
 namespace esc
 {
@@ -53,6 +54,8 @@ namespace esc
 
 		m_xGuard->setWatchSize(70);
 		m_xGuard->setVisionRange(250);
+
+		m_xGuard->getAnimator()->setCurrentAnimation("guard_run.txt");
 	}
 
 	void AIStateAlerted::exit()
