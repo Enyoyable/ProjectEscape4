@@ -602,7 +602,7 @@ namespace esc
 						else if (upFree && !downFree && !leftFree && !rightFree)
 							obj->setSprite(m_xSpriteManager->loadSprite("Wall 15.png", 0, 0, 64, 64));
 						else
-							obj->setSprite(m_xSpriteManager->loadSprite("Wall black.png", 0, 0, 64, 64));
+							obj->setSprite(m_xSpriteManager->loadSprite("Wall grey.png", 0, 0, 64, 64));
 					}
 					else if (obj->getType() == COUCH)
 					{
@@ -791,27 +791,27 @@ namespace esc
 					}
 				case EFloorType::FLOOR2:
 				{
-												sf::Sprite *sprite = m_xSpriteManager->loadSprite("Floor2.png", 0, 0, 64, 64);
-												sprite->setOrigin(32, 32);
-												sprite->setPosition(sf::Vector2f(x * 64, y * 64));
-												m_vFloorSprites.push_back(sprite);
-												break;
+						sf::Sprite *sprite = m_xSpriteManager->loadSprite("Floor2.png", 0, 0, 64, 64);
+						sprite->setOrigin(32, 32);
+						sprite->setPosition(sf::Vector2f(x * 64, y * 64));
+						m_vFloorSprites.push_back(sprite);
+						break;
 				}
 				case EFloorType::FLOOR3:
 				{
-												sf::Sprite *sprite = m_xSpriteManager->loadSprite("Floor3.png", 0, 0, 64, 64);
-												sprite->setOrigin(32, 32);
-												sprite->setPosition(sf::Vector2f(x * 64, y * 64));
-												m_vFloorSprites.push_back(sprite);
-												break;
+						sf::Sprite *sprite = m_xSpriteManager->loadSprite("Floor3.png", 0, 0, 64, 64);
+						sprite->setOrigin(32, 32);
+						sprite->setPosition(sf::Vector2f(x * 64, y * 64));
+						m_vFloorSprites.push_back(sprite);
+						break;
 				}
 				case EFloorType::FLOOR4:
 				{
-												sf::Sprite *sprite = m_xSpriteManager->loadSprite("Floor4.png", 0, 0, 64, 64);
-												sprite->setOrigin(32, 32);
-												sprite->setPosition(sf::Vector2f(x * 64, y * 64));
-												m_vFloorSprites.push_back(sprite);
-												break;
+						sf::Sprite *sprite = m_xSpriteManager->loadSprite("Floor4.png", 0, 0, 64, 64);
+						sprite->setOrigin(32, 32);
+						sprite->setPosition(sf::Vector2f(x * 64, y * 64));
+						m_vFloorSprites.push_back(sprite);
+						break;
 				}
 				}
 
