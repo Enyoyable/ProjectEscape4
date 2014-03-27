@@ -71,7 +71,7 @@ namespace esc
 			{
 				Guard *guard = static_cast<Guard*>(obj);
 
-				guard->attachAi(new AIManager(guard, path, m_xPlayer));
+				guard->attachAi(new AIManager(guard, m_xLevel, m_xPlayer));
 
 				if (guard->getIsRotating())
 					guard->m_xAIManager->forceCurrentState(AIManager::STATIONARY);

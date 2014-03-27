@@ -17,6 +17,14 @@ namespace esc
 		m_fCurrentRadious = m_fMinRadious;
 
 		m_bIsUpdating = true;
+
+		m_xRipple = nullptr;
+	}
+
+	SoundRipple::~SoundRipple()
+	{
+		delete m_xRipple;
+		m_xRipple = nullptr;
 	}
 
 	void SoundRipple::update(float p_fDeltaTime)
@@ -46,6 +54,27 @@ namespace esc
 		setSize(sf::Vector2f(m_fCurrentRadious * 2, m_fCurrentRadious * 2));
 
 		setOrigin(sf::Vector2f(m_fCurrentRadious, m_fCurrentRadious));
+
+		delete m_xRipple;
+		m_xRipple = nullptr;
+
+		m_xRipple = new sf::CircleShape;
+
+		m_xRipple->setRadius(m_fCurrentRadious);
+		m_xRipple->setOutlineThickness(3.f);
+
+		sf::Color fadingColor = sf::Color::Green;
+		fadingColor.a = 1 - 255 * (m_fCurrentRadious) / m_fMaxRadious;
+
+		m_xRipple->setOutlineColor(fadingColor);
+		m_xRipple->setFillColor(sf::Color(0, 0, 0, 0));
+		m_xRipple->setPointCount(100);
+
+		float offset = sqrtf((m_fCurrentRadious * m_fCurrentRadious) / 2);
+
+		m_v2fRipplePosition = sf::Vector2f(m_v2fOriginPosition - sf::Vector2f(m_fCurrentRadious, m_fCurrentRadious));
+
+		m_xRipple->setPosition(m_v2fRipplePosition);
 		
 	}
 
@@ -58,24 +87,12 @@ namespace esc
 	{
 		if (!m_bIsUpdating)
 			return;
-		sf::CircleShape shape;
-		shape.setRadius(m_fCurrentRadious);
-		shape.setOutlineThickness(3.f);
+		
+		if (m_xRipple == nullptr)
+			return;
+		
 
-		sf::Color fadingColor = sf::Color::Green;
-		fadingColor.a = 1 - 255 * (m_fCurrentRadious) / m_fMaxRadious;
-
-		shape.setOutlineColor(fadingColor);
-		shape.setFillColor(sf::Color(0, 0, 0, 0));
-		shape.setPointCount(100);
-
-		float offset = sqrtf((m_fCurrentRadious * m_fCurrentRadious) / 2);
-
-		sf::Vector2f newPos(m_v2fOriginPosition - sf::Vector2f(m_fCurrentRadious, m_fCurrentRadious));
-
-		shape.setPosition(m_v2fOriginPosition - sf::Vector2f(m_fCurrentRadious, m_fCurrentRadious));
-
-		target.draw(shape);
+		target.draw(*m_xRipple);
 
 		
 	}
@@ -84,10 +101,18 @@ namespace esc
 	{
 		if (p_xGameObject->getType() == PATROLLINGGUARD || p_xGameObject->getType() == STATIONARYGUARD)
 		{
-			Guard *guard = static_cast<Guard*>(p_xGameObject);
-
-			//guard->alert(*m_v2fCurrentPos);
+			
 		}
+	}
+
+	sf::Vector2f SoundRipple::getRipplePosition()
+	{
+		return m_v2fRipplePosition + sf::Vector2f(m_fCurrentRadious, m_fCurrentRadious);
+	}
+
+	float SoundRipple::getCurrentRadious()
+	{
+		return m_fCurrentRadious;
 	}
 }
 

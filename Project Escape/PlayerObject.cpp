@@ -61,6 +61,8 @@ namespace esc
 
 		m_vStateObjects = nullptr;
 		
+		m_vRemoveObjects = new std::vector<GameObject*>();
+
 		m_xAnimator = p_xAnimator;
 
 		m_xAnimator->loadAnimations("playerAnims.txt");
@@ -68,8 +70,6 @@ namespace esc
 		std::vector<int> triggers = {
 			3, 9
 		};
-
-		m_vRemoveObjects = new std::vector<GameObject*>();
 
 		m_xAnimator->getAnimation("Spy_walk.txt")->setTriggers(triggers);
 
@@ -84,8 +84,9 @@ namespace esc
 
 	void PlayerObject::update(float deltaTime, std::vector<GameObject*> objects)
 	{
+
 		bool bIsWalking = false;
-			
+		
 		if (m_xWeapon->getAttachedObject() == nullptr)
 			m_xWeapon->setAttachedObject(this);
 
@@ -93,7 +94,7 @@ namespace esc
 			m_xWeapon->update(deltaTime);
 
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-		{   
+		{
 			if (m_xWeapon->getCurrentWeaponType() == WEAPONGUN)
 			{
 				m_xAnimator->setForcedAnimation("Spy_shot.txt");
@@ -242,6 +243,7 @@ namespace esc
 		else
 			m_fTimeUnhidden += deltaTime;
 
+
 		m_bRblock = false;
 		m_bLblock = false;
 		m_bUblock = false;
@@ -272,6 +274,7 @@ namespace esc
 				Attack();
 				sf::Vector2f ripplePosition = getPosition();
 
+				
 
 				ripplePosition.x -= cosf((getRotation() - 180) * 0.0174532925) * 60;
 				ripplePosition.y -= sinf((getRotation() - 180) * 0.0174532925) * 60;
@@ -295,6 +298,7 @@ namespace esc
 
 				sf::Vector2f ripplePosition = getPosition();
 
+				
 
 				ripplePosition.x -= cosf((getRotation() - 180) * 0.0174532925) * 16;
 				ripplePosition.y -= sinf((getRotation() - 180) * 0.0174532925) * 16;
@@ -314,25 +318,10 @@ namespace esc
 				}
 
 				m_sStepMusic->play();
-			}
-		}
 
-		/*if (m_vRemoveObjects->size() > 0)
-		{
-			for (auto object : m_vRemoveObjects)
-			{
-				for (auto it = m_vStateObjects->begin(); it != m_vStateObjects->end(); ++it)
-				{
-					if (object == *it)
-					{
-						delete object;
-						object = nullptr;
 
-						m_vStateObjects->erase(it);
-						break;
-					}
-				}
 			}
+<<<<<<< HEAD
 			m_vRemoveObjects.clear();
 		}*/
 
@@ -379,6 +368,9 @@ namespace esc
 			}
 			if (getPosition().y > 19 * 64)
 				m_bTutComplete = true;
+=======
+			
+>>>>>>> 45c0612b50f424944da1b53a50684c4efcb4882c
 		}
 	}
 
@@ -413,6 +405,7 @@ namespace esc
 		m_xWeapon = new Gun(true, 2, 1.f, 1.f, m_xLevel->getObjects(), m_xGobjManager, m_xLevel->getSpriteManager());
 		m_iCurWep = 2;
 
+
 	}
 
 	void PlayerObject::setcurwep(int newWep)
@@ -444,7 +437,6 @@ namespace esc
 
 	void PlayerObject::Interract(GameObject *p_xInteractObj)
 	{
-
 		if (p_xInteractObj->getType() == LOCKERL ||
 			p_xInteractObj->getType() == LOCKERR)
 		{
@@ -464,6 +456,7 @@ namespace esc
 				m_hiding = true;
 				setRotation(90.0f);
 			}
+
 		}
 		else if (p_xInteractObj->getType() == BATON)
 		{
@@ -471,7 +464,6 @@ namespace esc
 				return;
 
 			Item *baton = static_cast<Item*>(p_xInteractObj);
-
 			m_xWeapon = nullptr;
 			m_xWeapon = new Baton(true, baton->getCharges(), 1.f, 1.f, m_vStateObjects, m_xLevel, m_xGobjManager, m_xLevel->getSpriteManager());
 			m_iCurWep = 1;
@@ -498,6 +490,7 @@ namespace esc
 		{
 			if (p_xInteractObj->getIsRemoved() == true)
 				return;
+
 			Item *gun = static_cast<Item*>(p_xInteractObj);
 			m_xWeapon = new Gun(true, gun->getCharges(), 1.f, 1.f, m_vStateObjects, m_xGobjManager, m_xLevel->getSpriteManager());
 			m_xWeapon->setAttachedObject(this);
@@ -522,7 +515,9 @@ namespace esc
 						m_bHasCard = false;
 					}
 				}
+
 			}
+			
 		}
 	}
 
@@ -543,7 +538,7 @@ namespace esc
 			
 			Gun *gun = static_cast<Gun*>(m_xWeapon);
 			gun->setTarget(sf::Vector2f(sf::Mouse::getPosition(*p_window)) + getPosition() - sf::Vector2f(960, 540));
-			gun->trigger();
+			gun->attack();
 		}
 	}
 
@@ -620,6 +615,7 @@ namespace esc
 			float xDiff = p_oObject->getPosition().x - getPosition().x;
 			float yDiff = p_oObject->getPosition().y - getPosition().y;
 
+
 			if (fabs(xDiff) > 64 || fabs(yDiff) > 64)
 				return false;
 
@@ -642,9 +638,11 @@ namespace esc
 				}
 				else
 				{
+
 					setPosition(getPosition().x, p_oObject->getPosition().y - 64);
 				}
 			}
+
 		}
 		else if (p_oObject->getType() == PATROLLINGGUARD || p_oObject->getType() == STATIONARYGUARD)
 		{

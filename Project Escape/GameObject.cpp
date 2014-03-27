@@ -98,8 +98,9 @@ namespace esc
 
 		m_vCorners.push_back(new Corner(getPosition() + sf::Vector2f(0.001, 0.001) - getOrigin(), sf::Color(255, 255, 255, 0), m_iObjectId));
 		m_vCorners.push_back(new Corner(sf::Vector2f(getPosition().x + m_v2fSize.x + 0.001, getPosition().y - 0.001) - getOrigin(), sf::Color(255, 255, 255, 0), m_iObjectId));
-		m_vCorners.push_back(new Corner(sf::Vector2f(getPosition().x + 0.001, getPosition().y + m_v2fSize.y - 0.001) - getOrigin(), sf::Color(255, 255, 255, 0), m_iObjectId));
 		m_vCorners.push_back(new Corner(sf::Vector2f(getPosition().x + m_v2fSize.x - 0.001, getPosition().y + m_v2fSize.y - 0.001) - getOrigin(), sf::Color(255, 255, 255, 0), m_iObjectId));
+		m_vCorners.push_back(new Corner(sf::Vector2f(getPosition().x + 0.001, getPosition().y + m_v2fSize.y - 0.001) - getOrigin(), sf::Color(255, 255, 255, 0), m_iObjectId));
+		
 	}
 
 	std::vector<Corner*> GameObject::getCorners()

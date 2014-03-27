@@ -28,8 +28,11 @@ namespace esc
 			for (int y = 0; y < 200; y++)
 			{
 				m_aAdjacantObjects[x][y] = nullptr;
+				m_aWalls[x][y] = nullptr;
 			}
 		}
+
+		
 	}
 
 	void Level::update(float p_fDeltaTime)
@@ -215,16 +218,18 @@ namespace esc
 								  GameObject *obj = m_xGameObjectManager->createObject(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, EObjectType::WALL, nullptr);
 								  m_vLevelObjects.push_back(obj);
 								  m_aAdjacantObjects[x][y] = obj;
+								  m_aWalls[x][y] = obj;
 								  xNode->setIllegal(true);
 								  break;
+
 				}
 				case esc::COUCH:
 				{
-								  GameObject *obj = m_xGameObjectManager->createObject(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, EObjectType::COUCH, nullptr);
-								  m_vLevelObjects.push_back(obj);
-								  m_aAdjacantObjects[x][y] = obj;
-								  xNode->setIllegal(true);
-								  break;
+								   GameObject *obj = m_xGameObjectManager->createObject(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), false, EObjectType::COUCH, nullptr);
+								   m_vLevelObjects.push_back(obj);
+								   m_aAdjacantObjects[x][y] = obj;
+								   xNode->setIllegal(true);
+								   break;
 				}
 				case esc::LOCKERD:
 				{
@@ -641,6 +646,7 @@ namespace esc
 						if (leftCouch && upFace)
 							obj->setSprite(m_xSpriteManager->loadSprite("Couch_rotate3.png", 0, 0, 64, 64));
 					}
+<<<<<<< HEAD
 					else if (obj->getType() == DESKS)
 					{
 						bool upDesk, downDesk, leftDesk, rightDesk, upWall, downWall, leftWall, rightWall;
@@ -703,9 +709,13 @@ namespace esc
 						if (rightDesk && downWall)
 							obj->setSprite(m_xSpriteManager->loadSprite("desk2right.png", 0, 0, 64, 64));
 					}
+=======
+
+>>>>>>> 45c0612b50f424944da1b53a50684c4efcb4882c
 				}
 			}
 		}
+
 	}
 
 	void Level::createFloor(std::string p_sFilePath)
@@ -971,6 +981,7 @@ namespace esc
 		return m_xSpriteManager;
 	}
 
+<<<<<<< HEAD
 	void Level::handleTutObjects(int p_iObjNum, bool p_bAddOrRemove)
 	{
 		GameObject* obj = m_vTutorialObjects[p_iObjNum - 1];
@@ -978,5 +989,16 @@ namespace esc
 			obj->setIsRemoved(false);
 		else
 			obj->setIsRemoved(true);
+=======
+	void Level::getWalls(GameObject *p_aWalls[200][200])
+	{
+		for (int y = 0; y < 200; y++)
+		{
+			for (int x = 0; x < 200; x++)
+			{
+				p_aWalls[x][y] = m_aWalls[x][y];
+			}
+		}
+>>>>>>> 45c0612b50f424944da1b53a50684c4efcb4882c
 	}
 }

@@ -12,6 +12,7 @@ namespace esc
 	class GameObjectManager;
 	class Level;
 	class PathFind;
+	class SoundRipple;
 
 	class Guard : public GameObject
 	{
@@ -82,6 +83,16 @@ namespace esc
 
 		sf::Vector2f m_v2fStartPosition;
 
+		virtual void HandleCollision(GameObject *p_xOtherObject);
+
+		void setMovementSpeed(float p_fSpeed);
+
+		float getMovementSpeed();
+
+		void resetVision();
+
+		bool checkWalls(float p_fAngleToPlayer, float p_fDistanceToPlayer);
+
 	private:
 		bool m_bIsPatrolling;
 
@@ -103,7 +114,11 @@ namespace esc
 
 		float m_fStartAngle;
 
-		
+		bool m_bOriginalVisionRangeSet;
+		bool m_bOriginalVisionSizeSet;
+
+		float m_fOriginalVisionRange;
+		float m_fOriginalVisionSize;
 
 		float m_fViewDistance;
 
@@ -131,7 +146,11 @@ namespace esc
 
 		std::vector<sf::Vector2f*> m_vPath;
 
-		
+		SoundRipple *m_xLastRipple;
+
+		sf::CircleShape *m_xTarget;
+
+		float m_fMovementSpeed;
 	};
 
 }
