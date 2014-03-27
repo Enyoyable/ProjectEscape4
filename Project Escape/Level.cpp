@@ -159,6 +159,12 @@ namespace esc
 				eFloorType = EFloorType::NORMAL;
 			else if (sObjectIdentifier.compare("NORMALFLOOR") == 0)
 				eFloorType = EFloorType::NORMALFLOOR;
+			else if (sObjectIdentifier.compare("FLOOR2") == 0)
+				eFloorType = EFloorType::FLOOR2;
+			else if (sObjectIdentifier.compare("FLOOR3") == 0)
+				eFloorType = EFloorType::FLOOR3;
+			else if (sObjectIdentifier.compare("FLOOR4") == 0)
+				eFloorType = EFloorType::FLOOR4;
 
 			sf::Color *color = new sf::Color(r, g, b, a);
 
@@ -469,6 +475,12 @@ namespace esc
 						m_vLevelObjects.push_back(pda);
 						break;
 					}
+				case esc::GUN:
+					{
+						Item *gun = m_xGameObjectManager->createItem(sf::Vector2f(x * 64, y * 64), sf::Vector2f(64, 64), EObjectType::GUN, m_xSpriteManager->loadSprite("Gun_pu.png", 0, 0, 64, 64), 0);
+						m_vLevelObjects.push_back(gun);
+						break;
+					}
 				}
 
 				vPathNodes.push_back(xNode);
@@ -771,13 +783,36 @@ namespace esc
 
 				case EFloorType::NORMALFLOOR:
 					{
-						sf::Sprite *sprite = m_xSpriteManager->loadSprite("Floor 5.png", 0, 0, 64, 64);
+						sf::Sprite *sprite = m_xSpriteManager->loadSprite("Floor5.png", 0, 0, 64, 64);
 						sprite->setOrigin(32, 32);
 						sprite->setPosition(sf::Vector2f(x * 64, y * 64));
 						m_vFloorSprites.push_back(sprite);
 						break;
 					}
-
+				case EFloorType::FLOOR2:
+				{
+												sf::Sprite *sprite = m_xSpriteManager->loadSprite("Floor2.png", 0, 0, 64, 64);
+												sprite->setOrigin(32, 32);
+												sprite->setPosition(sf::Vector2f(x * 64, y * 64));
+												m_vFloorSprites.push_back(sprite);
+												break;
+				}
+				case EFloorType::FLOOR3:
+				{
+												sf::Sprite *sprite = m_xSpriteManager->loadSprite("Floor3.png", 0, 0, 64, 64);
+												sprite->setOrigin(32, 32);
+												sprite->setPosition(sf::Vector2f(x * 64, y * 64));
+												m_vFloorSprites.push_back(sprite);
+												break;
+				}
+				case EFloorType::FLOOR4:
+				{
+												sf::Sprite *sprite = m_xSpriteManager->loadSprite("Floor4.png", 0, 0, 64, 64);
+												sprite->setOrigin(32, 32);
+												sprite->setPosition(sf::Vector2f(x * 64, y * 64));
+												m_vFloorSprites.push_back(sprite);
+												break;
+				}
 				}
 
 			}

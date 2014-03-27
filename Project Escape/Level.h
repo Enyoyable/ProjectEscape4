@@ -19,6 +19,9 @@ namespace esc
 		{
 			NORMAL,
 			NORMALFLOOR,
+			FLOOR2,
+			FLOOR3,
+			FLOOR4
 		};
 
 		struct SGuardRotation
