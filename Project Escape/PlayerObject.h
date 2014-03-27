@@ -92,6 +92,7 @@ namespace esc
 
 		bool m_bHasCard;
 		bool m_bHasObj;
+		bool m_bTutComplete;
 
 		Level *m_xLevel;
 		sf::Clock *m_xTimer;

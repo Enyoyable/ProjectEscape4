@@ -48,11 +48,18 @@ namespace esc
 
 		void destroy();
 
+		void handleTutObjects(int p_iObjNum, bool p_bAddOrRemove);
+
 		std::vector<std::vector<PathNode*>> *getPathNodes();
 
 		std::vector<GameObject*> *getObjects();
 
+		std::vector<GameObject*> *getTutObjects();
+
 		SpriteManager* getSpriteManager();
+
+		void setStateNum(int p_statenum);
+		int getStateNum();
 
 		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
@@ -68,6 +75,8 @@ namespace esc
 		std::vector<sf::Sprite*> m_vFloorSprites;
 
 		std::vector<GameObject*> m_vLevelObjects;
+
+		std::vector<GameObject*> m_vTutorialObjects;
 
 		std::string m_sDirectoryPath;
 
@@ -87,6 +96,7 @@ namespace esc
 
 		int m_ixDimensions;
 		int m_iyDimensions;
+		int m_iStateNum;
 
 		std::vector<std::vector<PathNode*>> m_vPathNodes;
 

@@ -22,6 +22,7 @@ namespace esc
 		PATROLLINGGUARD,
 		TOILET,
 		URINAL,
+		URINAL2,
 		SINK,
 		EXIT,
 		BUTTON,
@@ -42,7 +43,17 @@ namespace esc
 		SOUNDRIPPLE,
 		WRITER,
 		PLANTS,
-		DOOR
+		DOOR,
+		RECMID,
+		RECTOP,
+		RECLOW,
+		FIKABORD,
+		STOLARUPP,
+		STOLARNER,
+		STOLARV,
+		STOLARH,
+		OBJECTIVE,
+		TUTOBJ
 	};
 
 	class GameObject : public sf::Drawable, public sf::Transformable

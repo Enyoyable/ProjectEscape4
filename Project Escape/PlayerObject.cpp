@@ -37,6 +37,7 @@ namespace esc
 
 		m_iCurWep = 2;
 		m_bHasCard = true;
+		m_bTutComplete = false;
 
 		m_bRblock = false;
 		m_bLblock = false;
@@ -334,6 +335,51 @@ namespace esc
 			}
 			m_vRemoveObjects.clear();
 		}*/
+
+		if (m_bTutComplete != true)
+		{
+			if (getPosition().x < 49 * 64)
+			m_xLevel->handleTutObjects(1, true);
+
+			if (getPosition().y > 9 * 64)
+			{
+				m_xLevel->handleTutObjects(1, false);
+				if (getPosition().x > 49 * 64 && getPosition().y < 64 * 11)
+					m_xLevel->handleTutObjects(2, true);
+			}
+
+			if (getPosition().x > 52 * 64)
+				m_xLevel->handleTutObjects(2, false);
+
+			if (getPosition().x > 57 * 64 && getPosition().y > 11 * 64)
+				m_xLevel->handleTutObjects(3, true);
+			else
+				m_xLevel->handleTutObjects(3, false);
+			
+			if (getPosition().x > 60 * 64 || getPosition().y > 14 * 64)
+				m_xLevel->handleTutObjects(3, false);
+
+			if (getPosition().y > 11 * 64 && getPosition().x < 56 * 64)
+				m_xLevel->handleTutObjects(4, true);
+			else
+				m_xLevel->handleTutObjects(4, false);
+
+			if (getPosition().x > 59 * 64)
+			{
+				m_xLevel->handleTutObjects(5, true);
+				if (getPosition().y > 12 * 64 && m_hiding == true)
+				{
+					//m_xLevel->handleTutObjects(5, false);
+					//m_xLevel->handleTutObjects(6, true);
+				}
+				if (getPosition().y > 17)
+				{
+					//m_xLevel->handleTutObjects(6. false);
+				}
+			}
+			if (getPosition().y > 19 * 64)
+				m_bTutComplete = true;
+		}
 	}
 
 	float PlayerObject::calcAngle(float mouse_x, float mouse_y)
@@ -611,13 +657,12 @@ namespace esc
 			if (fabs(xDiff) > 25 || fabs(yDiff) > 25)
 				return false;
 
-			reset();
-			m_xLevel->reset();
+			
+			m_xLevel->setStateNum(2);
 		}
 		else if (p_oObject->getType() == EXIT)
 		{
-			reset();
-			m_xLevel->reset();
+			m_xLevel->setStateNum(3);
 		}
 
 		return false;

@@ -17,6 +17,8 @@ namespace esc
 		{
 			MENU,
 			GAME,
+			LOSE,
+			WIN,
 			PAUSE,
 			OPTION,
 			DIALOGUE,

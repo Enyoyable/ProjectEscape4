@@ -131,13 +131,28 @@ namespace esc
 					iter = m_vGameObjects[MAIN].erase(iter);
 					continue;
 				}
-				
-					
 			}
-
 			++iter;
 		}
 		
+		if (m_xLevel->getStateNum() != 1)
+		{
+			if (m_xLevel->getStateNum() == 0)
+			{
+				m_xStateManager->setCurrentState(StateManager::MENU);
+				exit();
+			}
+			else if (m_xLevel->getStateNum() == 2)
+			{
+				m_xStateManager->setCurrentState(StateManager::LOSE);
+				exit();
+			}
+			else if (m_xLevel->getStateNum() == 3)
+			{
+				m_xStateManager->setCurrentState(StateManager::WIN);
+				exit();
+			}
+		}
 	}
 
 	void GameState::draw()
