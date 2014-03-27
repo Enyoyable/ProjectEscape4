@@ -34,13 +34,14 @@ namespace esc
 	{
 		sf::ContextSettings settings;
 		settings.antialiasingLevel = 8;
-		m_window = new sf::RenderWindow(sf::VideoMode(1920, 1080), "Plans of Futura", sf::Style::Resize, settings);
+		m_window = new sf::RenderWindow(sf::VideoMode(1920, 1080), "Plans of Futura", sf::Style::Default, settings);
 		m_window->setFramerateLimit(60);
 		m_window->setVerticalSyncEnabled(true);
 	}
 
 	void Engine::run()
 	{
+		srand(static_cast <unsigned> (time(0)));
 		sf::CircleShape circleShape(100.f);
 		circleShape.setFillColor(sf::Color::Yellow);
 

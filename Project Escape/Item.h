@@ -23,16 +23,16 @@ namespace esc
 		void setIsFlying(bool p_bflying);
 		bool getIsflying();
 
-		int getCharges();
-
 		void setTarget(sf::Vector2f p_v2fTarget);
+
+		int getCharges();
 
 	private:
 
 		sf::Vector2f m_v2fTarget;
 
-		int m_icharges;
-
 		bool m_bIsFlying;	
+
+		int m_icharges;
 	};
 }

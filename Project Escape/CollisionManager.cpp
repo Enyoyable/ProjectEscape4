@@ -3,6 +3,7 @@
 #include "Bullet.h"
 #include "Item.h"
 #include "SoundRipple.h"
+#include "Corner.h"
 #include "Door.h"
 
 namespace esc
@@ -184,39 +185,32 @@ namespace esc
 				{
 					if (object2->getType() == PATROLLINGGUARD || object2->getType() == STATIONARYGUARD)
 					{
-						int pPosX = object->getPosition().x;
-						int pPosY = object->getPosition().y;
-						int pSizeX = object->getSize().x;
-						int pSizeY = object->getSize().y;
+						float pPosX = object->getPosition().x;
+						float pPosY = object->getPosition().y;
+						
 
-						int oPosX = object2->getPosition().x;
-						int oPosY = object2->getPosition().y;
-						int oSizeX = object2->getSize().x;
-						int oSizeY = object2->getSize().y;
+						float oPosX = object2->getPosition().x;
+						float oPosY = object2->getPosition().y;
+						
 
-						float A = pSizeX * 0.5;
-						float B = oSizeX * 0.5f;
-						float C = (pPosX + A) - (oPosX + B);
+						float diffX = fabs(pPosX - oPosX);
+						float diffY = fabs(pPosY - oPosY);
 
-						if (fabs(C) < A + B)
+						SoundRipple *ripple = static_cast<SoundRipple*>(object);
+
+						float rippleRad = ripple->getCurrentRadious();
+
+						float minCollisionDiff = rippleRad + 45;
+
+						float distance = sqrtf(diffX * diffX + diffY * diffY);
+
+						if (minCollisionDiff > distance)
 						{
-							float Q = pSizeY * 0.5;
-							float P = oSizeY * 0.5f;
-							float Z = (pPosY + A) - (oPosY + B);
-							if (fabs(Z) < Q + P)
-							{
-								
+							Guard *guard = static_cast<Guard*>(object2);
 
-								Guard *ripple = dynamic_cast<Guard*>(object2);
-
-								if (ripple != nullptr)
-								{
-									ripple->HandleCollision(object);
-								}
-
-								
-							}
+							guard->HandleCollision(ripple);
 						}
+
 					}
 				}
 			}
@@ -263,10 +257,132 @@ namespace esc
 					{
 						Button *button = static_cast<Button*>(object);
 						button->HandleCollision();
+						
 					}
 				}
 
 			}
 		}
+	}
+
+	bool CollisionManager::lineCollision(sf::Vector2f A1, sf::Vector2f A2, sf::Vector2f B1, sf::Vector2f B2, double out)
+	{
+		sf::Vector2f a(A2 - A1);
+		sf::Vector2f b(B2 - B1);
+
+		double f = perpDot(a, b);
+
+		if (!f)
+			return false;
+
+		sf::Vector2f c(B2 - A2);
+
+		double aa = perpDot(a, c);
+		double bb = perpDot(b, c);
+
+		if (f < 0)
+		{
+			if (aa > 0)     return false;
+			if (bb > 0)     return false;
+			if (aa < f)     return false;
+			if (bb < f)     return false;
+		}
+		else
+		{
+			if (aa < 0)     return false;
+			if (bb < 0)     return false;
+			if (aa > f)     return false;
+			if (bb > f)     return false;
+		}
+
+		return true;
+	}
+
+	bool CollisionManager::getCollisionWithLine(std::vector<GameObject*> *p_vCollisionObjects, sf::Vector2f p_v2iPoint1, sf::Vector2f p_v2iPoint2)
+	{
+		for (auto object : *p_vCollisionObjects)
+		{
+			if (object->getType() == WALL)
+			{
+				int pPosX = object->getPosition().x;
+				int pPosY = object->getPosition().y;
+				int pSizeX = object->getSize().x;
+				int pSizeY = object->getSize().y;
+
+				int oPosX = p_v2iPoint1.x;
+				int oPosY = p_v2iPoint1.y;
+				int oSizeX = abs(p_v2iPoint1.x - p_v2iPoint2.x);
+				int oSizeY = abs(p_v2iPoint1.y - p_v2iPoint2.y);
+
+				float A = pSizeX * 0.5;
+				float B = oSizeX * 0.5f;
+				float C = (pPosX + A) - (oPosX + B);
+
+				if (fabs(C) < A + B)
+				{
+					float Q = pSizeY * 0.5;
+					float P = oSizeY * 0.5f;
+					float Z = (pPosY + A) - (oPosY + B);
+					if (fabs(Z) < Q + P)
+					{
+						std::vector<std::vector<sf::Vector2f*>> vLines;
+
+						for (int i = 0; i < 4; i++)
+						{
+							std::vector<sf::Vector2f*> vTempVector;
+
+							vTempVector.push_back(nullptr);
+							vTempVector.push_back(nullptr);
+
+							vLines.push_back(vTempVector);
+						}
+
+						std::vector<Corner*> vCorners = object->getCorners();
+
+						int i = 0;
+
+						std::vector<std::vector<sf::Vector2f*>> vNewLines;
+
+						for (auto line : vLines)
+						{
+							if (i != 3)
+							{
+								line[0] = &vCorners[i]->position;
+								line[1] = &vCorners[++i]->position;
+							}
+							else
+							{
+								line[0] = &vCorners[i]->position;
+								line[1] = &vCorners[0]->position;
+							}
+
+							vNewLines.push_back(line);
+						}
+
+						bool hasCollided = false;
+						
+						for (auto line : vNewLines)
+						{
+							hasCollided = lineCollision(*line[0], *line[1], p_v2iPoint1, p_v2iPoint2, 0);
+
+							if (hasCollided)
+								return true;
+						}
+					}
+				}
+			}
+		}
+
+		return false;
+	}
+
+	double CollisionManager::dot(sf::Vector2f a, sf::Vector2f b)
+	{
+		return (a.x * b.x) + (a.y * b.y);
+	}
+
+	double CollisionManager::perpDot(sf::Vector2f a, sf::Vector2f b)
+	{
+		return (a.y * b.x) - (a.x * b.y);
 	}
 }

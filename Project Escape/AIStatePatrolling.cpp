@@ -4,11 +4,12 @@
 #include "GameObject.h"
 #include "PlayerObject.h"
 #include "AIManager.h"
+#include "Level.h"
 
 namespace esc
 {
 
-	AIStatePatrolling::AIStatePatrolling(AIManager *p_xAIManager, Guard *p_xGuard, PathFind *p_xPathFind, PlayerObject *p_xPlayer) : AIState(p_xAIManager, p_xGuard, p_xPathFind, p_xPlayer)
+	AIStatePatrolling::AIStatePatrolling(AIManager *p_xAIManager, Guard *p_xGuard, Level *p_xPathFind, PlayerObject *p_xPlayer) : AIState(p_xAIManager, p_xGuard, p_xPathFind, p_xPlayer)
 	{
 		m_bHasReturned = true;
 	}
@@ -36,9 +37,15 @@ namespace esc
 
 	void AIStatePatrolling::enter()
 	{
+		printf("Now Patrolling!\n");
+
+		PathFind xPathFind(m_xPathFind);
+
 		m_xGuard->followPathCount = 0;
 
-		m_xGuard->setFollowPath(m_xPathFind->pathToPosition(m_xGuard, &m_xGuard->m_v2fStartPosition));
+		m_xGuard->setFollowPath(xPathFind.pathToPosition(m_xGuard, &m_xGuard->m_v2fStartPosition));
+
+		m_xGuard->setMovementSpeed(120.f);
 	}
 
 	void AIStatePatrolling::exit()

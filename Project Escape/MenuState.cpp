@@ -26,15 +26,11 @@ namespace esc
 		m_xMenuBack = m_xGameObjectManager->createObject(sf::Vector2f(0, 0), sf::Vector2f(1920, 1080), false, BACKGROUNDOBJ, m_xSpriteManager->loadSprite("TitleBG.png", 0, 0, 1920, 1080));
 
 		m_xStartButton = new Button(sf::Vector2f(615, 452), sf::Vector2f(715, 126), false, 0, m_xSpriteManager->loadSprite("NG1.png", 0, 0, 715, 126));
-
+		m_xStartButton->setHoverSprite(m_xSpriteManager->loadAnimatedSprite("NewGameAnim.txt"));
 		m_xStartButton->setFunction([&](){
 			m_xStateManager->setCurrentState(StateManager::EStates::GAME);
 			m_sTitle->stop();
 		});
-
-		m_xStartButton->setHoverSprite(m_xSpriteManager->loadAnimatedSprite("NewGameAnim.txt"));
-
-		m_xStartButton->setOrigin(0, 0);
 
 		m_xCreditsButton = new Button(sf::Vector2f(615, 577), sf::Vector2f(715, 126), false, 0, m_xSpriteManager->loadSprite("Cred1.png", 0, 0, 715, 126));
 

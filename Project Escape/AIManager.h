@@ -10,6 +10,8 @@ namespace esc
 	class PathFind;
 	class PlayerObject;
 	class Guard;
+	class Level;
+
 	class AIManager
 	{
 	public:
@@ -23,7 +25,7 @@ namespace esc
 		};
 
 	public:
-		AIManager(Guard *p_xGuard, PathFind *p_xPathFind, PlayerObject *p_xPlayer);
+		AIManager(Guard *p_xGuard, Level *p_xPathFind, PlayerObject *p_xPlayer);
 
 		void update(float p_fDeltaTime);
 
@@ -36,6 +38,10 @@ namespace esc
 		EAIStates getCurrentStateID();
 		AIState *getCurrentState();
 
+		void setIsLocked(bool p_bIsLocked);
+
+		bool getIsLocked();
+
 	private:
 		Guard *m_xGuard;
 
@@ -44,6 +50,10 @@ namespace esc
 		EAIStates m_eCurrentState;
 
 		PlayerObject *m_xPlayer;
+
+		Level *m_xPathFind;
+
+		bool m_bLockedState;
 	};
 
 }

@@ -10,11 +10,12 @@ namespace esc
 	class PathFind;
 	class PlayerObject;
 	class Guard;
+	class Level;
 
 	class AIState
 	{
 	public:
-		AIState(AIManager *p_xAIManager, Guard *p_xGuard, PathFind *p_xPathFind, PlayerObject *p_xPlayer);
+		AIState(AIManager *p_xAIManager, Guard *p_xGuard, Level *p_xPathFind, PlayerObject *p_xPlayer);
 
 		virtual void update(float p_fDeltaTime);
 
@@ -27,7 +28,7 @@ namespace esc
 	protected:
 		AIManager *m_xAiManager;
 		Guard *m_xGuard;
-		PathFind *m_xPathFind;
+		Level *m_xPathFind;
 		PlayerObject *m_xPlayer;
 	};
 

@@ -15,6 +15,8 @@ namespace esc
 	public:
 		SoundRipple(sf::Vector2f p_v2fPosiiton, float p_fMinRadious, float p_fmaxRadious, float p_fDuration);
 
+		~SoundRipple();
+
 		virtual void update(float p_fDeltaTime);
 
 		void destroy();
@@ -24,6 +26,10 @@ namespace esc
 		virtual void HandleCollision(GameObject *p_xGameObject);
 
 		bool m_bIsUpdating;
+
+		sf::Vector2f getRipplePosition();
+
+		float getCurrentRadious();
 
 	private:
 		float m_fCurrentRadious;
@@ -39,6 +45,10 @@ namespace esc
 		sf::Vector2f m_v2fOriginPosition;
 
 		sf::Vector2f *m_v2fCurrentPos;
+
+		sf::Vector2f m_v2fRipplePosition;
+
+		sf::CircleShape *m_xRipple;
 	};
 
 }

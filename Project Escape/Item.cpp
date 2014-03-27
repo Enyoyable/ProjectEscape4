@@ -65,6 +65,7 @@ namespace esc
 				m_bIsFlying = false;
 				m_v2fTarget = sf::Vector2f(0, 0);
 			}
+
 		}
 		else if (p_xGameObject->getType() == WALL)
 		{
@@ -97,4 +98,5 @@ namespace esc
 	{
 		return m_icharges;
 	}
+
 }

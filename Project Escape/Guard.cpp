@@ -3,6 +3,9 @@
 #include "AIManager.h"
 #include "PathFind.h"
 #include "AIStateAlerted.h"
+#include "SoundRipple.h"
+#include "Level.h"
+#include "CollisionManager.h"
 
 namespace esc
 {
@@ -45,6 +48,13 @@ namespace esc
 		m_xGobjManager = p_xGameObjectManager;
 
 		m_xLevel = p_xlevel;
+
+		m_xLastRipple = nullptr;
+		m_fMovementSpeed = 0.0f;
+
+		m_bOriginalVisionRangeSet = false;
+
+		m_bOriginalVisionSizeSet = false;
 	}
 
 	void Guard::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -276,12 +286,15 @@ namespace esc
 	{
 		sf::Vector2f v2fPlayerPos = p_xObject->getPosition();
 
+
 		float xDiff = getPosition().x - v2fPlayerPos.x;
 		float yDiff = getPosition().y - v2fPlayerPos.y;
 
 		float fDistance = sqrtf(xDiff * xDiff + yDiff * yDiff);
 
 		float fAngle = atan2f(yDiff, xDiff) / 0.017453292519943 + 180;
+
+		
 
 		if (fDistance > m_fViewDistance)
 			return false;
@@ -290,22 +303,95 @@ namespace esc
 		{
 			if (fAngle > m_fWatchAngle - m_fWatchArea/2 || fAngle < m_fWatchAngle + m_fWatchArea/2 - 360)
 			{
-				return true;
+				return checkWalls(fAngle, fDistance);
 			}
 		}
 		else if (m_fWatchAngle - m_fWatchArea / 2 < 0)
 		{
 			if (fAngle > m_fWatchAngle - m_fWatchArea / 2 + 360 || fAngle < m_fWatchAngle + m_fWatchArea / 2)
 			{
-				return true;
+				return checkWalls(fAngle, fDistance);
 			}
 		}
 		else
 		{
 			if (fAngle > m_fWatchAngle - m_fWatchArea / 2 && fAngle < m_fWatchAngle + m_fWatchArea / 2)
 			{
-				return true;
+				return checkWalls(fAngle, fDistance);
 			}
+		}
+
+		return false;
+	}
+	
+	bool Guard::checkWalls(float p_fAngleToPlayer, float p_fDistanceToPlayer)
+	{
+		int iTileDistance = m_fWatchArea / 64;
+
+		int iPlayerDistance = p_fDistanceToPlayer / 64;
+
+		if (iPlayerDistance > iTileDistance + 2)
+			return true;
+
+		sf::Vector2i v2iCurrentTilePosition((getPosition().x) / 64, (getPosition().y) / 64);
+
+		sf::Vector2i v2iCurrentPlayerTilePosition((m_xPlayerObject->getPosition().x) / 64, (m_xPlayerObject->getPosition().y ) / 64);
+
+		GameObject *aWalls[200][200];
+
+		m_xLevel->getWalls(aWalls);
+
+		std::vector<GameObject*> vWalls;
+
+		for (int y = v2iCurrentPlayerTilePosition.y - 12; y <= v2iCurrentPlayerTilePosition.y + 12; y++)
+		{
+
+			if (y < 0)
+				y = 0;
+
+			if (y == 200)
+				break;
+
+			for (int x = v2iCurrentPlayerTilePosition.x - 12; x <= v2iCurrentPlayerTilePosition.x + 12; x++)
+			{
+				if (x < 0)
+					x = 0;
+
+				if (x == 200)
+					break;
+
+				if (aWalls[x][y] != nullptr)
+					vWalls.push_back(aWalls[x][y]);
+			}
+		}
+
+		float playerRotation = m_xPlayerObject->getRotation();
+
+		std::vector<float> vRotations;
+
+		vRotations.push_back(playerRotation);
+
+		for (int i = 1; i < 8; i++)
+		{
+			float newRotation = playerRotation + i * 45;
+
+			if (newRotation > 360)
+				newRotation -= 360;
+
+			vRotations.push_back(newRotation);
+		}
+
+		CollisionManager manager;
+
+		int collcount = 0;
+
+		for (auto rotation : vRotations)
+		{
+			float x = cosf((rotation - 180) * 0.017453292519943) * 32 + m_xPlayerObject->getPosition().x;
+			float y = sinf((rotation - 180) * 0.017453292519943) * 32 + m_xPlayerObject->getPosition().y;
+
+			if (!manager.getCollisionWithLine(&vWalls, sf::Vector2f(x, y), getPosition()))
+				return true;
 		}
 
 		return false;
@@ -321,6 +407,12 @@ namespace esc
 
 	void Guard::setWatchSize(float p_fAngle)
 	{
+		if (!m_bOriginalVisionSizeSet)
+		{
+			m_fOriginalVisionSize = p_fAngle;
+			m_bOriginalVisionSizeSet = true;
+		}
+
 		m_fWatchArea = p_fAngle;
 	}
 
@@ -345,7 +437,19 @@ namespace esc
 
 	void Guard::setVisionRange(float p_fRange)
 	{
+		if (!m_bOriginalVisionRangeSet)
+		{
+			m_fOriginalVisionRange = p_fRange;
+			m_bOriginalVisionRangeSet = true;
+		}
+
 		m_fViewDistance = p_fRange;
+	}
+
+	void Guard::resetVision()
+	{
+		m_fViewDistance = m_fOriginalVisionRange;
+		m_fWatchArea = m_fOriginalVisionSize;
 	}
 
 	void Guard::setConstantRotation(bool p_fClockwise)
@@ -359,6 +463,7 @@ namespace esc
 	{
 		m_fWatchAngle = p_fAngle;
 		m_fStartAngle = p_fAngle;
+		setRotation(p_fAngle);
 	}
 
 	void Guard::reset()
@@ -440,10 +545,7 @@ namespace esc
 
 	void Guard::alert(sf::Vector2f p_v2fPosition)
 	{
-		m_xAIManager->setCurrentState(AIManager::ALERTED);
-		AIStateAlerted *alerted = static_cast<AIStateAlerted*>(m_xAIManager->getCurrentState());
-		alerted->setTarget(p_v2fPosition);
-		printf("ALERT");
+		
 	}
 
 	void Guard::updateRotation(float p_fDeltaTime)
@@ -577,7 +679,7 @@ namespace esc
 
 	bool Guard::followPath(float p_fDeltaTime)
 	{
-		if (m_vFollowPath.size() == 0)
+		if (m_vFollowPath.size() == 0 || followPathCount == m_vFollowPath.size())
 		{
 			return true;
 		}
@@ -589,7 +691,7 @@ namespace esc
 
 		float fTargetDistance = sqrt(fTargetxDiff * fTargetxDiff + fTargetyDiff * fTargetyDiff);
 
-		sf::Vector2f v2fMovementVector(fTargetxDiff / fTargetDistance * m_fGuardPatrolSpeed * p_fDeltaTime, fTargetyDiff / fTargetDistance * m_fGuardPatrolSpeed * p_fDeltaTime);
+		sf::Vector2f v2fMovementVector(fTargetxDiff / fTargetDistance * m_fMovementSpeed * p_fDeltaTime, fTargetyDiff / fTargetDistance * m_fMovementSpeed * p_fDeltaTime);
 
 		float fMovementDistance = sqrt(v2fMovementVector.x * v2fMovementVector.x + v2fMovementVector.y * v2fMovementVector.y);
 
@@ -601,6 +703,9 @@ namespace esc
 
 			if (followPathCount == m_vFollowPath.size())
 			{
+				if (m_xAIManager->getCurrentStateID() == AIManager::ALERTED)
+					return true;
+
 				if (getIsPatrolling())
 				{
 					setPosition(m_v2fStartPosition);
@@ -629,6 +734,72 @@ namespace esc
 
 	void Guard::setFollowPath(std::vector<sf::Vector2f*> p_v2fFollowPath)
 	{
+		printf("followpath set!\n");
+
+		if (p_v2fFollowPath.size() == 0)
+			return;
+
+		if (m_vFollowPath.size() != 0)
+		{
+			for (auto path : m_vFollowPath)
+			{
+				delete path;
+				path = nullptr;
+			}
+
+			m_vFollowPath.clear();
+		}
+		followPathCount = 0;
+
 		m_vFollowPath = p_v2fFollowPath;
+
+		if (m_xTarget != nullptr)
+		{
+			delete m_xTarget;
+			m_xTarget = nullptr;
+		}
+
+		
+
+		m_xTarget = new sf::CircleShape(20, 40);
+
+		m_xTarget->setPosition(*m_vFollowPath[0] -sf::Vector2f(16, 16));
+		m_xTarget->setFillColor(sf::Color::Green);
+	}
+
+	void Guard::HandleCollision(GameObject *p_xOtherObject)
+	{
+		if (m_xAIManager->getIsLocked())
+			return;
+		
+		SoundRipple *ripple = static_cast<SoundRipple*>(p_xOtherObject);
+
+		if (m_xLastRipple == ripple)
+			return;
+
+		if (m_xAIManager->getCurrentStateID() == AIManager::ALERTED)
+		{
+			AIStateAlerted *alerted = static_cast<AIStateAlerted*>(m_xAIManager->getCurrentState());
+			alerted->setNewTarget(ripple->getRipplePosition() + sf::Vector2f(32, 32));
+		}
+		else
+		{
+			m_xLastRipple = ripple;
+			m_xAIManager->setCurrentState(AIManager::ALERTED);
+			AIStateAlerted *alerted = static_cast<AIStateAlerted*>(m_xAIManager->getCurrentState());
+			alerted->setTarget(ripple->getRipplePosition() + sf::Vector2f(32, 32));
+		}
+		
+		
+	}
+
+	void Guard::setMovementSpeed(float p_fSpeed)
+	{
+		m_fMovementSpeed = p_fSpeed;
+	}
+
+	float Guard::getMovementSpeed()
+	{
+		return m_fMovementSpeed;
 	}
 }

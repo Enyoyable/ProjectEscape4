@@ -59,6 +59,26 @@ namespace esc
 
 		getPath();
 
+		for (auto node : m_vOpenList)
+		{
+			node->F = 0;
+			node->G = 0;
+			node->H = 0;
+
+			node->setOpen(false);
+			node->setParent(nullptr);
+		}
+
+		for (auto node : m_vClosedList)
+		{
+			node->F = 0;
+			node->G = 0;
+			node->H = 0;
+
+			node->setClosed(false);
+			node->setParent(nullptr);
+		}
+
 		return m_vPathPoints;
 	}
 
@@ -104,6 +124,26 @@ namespace esc
 		m_xStartingNode = m_xCurrentNode;
 
 		getPath();
+
+		for (auto node : m_vOpenList)
+		{
+			node->F = 0;
+			node->G = 0;
+			node->H = 0;
+
+			node->setOpen(false);
+			node->setParent(nullptr);
+		}
+
+		for (auto node : m_vClosedList)
+		{
+			node->F = 0;
+			node->G = 0;
+			node->H = 0;
+
+			node->setClosed(false);
+			node->setParent(nullptr);
+		}
 
 		return m_vPathPoints;
 	}
@@ -310,8 +350,8 @@ namespace esc
 		/*if (m_xCurrentNode->getIllegal())
 			m_xCurrentNode->setIllegal(false);*/
 
-		if (m_xTargetNode->getIllegal())
-			m_xTargetNode->setIllegal(false);
+		//if (m_xTargetNode->getIllegal())
+			//m_xTargetNode->setIllegal(false);
 
 		bool bFinished = false;
 
