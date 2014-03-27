@@ -149,7 +149,7 @@ namespace esc
 			m_iCurWep = 0;
 		}
 
-		if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
+		/*if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
 		{
 			if (m_xWeapon != nullptr)
 			{
@@ -160,7 +160,7 @@ namespace esc
 				m_xWeapon = new Garrote(1.f, 3.f, m_vStateObjects);
 				m_xWeapon->setAttachedObject(this);
 			}
-		}
+		}*/
 
 		if (m_hiding == false)
 		{
