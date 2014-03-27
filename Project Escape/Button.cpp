@@ -5,9 +5,10 @@ namespace esc
 {
 	Button::Button(sf::Vector2f p_v2fPosition, sf::Vector2f p_v2fSize, bool p_bInteractable, int p_iObjectId, sf::Sprite *p_xSprite) : GameObject(p_v2fPosition, p_v2fSize, p_bInteractable, p_iObjectId, EObjectType::BUTTON, p_xSprite)
 	{
+		
 		m_xHoverSprite = nullptr;
 		m_xOnClickSprite = nullptr;
-
+		setOrigin(0, 0);
 		m_bIsHovering = false;
 		m_bIsclicked = false;
 	}
