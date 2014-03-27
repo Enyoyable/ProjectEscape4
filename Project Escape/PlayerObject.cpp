@@ -368,12 +368,12 @@ namespace esc
 			else
 				m_xLevel->handleTutObjects(4, false);
 
-			if (getPosition().x > 59 * 64)
+			if (getPosition().x > 60 * 64 && getPosition().y > 12 * 64)
 			{
 				m_xLevel->handleTutObjects(5, true);
-				if (getPosition().y > 12 * 64 && m_hiding == true)
+				if (getPosition().y > 16 * 64)
 				{
-					//m_xLevel->handleTutObjects(5, false);
+					m_xLevel->handleTutObjects(5, false);
 					//m_xLevel->handleTutObjects(6, true);
 				}
 				if (getPosition().y > 17)

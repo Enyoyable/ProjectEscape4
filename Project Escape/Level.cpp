@@ -500,15 +500,15 @@ namespace esc
 		m_vLevelObjects.push_back(tutobj2);
 		m_vTutorialObjects.push_back(tutobj2);
 
-		GameObject *tutobj3 = m_xGameObjectManager->createObject(sf::Vector2f(59 * 64, 12 * 64), sf::Vector2f(64, 64), false, EObjectType::TUTOBJ, m_xSpriteManager->loadSprite("E.png", 0, 0, 64, 64));
+		GameObject *tutobj3 = m_xGameObjectManager->createObject(sf::Vector2f(59 * 64, 12 * 64), sf::Vector2f(64, 64), false, EObjectType::TUTOBJ, m_xSpriteManager->loadSprite("Einteract.png", 0, 0, 232, 64));
 		m_vLevelObjects.push_back(tutobj3);
 		m_vTutorialObjects.push_back(tutobj3);
 
-		GameObject *tutobj4 = m_xGameObjectManager->createObject(sf::Vector2f(50 * 64, 12 * 64), sf::Vector2f(64, 64), false, EObjectType::TUTOBJ, m_xSpriteManager->loadAnimatedSprite("Mouseindicator.txt"));
+		GameObject *tutobj4 = m_xGameObjectManager->createObject(sf::Vector2f(50 * 64, 12 * 64), sf::Vector2f(64, 64), false, EObjectType::TUTOBJ, m_xSpriteManager->loadSprite("Mouse.png", 0, 0, 64, 64));
 		m_vLevelObjects.push_back(tutobj4);
 		m_vTutorialObjects.push_back(tutobj4);
 
-		GameObject *tutobj5 = m_xGameObjectManager->createObject(sf::Vector2f(64 * 20, 64 * 8), sf::Vector2f(64, 64), false, EObjectType::TUTOBJ, m_xSpriteManager->loadSprite("tut5.png", 0, 0, 64, 64));
+		GameObject *tutobj5 = m_xGameObjectManager->createObject(sf::Vector2f(64 * 63, 64 * 16), sf::Vector2f(64, 64), false, EObjectType::TUTOBJ, m_xSpriteManager->loadSprite("HideB.png", 0, 0, 64, 288));
 		m_vLevelObjects.push_back(tutobj5);
 		m_vTutorialObjects.push_back(tutobj5);
 
@@ -572,7 +572,7 @@ namespace esc
 						if (!upFree && !downFree && !leftFree && !rightFree)
 							obj->setSprite(m_xSpriteManager->loadSprite("Wall black.png", 0, 0, 64, 64));
 						else if (upFree && downFree && !leftFree && rightFree)
-							obj->setSprite(m_xSpriteManager->loadSprite("Wall 1.png", 0, 0, 64, 64));
+							obj->setSprite(m_xSpriteManager->loadSprite("Wall 5.png", 0, 0, 64, 64));
 						else if (upFree && !downFree && leftFree && rightFree)
 							obj->setSprite(m_xSpriteManager->loadSprite("Wall 2.png", 0, 0, 64, 64));
 						else if (upFree && downFree && leftFree && !rightFree)
